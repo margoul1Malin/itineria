@@ -1,20 +1,28 @@
 "use client"
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import Header from "../components/Header";
 
-export default function Home() {
+export default function VolsEtHotels() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [currentDestinationIndex, setCurrentDestinationIndex] = useState(0);
+  const [, setCurrentDestinationIndex] = useState(0);
   const [currentHotelIndex, setCurrentHotelIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+  const [selectedDates, setSelectedDates] = useState({ start: '', end: '' });
   
   const heroImages = [
-    "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1200&h=800&fit=crop",
-    "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&h=800&fit=crop", 
-    "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1200&h=800&fit=crop",
-    "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200&h=800&fit=crop"
+    "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1200&h=800&fit=crop",
+    "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1200&h=800&fit=crop", 
+    "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1200&h=800&fit=crop",
+    "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=1200&h=800&fit=crop"
   ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % heroImages.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [heroImages.length]);
 
   const destinations = [
     {
@@ -125,14 +133,6 @@ export default function Home() {
       price: "À partir de 149€/nuit"
     }
   ];
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentImageIndex((prev) => (prev + 1) % heroImages.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [heroImages.length]);
-
   // Auto-scroll for destinations carousel
   useEffect(() => {
     const interval = setInterval(() => {
@@ -152,6 +152,7 @@ export default function Home() {
     }, 5000);
     return () => clearInterval(interval);
   }, [isTransitioning, hotels.length]);
+
 
   const weeklyOffers = [
     {
@@ -181,21 +182,7 @@ export default function Home() {
       discountPrice: "129€",
       discount: "-35%"
     }
-  ];
-
-  const nextDestination = () => {
-    setIsTransitioning(true);
-    setCurrentDestinationIndex((prev) => (prev + 1) % Math.ceil(destinations.length / 4));
-    setTimeout(() => setIsTransitioning(false), 300);
-  };
-
-  const prevDestination = () => {
-    setIsTransitioning(true);
-    setCurrentDestinationIndex((prev) => 
-      prev === 0 ? Math.ceil(destinations.length / 4) - 1 : prev - 1
-    );
-    setTimeout(() => setIsTransitioning(false), 300);
-  };
+  ]
 
   const nextHotel = () => {
     setIsTransitioning(true);
@@ -211,15 +198,94 @@ export default function Home() {
     setTimeout(() => setIsTransitioning(false), 300);
   };
 
-  const visibleDestinations = destinations.slice(currentDestinationIndex * 4, (currentDestinationIndex * 4) + 4);
   const visibleHotels = hotels.slice(currentHotelIndex * 3, (currentHotelIndex * 3) + 3);
+
+  const handleDateSelect = (date: string) => {
+    if (!selectedDates.start) {
+      setSelectedDates({ start: date, end: '' });
+    } else if (!selectedDates.end) {
+      if (date >= selectedDates.start) {
+        setSelectedDates({ start: selectedDates.start, end: date });
+        setIsCalendarOpen(false);
+      } else {
+        setSelectedDates({ start: date, end: selectedDates.start });
+        setIsCalendarOpen(false);
+      }
+    } else {
+      setSelectedDates({ start: date, end: '' });
+    }
+  };
+
+  const getDateDisplay = () => {
+    if (selectedDates.start && selectedDates.end) {
+      return `${selectedDates.start} - ${selectedDates.end}`;
+    } else if (selectedDates.start) {
+      return `${selectedDates.start} - Sélectionner fin`;
+    }
+    return "Sélectionner dates";
+  };
+
+  const offers = [
+    {
+      id: 1,
+      destination: "Sarandë, Albanie",
+      price: "87 €",
+      image: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&h=300&fit=crop"
+    },
+    {
+      id: 2,
+      destination: "Ksamil, Albanie",
+      price: "106 €",
+      image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&h=300&fit=crop"
+    },
+    {
+      id: 3,
+      destination: "Nerja, Espagne",
+      price: "132 €",
+      image: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=400&h=300&fit=crop"
+    },
+    {
+      id: 4,
+      destination: "Milan, Italie",
+      price: "133 €",
+      image: "https://images.unsplash.com/photo-1489749798305-4fea3ae63d43?w=400&h=300&fit=crop"
+    },
+    {
+      id: 5,
+      destination: "Alghero, Italie",
+      price: "136 €",
+      image: "https://images.unsplash.com/photo-1624938263838-161ebb0811f7?w=400&h=300&fit=crop"
+    },
+    {
+      id: 6,
+      destination: "Padoue, Italie",
+      price: "140 €",
+      image: "https://images.unsplash.com/photo-1549294413-26f195200c16?w=400&h=300&fit=crop"
+    },
+    {
+      id: 7,
+      destination: "Durrës, Albanie",
+      price: "140 €",
+      image: "https://images.unsplash.com/photo-1509439581779-6298f75bf6e5?w=400&h=300&fit=crop"
+    },
+    {
+      id: 8,
+      destination: "Lloret de Mar, Espagne",
+      price: "141 €",
+      image: "https://images.unsplash.com/photo-1474181487882-5abf3f0ba6c2?w=400&h=300&fit=crop"
+    },
+    {
+      id: 9,
+      destination: "Vignola Mare, Italie",
+      price: "145 €",
+      image: "https://images.unsplash.com/photo-1529655683826-aba9b3e77383?w=400&h=300&fit=crop"
+    }
+  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-stone-50 to-green-50">
-      <Header />
-      
       {/* Hero Section */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden pt-16">
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16 pb-8">
         {/* Background Images Carousel */}
         <div className="absolute inset-0">
           {heroImages.map((image, index) => (
@@ -244,37 +310,87 @@ export default function Home() {
 
         {/* Hero Content */}
         <div className="relative z-20 text-center text-white px-4 w-full max-w-6xl">
-          <h1 className="text-5xl md:text-7xl font-bold mb-6">
-            <span className="text-stone-200">Itineria</span>
+          <h1 className="text-4xl md:text-7xl font-bold mb-4 md:mb-6">
+            <span className="text-stone-200">Vols & Hôtels</span>
           </h1>
-          <p className="text-xl md:text-2xl mb-8 max-w-2xl mx-auto">
-            Découvrez le monde avec nos voyages d&apos;exception
+          <p className="text-lg md:text-2xl mb-6 md:mb-8 max-w-2xl mx-auto">
+            Réservez vos vols et hôtels ensemble pour des économies garanties
           </p>
           
           {/* Search Form */}
-          <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-6 md:p-8 shadow-2xl max-w-4xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-4 md:p-8 shadow-2xl max-w-4xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
+              <div>
+                <label className="block text-sm font-semibold text-green-800 mb-2">Départ</label>
+                <input 
+                  type="text" 
+                  placeholder="Ville de départ"
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent text-black"
+                />
+              </div>
               <div>
                 <label className="block text-sm font-semibold text-green-800 mb-2">Destination</label>
                 <input 
                   type="text" 
-                  placeholder="Où voulez-vous aller ?"
+                  placeholder="Ville de destination"
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent text-black"
                 />
               </div>
-              <div>
-                <label className="block text-sm font-semibold text-green-800 mb-2">Départ</label>
-                <input 
-                  type="date" 
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent text-black"
-                />
+              <div className="relative md:col-span-2">
+                <label className="block text-sm font-semibold text-green-800 mb-2">Dates</label>
+                <button
+                  onClick={() => setIsCalendarOpen(!isCalendarOpen)}
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent text-black text-left bg-white"
+                >
+                  {getDateDisplay()}
+                </button>
+                
+                {/* Calendar Popup */}
+                {isCalendarOpen && (
+                  <div className="fixed md:absolute md:top-full md:left-0 md:right-0 left-4 right-4 top-1/2 transform -translate-y-1/2 md:transform-none mt-1 bg-white border border-gray-300 rounded-lg shadow-xl z-[9999] p-4 min-w-[280px] max-h-[80vh] overflow-y-auto">
+                    <div className="grid grid-cols-7 gap-1 text-sm">
+                      <div className="text-center font-semibold text-gray-600">Lun</div>
+                      <div className="text-center font-semibold text-gray-600">Mar</div>
+                      <div className="text-center font-semibold text-gray-600">Mer</div>
+                      <div className="text-center font-semibold text-gray-600">Jeu</div>
+                      <div className="text-center font-semibold text-gray-600">Ven</div>
+                      <div className="text-center font-semibold text-gray-600">Sam</div>
+                      <div className="text-center font-semibold text-gray-600">Dim</div>
+                      
+                      {/* Calendar days - simplified for demo */}
+                      {Array.from({ length: 35 }, (_, i) => {
+                        const day = i + 1;
+                        const date = `2024-08-${day.toString().padStart(2, '0')}`;
+                        const isSelected = date === selectedDates.start || date === selectedDates.end;
+                        const isInRange = selectedDates.start && selectedDates.end && 
+                                        date >= selectedDates.start && date <= selectedDates.end;
+                        
+                        return (
+                          <button
+                            key={i}
+                            onClick={() => handleDateSelect(date)}
+                            className={`p-2 rounded hover:bg-green-100 transition-colors text-gray-800 ${
+                              isSelected ? 'bg-green-600 text-white' : 
+                              isInRange ? 'bg-green-100 text-gray-800' : 'text-gray-800 hover:bg-gray-100'
+                            }`}
+                          >
+                            {day}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
               </div>
               <div>
-                <label className="block text-sm font-semibold text-green-800 mb-2">Retour</label>
-                <input 
-                  type="date" 
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent text-black"
-                />
+                <label className="block text-sm font-semibold text-green-800 mb-2">Voyageurs</label>
+                <select className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent text-black">
+                  <option>1 voyageur</option>
+                  <option>2 voyageurs</option>
+                  <option>3 voyageurs</option>
+                  <option>4 voyageurs</option>
+                  <option>5+ voyageurs</option>
+                </select>
               </div>
               <div className="flex items-end">
                 <button className="w-full bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
@@ -286,102 +402,112 @@ export default function Home() {
         </div>
 
         {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+        <div className="absolute bottom-4 md:bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
           <div className="w-6 h-10 border-2 border-white rounded-full flex justify-center">
             <div className="w-1 h-3 bg-white rounded-full mt-2 animate-pulse"></div>
           </div>
         </div>
       </section>
 
-      {/* Destinations Section */}
-      <section className="py-20 px-4 bg-gradient-to-br from-stone-50 to-green-50">
+      {/* Évadez-vous avec nos offres Section */}
+      <section className="py-20 px-4 bg-white">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-green-800 mb-4">Nos Destinations</h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Explorez nos destinations les plus populaires et laissez-vous porter par l&apos;aventure
-            </p>
+            <h2 className="text-4xl font-bold text-green-800 mb-4">Évadez-vous avec nos offres</h2>
+            <p className="text-xl text-gray-600 mb-2">Vol + Hôtel</p>
           </div>
 
-          <div className="relative overflow-hidden">
-            <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 transition-transform duration-300 ${
-              isTransitioning ? 'scale-95 opacity-50' : 'scale-100 opacity-100'
-            }`}>
-              {visibleDestinations.map((destination) => (
-                <div key={destination.id} className="group cursor-pointer">
-                  <div className="relative overflow-hidden rounded-xl shadow-lg group-hover:shadow-xl transition-shadow">
-                    <div className="aspect-[4/3] relative">
-                      <Image
-                        src={destination.image}
-                        alt={destination.name}
-                        fill
-                        className="object-cover group-hover:scale-110 transition-transform duration-300"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                      <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                        <h3 className="text-xl font-bold mb-2">{destination.name}</h3>
-                        <p className="text-stone-200 font-semibold">{destination.price}</p>
-                        <p className="text-sm opacity-90">{destination.duration}</p>
-                      </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {offers.map((offer) => (
+              <div key={offer.id} className="group cursor-pointer">
+                <div className="relative overflow-hidden rounded-xl shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105">
+                  <div className="aspect-[4/3] relative">
+                    <Image
+                      src={offer.image}
+                      alt={offer.destination}
+                      fill
+                      className="object-cover group-hover:scale-110 transition-transform duration-300"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+                    <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+                      <h3 className="text-lg font-semibold mb-1">{offer.destination}</h3>
+                      <p className="text-2xl font-bold text-stone-200">dès {offer.price}</p>
                     </div>
                   </div>
                 </div>
-              ))}
-            </div>
-
-            {/* Navigation Arrows */}
-            <button 
-              onClick={prevDestination}
-              className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white text-green-800 p-3 rounded-full shadow-lg transition-all hover:scale-110 z-10"
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-              </svg>
-            </button>
-            <button 
-              onClick={nextDestination}
-              className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white text-green-800 p-3 rounded-full shadow-lg transition-all hover:scale-110 z-10"
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
+      
+
       {/* Search Section */}
       <section className="py-20 px-4 bg-white">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl font-bold text-green-800 mb-4">Trouvez votre voyage idéal</h2>
+          <h2 className="text-4xl font-bold text-green-800 mb-4">Recherche Avancée Vols & Hôtels</h2>
           <p className="text-lg text-gray-600 mb-8">
-            Recherchez parmi des milliers de destinations et trouvez l&apos;offre parfaite
+            Utilisez nos filtres avancés pour trouver la meilleure combinaison vol + hôtel
           </p>
           <div className="bg-gradient-to-r from-green-50 to-stone-50 rounded-2xl p-8 shadow-lg">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div>
+                <label className="block text-sm font-semibold text-green-800 mb-2">Départ</label>
+                <input 
+                  type="text" 
+                  placeholder="Aéroport de départ"
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent text-black"
+                />
+              </div>
               <div>
                 <label className="block text-sm font-semibold text-green-800 mb-2">Destination</label>
                 <input 
                   type="text" 
-                  placeholder="Où voulez-vous aller ?"
+                  placeholder="Aéroport d'arrivée"
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent text-black"
                 />
               </div>
               <div>
-                <label className="block text-sm font-semibold text-green-800 mb-2">Départ</label>
-                <input 
-                  type="date" 
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent text-black"
-                />
+                <label className="block text-sm font-semibold text-green-800 mb-2">Voyageurs</label>
+                <select className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent text-black">
+                  <option>1 voyageur</option>
+                  <option>2 voyageurs</option>
+                  <option>3 voyageurs</option>
+                  <option>4+ voyageurs</option>
+                </select>
               </div>
               <div>
-                <label className="block text-sm font-semibold text-green-800 mb-2">Retour</label>
-                <input 
-                  type="date" 
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent text-black"
-                />
+                <label className="block text-sm font-semibold text-green-800 mb-2">Chambres</label>
+                <select className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent text-black">
+                  <option>1 chambre</option>
+                  <option>2 chambres</option>
+                  <option>3 chambres</option>
+                  <option>4+ chambres</option>
+                </select>
               </div>
-              <div className="flex items-end">
+            </div>
+            <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label className="block text-sm font-semibold text-green-800 mb-2">Classe Vol</label>
+                <select className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent text-black">
+                  <option>Économique</option>
+                  <option>Premium Economy</option>
+                  <option>Affaires</option>
+                  <option>Première</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-green-800 mb-2">Catégorie Hôtel</label>
+                <select className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent text-black">
+                  <option>Toutes catégories</option>
+                  <option>2 étoiles</option>
+                  <option>3 étoiles</option>
+                  <option>4 étoiles</option>
+                  <option>5 étoiles</option>
+                </select>
+              </div>
+              <div className="flex items-center">
                 <button className="w-full bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
                   Rechercher
                 </button>
@@ -397,7 +523,7 @@ export default function Home() {
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-green-800 mb-4">Offres de la Semaine</h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Profitez de nos réductions exceptionnelles sur une sélection d&apos;hôtels
+              Profitez de nos réductions exceptionnelles sur des packages vol + hôtel
             </p>
           </div>
 
@@ -529,7 +655,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
     </div>
   );
-}
+} 

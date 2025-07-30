@@ -1,20 +1,27 @@
 "use client"
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import Header from "../components/Header";
 
-export default function Home() {
+export default function Hotels() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [currentDestinationIndex, setCurrentDestinationIndex] = useState(0);
   const [currentHotelIndex, setCurrentHotelIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   
   const heroImages = [
-    "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1200&h=800&fit=crop",
-    "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&h=800&fit=crop", 
-    "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1200&h=800&fit=crop",
-    "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200&h=800&fit=crop"
+    "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1200&h=800&fit=crop",
+    "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1200&h=800&fit=crop", 
+    "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=1200&h=800&fit=crop",
+    "https://images.unsplash.com/photo-1549294413-26f195200c16?w=1200&h=800&fit=crop"
   ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % heroImages.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [heroImages.length]);
+
 
   const destinations = [
     {
@@ -125,14 +132,6 @@ export default function Home() {
       price: "À partir de 149€/nuit"
     }
   ];
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentImageIndex((prev) => (prev + 1) % heroImages.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [heroImages.length]);
-
   // Auto-scroll for destinations carousel
   useEffect(() => {
     const interval = setInterval(() => {
@@ -216,10 +215,8 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-stone-50 to-green-50">
-      <Header />
-      
       {/* Hero Section */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden pt-16">
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16 pb-8">
         {/* Background Images Carousel */}
         <div className="absolute inset-0">
           {heroImages.map((image, index) => (
@@ -244,21 +241,28 @@ export default function Home() {
 
         {/* Hero Content */}
         <div className="relative z-20 text-center text-white px-4 w-full max-w-6xl">
-          <h1 className="text-5xl md:text-7xl font-bold mb-6">
-            <span className="text-stone-200">Itineria</span>
+          <h1 className="text-4xl md:text-7xl font-bold mb-4 md:mb-6">
+            <span className="text-stone-200">Hôtels</span>
           </h1>
-          <p className="text-xl md:text-2xl mb-8 max-w-2xl mx-auto">
-            Découvrez le monde avec nos voyages d&apos;exception
+          <p className="text-lg md:text-2xl mb-6 md:mb-8 max-w-2xl mx-auto">
+            Découvrez des hôtels d&apos;exception pour un séjour inoubliable
           </p>
           
           {/* Search Form */}
-          <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-6 md:p-8 shadow-2xl max-w-4xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-4 md:p-8 shadow-2xl max-w-4xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
               <div>
                 <label className="block text-sm font-semibold text-green-800 mb-2">Destination</label>
                 <input 
                   type="text" 
-                  placeholder="Où voulez-vous aller ?"
+                  placeholder="Où voulez-vous séjourner ?"
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent text-black"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-green-800 mb-2">Arrivée</label>
+                <input 
+                  type="date" 
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent text-black"
                 />
               </div>
@@ -270,11 +274,23 @@ export default function Home() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-semibold text-green-800 mb-2">Retour</label>
-                <input 
-                  type="date" 
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent text-black"
-                />
+                <label className="block text-sm font-semibold text-green-800 mb-2">Voyageurs</label>
+                <select className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent text-black">
+                  <option>1 voyageur</option>
+                  <option>2 voyageurs</option>
+                  <option>3 voyageurs</option>
+                  <option>4 voyageurs</option>
+                  <option>5+ voyageurs</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-green-800 mb-2">Chambres</label>
+                <select className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent text-black">
+                  <option>1 chambre</option>
+                  <option>2 chambres</option>
+                  <option>3 chambres</option>
+                  <option>4+ chambres</option>
+                </select>
               </div>
               <div className="flex items-end">
                 <button className="w-full bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
@@ -286,20 +302,20 @@ export default function Home() {
         </div>
 
         {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+        <div className="absolute bottom-4 md:bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
           <div className="w-6 h-10 border-2 border-white rounded-full flex justify-center">
             <div className="w-1 h-3 bg-white rounded-full mt-2 animate-pulse"></div>
           </div>
         </div>
       </section>
 
-      {/* Destinations Section */}
+      {/* Hôtels En Vogue Section */}
       <section className="py-20 px-4 bg-gradient-to-br from-stone-50 to-green-50">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-green-800 mb-4">Nos Destinations</h2>
+            <h2 className="text-4xl font-bold text-green-800 mb-4">Hôtels En Vogue</h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Explorez nos destinations les plus populaires et laissez-vous porter par l&apos;aventure
+              Découvrez nos hôtels les plus populaires et trouvez votre séjour parfait
             </p>
           </div>
 
@@ -353,33 +369,66 @@ export default function Home() {
       {/* Search Section */}
       <section className="py-20 px-4 bg-white">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl font-bold text-green-800 mb-4">Trouvez votre voyage idéal</h2>
+          <h2 className="text-4xl font-bold text-green-800 mb-4">Recherche Avancée d&apos;Hôtels</h2>
           <p className="text-lg text-gray-600 mb-8">
-            Recherchez parmi des milliers de destinations et trouvez l&apos;offre parfaite
+            Utilisez nos filtres avancés pour trouver l&apos;hôtel parfait selon vos besoins
           </p>
           <div className="bg-gradient-to-r from-green-50 to-stone-50 rounded-2xl p-8 shadow-lg">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               <div>
                 <label className="block text-sm font-semibold text-green-800 mb-2">Destination</label>
                 <input 
                   type="text" 
-                  placeholder="Où voulez-vous aller ?"
+                  placeholder="Ville ou région"
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent text-black"
                 />
               </div>
               <div>
-                <label className="block text-sm font-semibold text-green-800 mb-2">Départ</label>
+                <label className="block text-sm font-semibold text-green-800 mb-2">Dates</label>
                 <input 
                   type="date" 
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent text-black"
                 />
               </div>
               <div>
-                <label className="block text-sm font-semibold text-green-800 mb-2">Retour</label>
-                <input 
-                  type="date" 
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent text-black"
-                />
+                <label className="block text-sm font-semibold text-green-800 mb-2">Voyageurs</label>
+                <select className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent text-black">
+                  <option>1 voyageur</option>
+                  <option>2 voyageurs</option>
+                  <option>3 voyageurs</option>
+                  <option>4+ voyageurs</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-green-800 mb-2">Chambres</label>
+                <select className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent text-black">
+                  <option>1 chambre</option>
+                  <option>2 chambres</option>
+                  <option>3 chambres</option>
+                  <option>4+ chambres</option>
+                </select>
+              </div>
+            </div>
+            <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label className="block text-sm font-semibold text-green-800 mb-2">Étoiles</label>
+                <select className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent text-black">
+                  <option>Toutes les étoiles</option>
+                  <option>5 étoiles</option>
+                  <option>4 étoiles</option>
+                  <option>3 étoiles</option>
+                  <option>2 étoiles</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-green-800 mb-2">Budget</label>
+                <select className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent text-black">
+                  <option>Tous les budgets</option>
+                  <option>Économique</option>
+                  <option>Milieu de gamme</option>
+                  <option>Luxe</option>
+                  <option>Ultra luxe</option>
+                </select>
               </div>
               <div className="flex items-end">
                 <button className="w-full bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
@@ -529,7 +578,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
     </div>
   );
-}
+} 
