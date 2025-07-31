@@ -1,15 +1,63 @@
 "use client"
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+
+interface User {
+  id: string;
+  username: string;
+  email: string;
+  firstName?: string;
+  lastName?: string;
+}
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAccountMenuOpen, setIsAccountMenuOpen] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   const toggleAccountMenu = () => {
     setIsAccountMenuOpen(!isAccountMenuOpen);
   };
+
+  const handleLogout = async () => {
+    try {
+      const response = await fetch('/api/auth/logout', {
+        method: 'POST',
+        credentials: 'include'
+      });
+      
+      if (response.ok) {
+        setUser(null);
+        setIsAccountMenuOpen(false);
+      }
+    } catch (error) {
+      console.error('Erreur lors de la déconnexion:', error);
+    }
+  };
+
+  useEffect(() => {
+    // Vérifier l'état de connexion
+    const checkAuthStatus = async () => {
+      try {
+        const response = await fetch('/api/auth/me', {
+          credentials: 'include'
+        });
+        
+        if (response.ok) {
+          const userData = await response.json();
+          setUser(userData.user);
+        }
+      } catch (error) {
+        console.error('Erreur lors de la vérification de l\'authentification:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    checkAuthStatus();
+  }, []);
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200">
@@ -48,44 +96,76 @@ export default function Header() {
 
           {/* Desktop Account Menu */}
           <div className="hidden md:block relative">
-            <button 
-              onClick={toggleAccountMenu}
-              className="text-gray-700 hover:text-green-600 transition-colors flex items-center gap-1 font-bold cursor-pointer"
-            >
-              Compte
-              <svg className={`w-4 h-4 transition-transform ${isAccountMenuOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
-            </button>
-            
-            {/* Dropdown Menu */}
-            {isAccountMenuOpen && (
-              <div className="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
-                <Link 
-                  href="/profil" 
-                  className="block px-4 py-2 text-gray-700 hover:bg-green-50 hover:text-green-600 transition-colors"
-                >
-                  Profil
-                </Link>
-                <Link 
-                  href="/reservations-et-voyages" 
-                  className="block px-4 py-2 text-gray-700 hover:bg-green-50 hover:text-green-600 transition-colors"
-                >
-                  Réservations et Voyages
-                </Link>
-                <Link 
-                  href="/commentaires-et-notes" 
-                  className="block px-4 py-2 text-gray-700 hover:bg-green-50 hover:text-green-600 transition-colors"
-                >
-                  Commentaires et Notes
-                </Link>
-                <Link 
-                  href="/favoris" 
-                  className="block px-4 py-2 text-gray-700 hover:bg-green-50 hover:text-green-600 transition-colors"
-                >
-                  Favoris
-                </Link>
-              </div>
+            {!isLoading && (
+              <>
+                {user ? (
+                  // Utilisateur connecté
+                  <>
+                    <button 
+                      onClick={toggleAccountMenu}
+                      className="text-gray-700 hover:text-green-600 transition-colors flex items-center gap-1 font-bold cursor-pointer"
+                    >
+                      {user.firstName ? `${user.firstName} ${user.lastName || ''}` : user.username}
+                      <svg className={`w-4 h-4 transition-transform ${isAccountMenuOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </button>
+                    
+                    {/* Dropdown Menu */}
+                    {isAccountMenuOpen && (
+                      <div className="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
+                        <Link 
+                          href="/profil" 
+                          className="block px-4 py-2 text-gray-700 hover:bg-green-50 hover:text-green-600 transition-colors"
+                        >
+                          Profil
+                        </Link>
+                        <Link 
+                          href="/reservations-et-voyages" 
+                          className="block px-4 py-2 text-gray-700 hover:bg-green-50 hover:text-green-600 transition-colors"
+                        >
+                          Réservations et Voyages
+                        </Link>
+                        <Link 
+                          href="/commentaires-et-notes" 
+                          className="block px-4 py-2 text-gray-700 hover:bg-green-50 hover:text-green-600 transition-colors"
+                        >
+                          Commentaires et Notes
+                        </Link>
+                        <Link 
+                          href="/favoris" 
+                          className="block px-4 py-2 text-gray-700 hover:bg-green-50 hover:text-green-600 transition-colors"
+                        >
+                          Favoris
+                        </Link>
+                        <div className="border-t border-gray-200 my-1"></div>
+                        <button
+                          onClick={handleLogout}
+                          className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors"
+                        >
+                          Déconnexion
+                        </button>
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  // Utilisateur non connecté
+                  <div className="flex items-center space-x-4">
+                    <Link 
+                      href="/login" 
+                      className="text-gray-700 hover:text-green-600 transition-colors font-medium"
+                    >
+                      Connexion
+                    </Link>
+                    <Link 
+                      href="/register" 
+                      className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors font-medium"
+                    >
+                      Inscription
+                    </Link>
+                  </div>
+                )}
+              </>
             )}
           </div>
 
@@ -125,25 +205,52 @@ export default function Header() {
               <Link href="/contact" className="block px-3 py-2 text-gray-700 hover:text-green-600 transition-colors font-medium">
                 Contact
               </Link>
-              <div className="pt-4 border-t border-gray-200">
-                <div className="px-3 py-2 text-gray-700 font-bold cursor-pointer" onClick={toggleAccountMenu}>Compte</div>
-                {isAccountMenuOpen && (
-                  <>
-                    <Link href="/profil" className="block px-6 py-2 text-gray-600 hover:text-green-600 transition-colors">
-                      Profil
-                    </Link>
-                    <Link href="/reservations-et-voyages" className="block px-6 py-2 text-gray-600 hover:text-green-600 transition-colors">
-                      Réservations et Voyages
-                    </Link>
-                    <Link href="/commentaires-et-notes" className="block px-6 py-2 text-gray-600 hover:text-green-600 transition-colors">
-                      Commentaires et Notes
-                    </Link>
-                    <Link href="/favoris" className="block px-6 py-2 text-gray-600 hover:text-green-600 transition-colors">
-                      Favoris
-                    </Link>
-                  </>
-                )}
-              </div>
+              {!isLoading && (
+                <>
+                  {user ? (
+                    // Utilisateur connecté
+                    <div className="pt-4 border-t border-gray-200">
+                      <div className="px-3 py-2 text-gray-700 font-bold">
+                        {user.firstName ? `${user.firstName} ${user.lastName || ''}` : user.username}
+                      </div>
+                      <div className="px-3 py-2 text-gray-700 font-bold cursor-pointer" onClick={toggleAccountMenu}>Compte</div>
+                      {isAccountMenuOpen && (
+                        <>
+                          <Link href="/profil" className="block px-6 py-2 text-gray-600 hover:text-green-600 transition-colors">
+                            Profil
+                          </Link>
+                          <Link href="/reservations-et-voyages" className="block px-6 py-2 text-gray-600 hover:text-green-600 transition-colors">
+                            Réservations et Voyages
+                          </Link>
+                          <Link href="/commentaires-et-notes" className="block px-6 py-2 text-gray-600 hover:text-green-600 transition-colors">
+                            Commentaires et Notes
+                          </Link>
+                          <Link href="/favoris" className="block px-6 py-2 text-gray-600 hover:text-green-600 transition-colors">
+                            Favoris
+                          </Link>
+                          <div className="border-t border-gray-200 my-1 mx-3"></div>
+                          <button
+                            onClick={handleLogout}
+                            className="block w-full text-left px-6 py-2 text-gray-600 hover:text-red-600 transition-colors"
+                          >
+                            Déconnexion
+                          </button>
+                        </>
+                      )}
+                    </div>
+                  ) : (
+                    // Utilisateur non connecté
+                    <div className="pt-4 border-t border-gray-200">
+                      <Link href="/login" className="block px-3 py-2 text-gray-700 hover:text-green-600 transition-colors font-medium">
+                        Connexion
+                      </Link>
+                      <Link href="/register" className="block px-3 py-2 text-gray-700 hover:text-green-600 transition-colors font-medium">
+                        Inscription
+                      </Link>
+                    </div>
+                  )}
+                </>
+              )}
             </div>
           </div>
         )}

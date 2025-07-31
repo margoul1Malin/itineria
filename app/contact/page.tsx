@@ -3,12 +3,17 @@ import { useState } from "react";
 
 export default function Contact() {
   const [formData, setFormData] = useState({
-    nom: '',
+    name: '',
     email: '',
     telephone: '',
-    sujet: '',
+    subject: '',
     message: ''
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<{
+    type: 'success' | 'error' | null;
+    message: string;
+  }>({ type: null, message: '' });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -18,11 +23,55 @@ export default function Contact() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Ici on pourrait envoyer les données à une API
-    console.log('Formulaire soumis:', formData);
-    alert('Votre message a été envoyé avec succès !');
+    setIsSubmitting(true);
+    setSubmitStatus({ type: null, message: '' });
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          subject: formData.subject,
+          message: formData.message
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setSubmitStatus({
+          type: 'success',
+          message: data.message || 'Votre message a été envoyé avec succès !'
+        });
+        // Réinitialiser le formulaire
+        setFormData({
+          name: '',
+          email: '',
+          telephone: '',
+          subject: '',
+          message: ''
+        });
+      } else {
+        setSubmitStatus({
+          type: 'error',
+          message: data.error || 'Une erreur est survenue lors de l\'envoi du message.'
+        });
+      }
+    } catch (error) {
+      console.error('Erreur lors de l\'envoi du message:', error)
+      setSubmitStatus({
+        type: 'error',
+        message: 'Une erreur de connexion est survenue. Veuillez réessayer.'
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -89,8 +138,8 @@ export default function Contact() {
                     <label className="block text-sm font-semibold text-green-800 mb-2">Nom complet *</label>
                     <input
                       type="text"
-                      name="nom"
-                      value={formData.nom}
+                      name="name"
+                      value={formData.name}
                       onChange={handleInputChange}
                       required
                       className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent text-black"
@@ -124,19 +173,20 @@ export default function Contact() {
                 <div>
                   <label className="block text-sm font-semibold text-green-800 mb-2">Sujet *</label>
                   <select
-                    name="sujet"
-                    value={formData.sujet}
+                    name="subject"
+                    value={formData.subject}
                     onChange={handleInputChange}
                     required
                     className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent text-black"
                   >
                     <option value="">Choisissez un sujet</option>
-                    <option value="reservation">Réservation de voyage</option>
-                    <option value="devis">Demande de devis</option>
-                    <option value="information">Demande d&apos;information</option>
-                    <option value="reclamation">Réclamation</option>
-                    <option value="partenariat">Partenariat commercial</option>
-                    <option value="autre">Autre</option>
+                    <option value="Réservation et voyages">Réservation et voyages</option>
+                    <option value="Informations générales">Informations générales</option>
+                    <option value="Support technique">Support technique</option>
+                    <option value="Partenariat commercial">Partenariat commercial</option>
+                    <option value="Réclamation">Réclamation</option>
+                    <option value="Suggestion">Suggestion</option>
+                    <option value="Autre">Autre</option>
                   </select>
                 </div>
                 <div>
@@ -151,11 +201,27 @@ export default function Contact() {
                     placeholder="Décrivez votre demande en détail..."
                   ></textarea>
                 </div>
+                {/* Message de statut */}
+                {submitStatus.type && (
+                  <div className={`p-4 rounded-lg ${
+                    submitStatus.type === 'success' 
+                      ? 'bg-green-100 border border-green-400 text-green-800' 
+                      : 'bg-red-100 border border-red-400 text-red-800'
+                  }`}>
+                    {submitStatus.message}
+                  </div>
+                )}
+
                 <button
                   type="submit"
-                  className="w-full bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-lg font-semibold transition-colors text-lg"
+                  disabled={isSubmitting}
+                  className={`w-full px-8 py-4 rounded-lg font-semibold transition-colors text-lg ${
+                    isSubmitting
+                      ? 'bg-gray-400 cursor-not-allowed'
+                      : 'bg-green-600 hover:bg-green-700 text-white'
+                  }`}
                 >
-                  Envoyer le message
+                  {isSubmitting ? 'Envoi en cours...' : 'Envoyer le message'}
                 </button>
               </form>
             </div>
@@ -309,7 +375,7 @@ export default function Contact() {
       {/* CTA Section */}
       <section className="py-20 px-4 bg-gradient-to-r from-green-600 to-stone-600">
         <div className="max-w-4xl mx-auto text-center text-white">
-          <h2 className="text-4xl font-bold mb-6">Prêt à partir à l&apos;aventure ?</h2>
+               <h2 className="text-4xl font-bold mb-6">Prêt à partir à l&apos;aventure ?</h2>
           <p className="text-xl mb-8 opacity-90">
             Contactez-nous dès maintenant pour planifier votre prochain voyage inoubliable
           </p>

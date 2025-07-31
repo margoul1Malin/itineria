@@ -1,5 +1,5 @@
 # Cahier des Charges Itineria
-API : Viator (Activités), Duffel (Avion), Hotelbeds (Hotels lol)
+API : Viator (Activités), Duffel (Avion), Hotelbeds (Hotels)
 Db : Prisma & MongoDB
 Payment : Stripe (Peut etre MangoPay)
 Front : React & Tailwind
@@ -15,8 +15,8 @@ Pages Importantes :
 	- Infos personnelles
 	- Paramètres & Sécurité
 	- Préférences
-	- Inscription à une newsletter ?
-	- Voyages & Réservation
+	- Proposition de voyage basé sur leurs voyages déjà effectués
+	- Réservation & Billets
 	- Commentaires & Rating
 	- Section Aide (Contact Service Client, Voyage en sécurité, Résolution de litiges)
 - Mentions Legales / CGV / Privacy / Cookies et :
@@ -29,8 +29,7 @@ Pages Importantes :
 	Charte relative aux droits humains
 	Gérer les recommandations personnalisées
 - Inscription / Connexion
-- Header & Footer (Section découverte, assistance, mentions legales, A propos)
-- FAQ (Référencement)
+- FAQ / Blog (Temporaire au départ c'est surtout parceque c'est ultra bénéfique pour le Référencement on les supprimera plus tard quand le site prendra de la valeur)
 - A propos
 - Centre de presse / Blog
 - Recrutement

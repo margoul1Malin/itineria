@@ -12,3 +12,79 @@ datasource db {
   provider = "mongodb"
   url      = env("DATABASE_URL")
 }
+
+model ContactQuery {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  email     String
+  subject   String
+  message   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  status    String   @default("pending") // pending, processed, resolved, archived
+  
+  @@map("contact_queries")
+}
+
+model User {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  username  String   @unique
+  email     String   @unique
+  password  String
+  role      String   @default("user") // user, admin, super_admin
+  isActive  Boolean  @default(true)
+  lastLogin DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  // Informations personnelles
+  firstName String?
+  lastName  String?
+  phone     String?
+  
+  // Moyens de paiement (stocké en JSON pour la flexibilité)
+  paymentMethods Json? // Array de moyens de paiement
+  
+  // Préférences utilisateur
+  currency String @default("EUR") // EUR, USD, GBP, etc.
+  language String @default("fr") // fr, en, de
+  
+  // Paramètres de sécurité
+  twoFactorEnabled Boolean @default(false)
+  twoFactorSecret  String? // Secret pour l'authentification 2FA
+  twoFactorVerified Boolean @default(false)
+  emailVerified    Boolean @default(false)
+  emailVerificationToken String?
+  emailVerificationExpires DateTime?
+  
+  // Paramètres de suppression de compte
+  deletionRequested Boolean @default(false)
+  deletionRequestedAt DateTime?
+  
+  @@map("users")
+}
+
+model BruteforceAttempt {
+  id              String    @id @default(auto()) @map("_id") @db.ObjectId
+  ip              String
+  userAgent       String
+  fingerprint     String
+  sessionId       String?
+  attempts        Int       @default(0)
+  isBlocked       Boolean   @default(false)
+  blockedUntil    DateTime?
+  lastAttempt     DateTime  @default(now())
+  headers         Json
+  browser         String?
+  os              String?
+  device          String?
+  language        String?
+  timezone        String?
+  screenSize      String?
+  colorDepth      Int?
+  pixelRatio      Float?
+  canvasFingerprint String?
+  webglFingerprint String?
+  
+  @@map("bruteforce_attempts")
+}
