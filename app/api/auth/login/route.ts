@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { PrismaClient } from '@prisma/client'
 import bcrypt from 'bcryptjs'
 import { generateToken } from '@/lib/jwt'
+import { generateTwoFactorCode, sendTwoFactorEmail } from '@/lib/twoFactor'
+import crypto from 'crypto'
 
 const prisma = new PrismaClient()
 
@@ -26,7 +28,8 @@ export async function POST(request: NextRequest) {
         firstName: true,
         lastName: true,
         isActive: true,
-        role: true
+        role: true,
+        twoFactorEnabled: true
       }
     })
 
@@ -44,6 +47,32 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Email ou mot de passe incorrect' }, { status: 401 })
     }
 
+    // Si l'utilisateur a la 2FA activée
+    if (user.twoFactorEnabled) {
+      // Générer un code 2FA temporaire
+      const twoFactorCode = generateTwoFactorCode()
+      const tempSessionId = crypto.randomBytes(32).toString('hex')
+      
+      // Stocker temporairement le code et l'ID de session
+      await prisma.user.update({
+        where: { id: user.id },
+        data: { 
+          twoFactorSecret: twoFactorCode,
+          lastLogin: new Date()
+        }
+      })
+
+      // Envoyer le code par email
+      await sendTwoFactorEmail(user.email, twoFactorCode, user.username)
+
+      return NextResponse.json({
+        requiresTwoFactor: true,
+        tempSessionId,
+        message: 'Code de vérification envoyé par email'
+      })
+    }
+
+    // Connexion normale (sans 2FA)
     // Mettre à jour la dernière connexion
     await prisma.user.update({
       where: { id: user.id },

@@ -9,6 +9,7 @@ interface User {
   email: string;
   firstName?: string;
   lastName?: string;
+  role?: string;
 }
 
 export default function Header() {
@@ -31,6 +32,8 @@ export default function Header() {
       if (response.ok) {
         setUser(null);
         setIsAccountMenuOpen(false);
+        // Rediriger vers la page d'accueil
+        window.location.href = '/';
       }
     } catch (error) {
       console.error('Erreur lors de la déconnexion:', error);
@@ -48,15 +51,36 @@ export default function Header() {
         if (response.ok) {
           const userData = await response.json();
           setUser(userData.user);
+        } else {
+          setUser(null);
         }
       } catch (error) {
         console.error('Erreur lors de la vérification de l\'authentification:', error);
+        setUser(null);
       } finally {
         setIsLoading(false);
       }
     };
 
     checkAuthStatus();
+
+    // Écouter les événements de changement d'authentification
+    const handleAuthChange = () => {
+      checkAuthStatus();
+    };
+
+    // Écouter les événements de navigation (pour détecter les changements de page)
+    window.addEventListener('focus', handleAuthChange);
+    window.addEventListener('storage', handleAuthChange);
+    
+    // Écouter les événements personnalisés d'authentification
+    window.addEventListener('auth-change', handleAuthChange);
+
+    return () => {
+      window.removeEventListener('focus', handleAuthChange);
+      window.removeEventListener('storage', handleAuthChange);
+      window.removeEventListener('auth-change', handleAuthChange);
+    };
   }, []);
 
   return (
@@ -121,23 +145,34 @@ export default function Header() {
                           Profil
                         </Link>
                         <Link 
-                          href="/reservations-et-voyages" 
+                          href="/vols" 
                           className="block px-4 py-2 text-gray-700 hover:bg-green-50 hover:text-green-600 transition-colors"
                         >
-                          Réservations et Voyages
+                          Vols
                         </Link>
                         <Link 
-                          href="/commentaires-et-notes" 
+                          href="/hotels" 
                           className="block px-4 py-2 text-gray-700 hover:bg-green-50 hover:text-green-600 transition-colors"
                         >
-                          Commentaires et Notes
+                          Hôtels
                         </Link>
                         <Link 
-                          href="/favoris" 
+                          href="/activites" 
                           className="block px-4 py-2 text-gray-700 hover:bg-green-50 hover:text-green-600 transition-colors"
                         >
-                          Favoris
+                          Activités
                         </Link>
+                        {(user?.role === 'admin' || user?.role === 'super_admin') && (
+                          <>
+                            <div className="border-t border-gray-200 my-1"></div>
+                            <Link 
+                              href="/admin" 
+                              className="block px-4 py-2 text-orange-600 hover:bg-orange-50 hover:text-orange-700 transition-colors font-medium"
+                            >
+                              🛠️ Administration
+                            </Link>
+                          </>
+                        )}
                         <div className="border-t border-gray-200 my-1"></div>
                         <button
                           onClick={handleLogout}
@@ -228,6 +263,14 @@ export default function Header() {
                           <Link href="/favoris" className="block px-6 py-2 text-gray-600 hover:text-green-600 transition-colors">
                             Favoris
                           </Link>
+                          {(user?.role === 'admin' || user?.role === 'super_admin') && (
+                            <>
+                              <div className="border-t border-gray-200 my-1 mx-3"></div>
+                              <Link href="/admin" className="block px-6 py-2 text-orange-600 hover:text-orange-700 transition-colors font-medium">
+                                🛠️ Administration
+                              </Link>
+                            </>
+                          )}
                           <div className="border-t border-gray-200 my-1 mx-3"></div>
                           <button
                             onClick={handleLogout}

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { PrismaClient } from '@prisma/client'
 import bcrypt from 'bcryptjs'
-import crypto from 'crypto'
+import { generateTwoFactorCode, sendTwoFactorEmail, verifyTwoFactorCode } from '@/lib/twoFactor'
 import { verifyToken } from '@/lib/jwt'
 
 const prisma = new PrismaClient()
@@ -74,9 +74,18 @@ export async function PUT(request: NextRequest) {
     const body = await request.json()
     const { action, code } = body // action: 'enable', 'disable', 'verify'
 
-    const user = await prisma.user.findFirst({
-      where: { isActive: true },
-      select: { id: true, twoFactorSecret: true, twoFactorEnabled: true }
+    const token = session.value
+    const payload = verifyToken(token)
+    if (!payload) {
+      return NextResponse.json({ error: 'Token invalide' }, { status: 401 })
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { 
+        id: payload.userId,
+        isActive: true 
+      },
+      select: { id: true, email: true, username: true, twoFactorSecret: true, twoFactorEnabled: true }
     })
 
     if (!user) {
@@ -84,20 +93,23 @@ export async function PUT(request: NextRequest) {
     }
 
     if (action === 'enable') {
-      // Générer un secret pour la 2FA
-      const secret = crypto.randomBytes(20).toString('hex')
+      // Générer un code 2FA et l'envoyer par email
+      const twoFactorCode = generateTwoFactorCode()
       
+      // Stocker temporairement le code
       await prisma.user.update({
         where: { id: user.id },
         data: { 
-          twoFactorSecret: secret,
+          twoFactorSecret: twoFactorCode,
           twoFactorEnabled: false // Pas encore activé jusqu'à vérification
         }
       })
 
+      // Envoyer le code par email
+      await sendTwoFactorEmail(user.email, twoFactorCode, user.username)
+
       return NextResponse.json({ 
-        message: '2FA configuré, veuillez vérifier avec le code',
-        secret 
+        message: 'Code 2FA envoyé par email. Vérifiez votre boîte de réception.'
       })
     }
 
@@ -106,14 +118,15 @@ export async function PUT(request: NextRequest) {
         return NextResponse.json({ error: 'Code requis' }, { status: 400 })
       }
 
-      // Ici vous devriez vérifier le code avec une bibliothèque TOTP
-      // Pour l'instant, on simule la vérification
-      if (code === '123456') { // Code de test
+      // Vérifier le code 2FA
+      if (verifyTwoFactorCode(code, user.twoFactorSecret || '')) {
         await prisma.user.update({
           where: { id: user.id },
           data: { 
             twoFactorEnabled: true,
-            twoFactorVerified: true
+            twoFactorVerified: true,
+            emailVerified: true, // Marquer l'email comme vérifié car l'utilisateur a reçu le code
+            twoFactorSecret: null // Nettoyer le code temporaire
           }
         })
 
@@ -151,17 +164,33 @@ export async function DELETE(request: NextRequest) {
       return NextResponse.json({ error: 'Non authentifié' }, { status: 401 })
     }
 
+    const token = session.value
+    const payload = verifyToken(token)
+    if (!payload) {
+      return NextResponse.json({ error: 'Token invalide' }, { status: 401 })
+    }
+
     const body = await request.json()
-    const { password } = body
+    const { password, reason } = body
 
     if (!password) {
       return NextResponse.json({ error: 'Mot de passe requis' }, { status: 400 })
     }
 
-    // Récupérer l'utilisateur
-    const user = await prisma.user.findFirst({
-      where: { isActive: true },
-      select: { id: true, password: true }
+    // Récupérer l'utilisateur connecté
+    const user = await prisma.user.findUnique({
+      where: { 
+        id: payload.userId,
+        isActive: true 
+      },
+      select: { 
+        id: true, 
+        password: true, 
+        email: true, 
+        username: true,
+        createdAt: true,
+        lastLogin: true
+      }
     })
 
     if (!user) {
@@ -174,18 +203,49 @@ export async function DELETE(request: NextRequest) {
       return NextResponse.json({ error: 'Mot de passe incorrect' }, { status: 400 })
     }
 
-    // Marquer la demande de suppression
-    await prisma.user.update({
-      where: { id: user.id },
-      data: { 
-        deletionRequested: true,
-        deletionRequestedAt: new Date()
+    // Calculer l'âge du compte
+    const accountAgeInDays = Math.floor((new Date().getTime() - user.createdAt.getTime()) / (1000 * 60 * 60 * 24))
+
+    // Sauvegarder les données de suppression avant de supprimer le compte
+    await (prisma as unknown as { accountDeletion: { create: (args: unknown) => Promise<unknown> } }).accountDeletion.create({
+      data: {
+        userId: user.id,
+        username: user.username,
+        email: user.email,
+        reason: reason || null,
+        accountAge: accountAgeInDays,
+        lastLogin: user.lastLogin
       }
     })
 
-    return NextResponse.json({ 
-      message: 'Demande de suppression enregistrée. Votre compte sera supprimé dans 30 jours.' 
+    // Supprimer définitivement le compte utilisateur
+    await prisma.user.delete({
+      where: { id: user.id }
     })
+
+    console.log(`Compte supprimé définitivement pour l'utilisateur ${user.username} (${user.email})`, {
+      userId: user.id,
+      reason: reason || 'Aucune raison fournie',
+      accountAge: accountAgeInDays,
+      deletedAt: new Date()
+    })
+
+    // Créer une réponse qui supprime aussi le cookie de session
+    const response = NextResponse.json({ 
+      message: 'Votre compte a été supprimé définitivement.',
+      success: true
+    })
+
+    // Supprimer le cookie de session pour déconnecter l'utilisateur
+    response.cookies.set('session', '', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 0, // Expire immédiatement
+      path: '/'
+    })
+
+    return response
   } catch (error) {
     console.error('Erreur lors de la demande de suppression:', error)
     return NextResponse.json({ error: 'Erreur serveur' }, { status: 500 })

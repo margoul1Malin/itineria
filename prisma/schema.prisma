@@ -57,11 +57,24 @@ model User {
   emailVerificationToken String?
   emailVerificationExpires DateTime?
   
-  // Paramètres de suppression de compte
+  // Paramètres de suppression de compte (gardé pour historique/administration)
   deletionRequested Boolean @default(false)
   deletionRequestedAt DateTime?
   
   @@map("users")
+}
+
+model AccountDeletion {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId          String   // ID de l'utilisateur supprimé
+  username        String   // Username au moment de la suppression
+  email           String   // Email au moment de la suppression
+  reason          String?  // Raison de la suppression
+  deletedAt       DateTime @default(now())
+  accountAge      Int      // Âge du compte en jours
+  lastLogin       DateTime? // Dernière connexion avant suppression
+  
+  @@map("account_deletions")
 }
 
 model BruteforceAttempt {

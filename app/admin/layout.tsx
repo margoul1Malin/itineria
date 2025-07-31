@@ -16,13 +16,11 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
 
   useEffect(() => {
     checkAuth()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const checkAuth = async () => {
     try {
-      const response = await fetch('/api/admin/login', {
-        method: 'GET',
+      const response = await fetch('/api/auth/me', {
         credentials: 'include'
       })
       
@@ -30,13 +28,11 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         const data = await response.json()
         setUser(data.user)
       } else {
-        router.push('/admin-login')
-        return
+        // Le middleware redirigera automatiquement, pas besoin de redirection manuelle
+        console.log('Utilisateur non authentifié ou sans droits admin')
       }
     } catch (error) {
       console.error('Erreur lors de la vérification de l\'authentification:', error)
-      router.push('/admin-login')
-      return
     } finally {
       setIsLoading(false)
     }
@@ -44,11 +40,13 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
 
   const handleLogout = async () => {
     try {
-      await fetch('/api/admin/logout', {
+      await fetch('/api/auth/logout', {
         method: 'POST',
         credentials: 'include'
       })
-      router.push('/admin-login')
+      
+      setUser(null)
+      router.push('/')
     } catch (error) {
       console.error('Erreur lors de la déconnexion:', error)
     }

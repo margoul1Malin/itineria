@@ -1,5 +1,5 @@
 "use client"
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react'
 
 interface User {
   id: string;
@@ -82,8 +82,10 @@ export default function PaiementPage() {
   }, []);
 
   const handleDeletePaymentMethod = async (methodId: string) => {
+    if (!confirm('Êtes-vous sûr de vouloir supprimer ce moyen de paiement ?')) return
+
     try {
-      const response = await fetch(`/api/user/payment-methods/${methodId}`, {
+      const response = await fetch(`/api/user/payment-methods?id=${methodId}`, {
         method: 'DELETE',
         credentials: 'include'
       });
@@ -91,16 +93,87 @@ export default function PaiementPage() {
       if (response.ok) {
         setPaymentMethods(prev => prev.filter(method => method.id !== methodId));
         setMessage({ type: 'success', text: 'Moyen de paiement supprimé avec succès' });
-        setTimeout(() => setMessage(null), 3000);
       } else {
         const data = await response.json();
         setMessage({ type: 'error', text: data.error || 'Erreur lors de la suppression' });
-        setTimeout(() => setMessage(null), 3000);
       }
+      setTimeout(() => setMessage(null), 3000);
     } catch (error) {
       console.error('Erreur lors de la suppression:', error)
       setMessage({ type: 'error', text: 'Erreur lors de la suppression' });
       setTimeout(() => setMessage(null), 3000);
+    }
+  };
+
+  const handleSetDefaultPaymentMethod = async (methodId: string) => {
+    try {
+      const response = await fetch('/api/user/payment-methods/set-default', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({ paymentMethodId: methodId })
+      })
+
+      if (response.ok) {
+        // Mettre à jour l'état local
+        setPaymentMethods(prev => prev.map(method => ({
+          ...method,
+          isDefault: method.id === methodId
+        })))
+        setMessage({ type: 'success', text: 'Carte par défaut mise à jour' })
+      } else {
+        const data = await response.json()
+        setMessage({ type: 'error', text: data.error || 'Erreur lors de la mise à jour' })
+      }
+      setTimeout(() => setMessage(null), 3000)
+    } catch (error) {
+      console.error('Erreur lors de la mise à jour:', error)
+      setMessage({ type: 'error', text: 'Erreur lors de la mise à jour' })
+      setTimeout(() => setMessage(null), 3000)
+    }
+  };
+
+  const handleAddCard = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const form = e.currentTarget
+    const formData = new FormData(form)
+    
+    const cardData = {
+      type: 'VISA', // Détecter automatiquement le type de carte
+      cardNumber: formData.get('cardNumber') as string,
+      expiryDate: formData.get('expiryDate') as string,
+      cardholderName: formData.get('cardholderName') as string
+    }
+
+    try {
+      const response = await fetch('/api/user/payment-methods', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify(cardData)
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        setPaymentMethods(prev => [...prev, data.paymentMethod])
+        setMessage({ type: 'success', text: 'Carte ajoutée avec succès' })
+        // Réinitialiser le formulaire de manière sûre
+        if (form) {
+          form.reset()
+        }
+      } else {
+        const data = await response.json()
+        setMessage({ type: 'error', text: data.error || 'Erreur lors de l\'ajout' })
+      }
+      setTimeout(() => setMessage(null), 3000)
+    } catch (error) {
+      console.error('Erreur lors de l\'ajout:', error)
+      setMessage({ type: 'error', text: 'Erreur lors de l\'ajout' })
+      setTimeout(() => setMessage(null), 3000)
     }
   };
 
@@ -149,16 +222,33 @@ export default function PaiementPage() {
                       </span>
                     </div>
                     <div>
-                      <div className="font-semibold text-gray-700">{method.maskedNumber}</div>
+                      <div className="font-semibold text-gray-700 flex items-center gap-2">
+                        {method.maskedNumber}
+                        {method.isDefault && (
+                          <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                            Par défaut
+                          </span>
+                        )}
+                      </div>
                       <div className="text-sm text-gray-500">Expire {method.expiryDate}</div>
                     </div>
                   </div>
-                  <button 
-                    onClick={() => handleDeletePaymentMethod(method.id)}
-                    className="text-red-600 hover:text-red-700 text-sm font-medium"
-                  >
-                    Supprimer
-                  </button>
+                  <div className="flex items-center gap-2">
+                    {!method.isDefault && (
+                      <button 
+                        onClick={() => handleSetDefaultPaymentMethod(method.id)}
+                        className="text-green-600 hover:text-green-700 text-sm font-medium"
+                      >
+                        Définir par défaut
+                      </button>
+                    )}
+                    <button 
+                      onClick={() => handleDeletePaymentMethod(method.id)}
+                      className="text-red-600 hover:text-red-700 text-sm font-medium"
+                    >
+                      Supprimer
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
@@ -168,85 +258,101 @@ export default function PaiementPage() {
         {/* Ajouter une nouvelle carte */}
         <div>
           <h3 className="text-lg font-semibold text-gray-700 mb-4">Ajouter une nouvelle carte</h3>
-          <div className="space-y-4">
+          <div className="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            <div className="flex items-start gap-3">
+              <svg className="w-5 h-5 text-blue-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <div>
+                <p className="text-sm text-blue-800 font-medium">Sécurité des paiements</p>
+                <p className="text-sm text-blue-700 mt-1">
+                  Pour votre sécurité, le code CVV n&apos;est pas stocké. Il vous sera demandé à chaque utilisation de la carte pour les paiements.
+                </p>
+              </div>
+            </div>
+          </div>
+          <form onSubmit={handleAddCard} className="space-y-4">
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">Numéro de carte</label>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">Numéro de carte *</label>
               <input
                 type="text"
-                placeholder="1234 5678 9012 3456"
+                name="cardNumber"
+                placeholder="XXXX XXXX XXXX XXXX"
+                pattern="[0-9\s]{19}"
+                maxLength={19}
+                required
                 className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent text-black"
+                onChange={(e) => {
+                  // Formater automatiquement le numéro de carte
+                  let value = e.target.value.replace(/\s/g, '').replace(/\D/g, '');
+                  value = value.replace(/(\d{4})/g, '$1 ').trim();
+                  e.target.value = value;
+                }}
               />
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">Date d&apos;expiration</label>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Date d&apos;expiration *</label>
                 <input
                   type="text"
+                  name="expiryDate"
                   placeholder="MM/AA"
+                  pattern="[0-9]{2}/[0-9]{2}"
+                  maxLength={5}
+                  required
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent text-black"
+                  onChange={(e) => {
+                    // Formater automatiquement la date
+                    let value = e.target.value.replace(/\D/g, '');
+                    if (value.length >= 2) {
+                      value = value.substring(0, 2) + '/' + value.substring(2, 4);
+                    }
+                    e.target.value = value;
+                  }}
                 />
               </div>
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">Code de sécurité</label>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Code de sécurité *</label>
                 <input
-                  type="text"
-                  placeholder="123"
+                  type="password"
+                  name="cvv"
+                  placeholder="XXX"
+                  pattern="[0-9]{3,4}"
+                  maxLength={4}
+                  required
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent text-black"
+                  onChange={(e) => {
+                    // Limiter aux chiffres
+                    e.target.value = e.target.value.replace(/\D/g, '');
+                  }}
                 />
               </div>
             </div>
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">Nom du titulaire</label>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">Nom du titulaire *</label>
               <input
                 type="text"
+                name="cardholderName"
                 placeholder="Nom et prénom"
+                required
                 className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent text-black"
               />
             </div>
-            <button className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg transition-colors">
+            <button type="submit" className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg transition-colors">
               Ajouter la carte
             </button>
-          </div>
+          </form>
         </div>
 
-        {/* Autres moyens de paiement */}
-        <div>
-          <h3 className="text-lg font-semibold text-gray-700 mb-4">Autres moyens de paiement</h3>
-          <div className="space-y-3">
-            <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-orange-500 rounded flex items-center justify-center">
-                  <span className="text-white text-xs font-bold">PP</span>
-                </div>
-                <span className="font-medium text-gray-700">PayPal</span>
-              </div>
-              <button className="text-green-600 hover:text-green-700 text-sm font-medium">
-                Configurer
-              </button>
-            </div>
-            <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-blue-500 rounded flex items-center justify-center">
-                  <span className="text-white text-xs font-bold">AP</span>
-                </div>
-                <span className="font-medium text-gray-700">Apple Pay</span>
-              </div>
-              <button className="text-green-600 hover:text-green-700 text-sm font-medium">
-                Configurer
-              </button>
-            </div>
+        {/* Message de succès/erreur */}
+        {message && (
+          <div className={`p-4 rounded-lg ${
+            message.type === 'success' ? 'bg-green-50 border border-green-200 text-green-800' : 'bg-red-50 border border-red-200 text-red-800'
+          }`}>
+            {message.text}
           </div>
-        </div>
+        )}
       </div>
-
-      {/* Messages de notification */}
-      {message && (
-        <div className={`fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg ${
-          message.type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
-        }`}>
-          {message.text}
-        </div>
-      )}
     </>
-  );
+  )
 } 

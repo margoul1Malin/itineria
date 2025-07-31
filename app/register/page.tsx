@@ -118,6 +118,8 @@ export default function Register() {
       })
 
       if (result.ok) {
+        // Déclencher l'événement de changement d'authentification
+        window.dispatchEvent(new Event('auth-change'))
         router.push('/profil')
       } else {
         const data = await result.json()

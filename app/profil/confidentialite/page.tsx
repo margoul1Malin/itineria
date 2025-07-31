@@ -80,19 +80,53 @@ export default function ConfidentialitePage() {
       });
 
       if (response.ok) {
-        setMessage({ type: 'success', text: 'Demande de suppression enregistrée' });
+        setMessage({ type: 'success', text: 'Votre compte a été supprimé définitivement.' });
         setShowDeleteModal(false);
         setDeleteAccountData({ password: '', reason: '' });
-        setTimeout(() => setMessage(null), 3000);
+        
+        // Rediriger vers la page d'accueil après suppression
+        setTimeout(() => {
+          window.location.href = '/';
+        }, 2000);
       } else {
         const data = await response.json();
-        setMessage({ type: 'error', text: data.error || 'Erreur lors de la demande de suppression' });
+        setMessage({ type: 'error', text: data.error || 'Erreur lors de la suppression du compte' });
         setTimeout(() => setMessage(null), 3000);
       }
     } catch (error) {
       console.error('Erreur lors de la demande de suppression:', error)
       setMessage({ type: 'error', text: 'Erreur lors de la demande de suppression' });
       setTimeout(() => setMessage(null), 3000);
+    }
+  };
+
+  const handleExportData = async () => {
+    try {
+      const response = await fetch('/api/user/export', {
+        credentials: 'include'
+      })
+
+      if (response.ok) {
+        const blob = await response.blob()
+        const url = window.URL.createObjectURL(blob)
+        const a = document.createElement('a')
+        a.href = url
+        a.download = `itineria-user-data-${user?.username}-${new Date().toISOString().split('T')[0]}.json`
+        document.body.appendChild(a)
+        a.click()
+        window.URL.revokeObjectURL(url)
+        document.body.removeChild(a)
+        
+        setMessage({ type: 'success', text: 'Données exportées avec succès' })
+      } else {
+        const data = await response.json()
+        setMessage({ type: 'error', text: data.error || 'Erreur lors de l\'export' })
+      }
+      setTimeout(() => setMessage(null), 3000)
+    } catch (error) {
+      console.error('Erreur lors de l\'export:', error)
+      setMessage({ type: 'error', text: 'Erreur lors de l\'export' })
+      setTimeout(() => setMessage(null), 3000)
     }
   };
 
@@ -138,28 +172,13 @@ export default function ConfidentialitePage() {
           <div className="space-y-3">
             <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
               <div>
-                <div className="font-semibold text-gray-700">Données personnelles</div>
-                <div className="text-sm text-gray-500">Informations de profil, préférences, historique</div>
+                <div className="font-semibold text-gray-700">Toutes mes données</div>
+                <div className="text-sm text-gray-500">Informations de profil, préférences, moyens de paiement</div>
               </div>
-              <button className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors text-sm">
-                Télécharger
-              </button>
-            </div>
-            <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
-              <div>
-                <div className="font-semibold text-gray-700">Historique des voyages</div>
-                <div className="text-sm text-gray-500">Réservations, avis, favoris</div>
-              </div>
-              <button className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors text-sm">
-                Télécharger
-              </button>
-            </div>
-            <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
-              <div>
-                <div className="font-semibold text-gray-700">Données de paiement</div>
-                <div className="text-sm text-gray-500">Moyens de paiement enregistrés (sécurisé)</div>
-              </div>
-              <button className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors text-sm">
+              <button 
+                onClick={handleExportData}
+                className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors text-sm"
+              >
                 Télécharger
               </button>
             </div>
@@ -201,26 +220,6 @@ export default function ConfidentialitePage() {
               </div>
               <label className="relative inline-flex items-center cursor-pointer">
                 <input type="checkbox" defaultChecked className="sr-only peer" />
-                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
-              </label>
-            </div>
-            <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-              <div>
-                <div className="font-semibold text-gray-700">Cookies et tracking</div>
-                <div className="text-sm text-gray-500">Autoriser les cookies pour une expérience optimale</div>
-              </div>
-              <label className="relative inline-flex items-center cursor-pointer">
-                <input type="checkbox" defaultChecked className="sr-only peer" />
-                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
-              </label>
-            </div>
-            <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-              <div>
-                <div className="font-semibold text-gray-700">Analytics et statistiques</div>
-                <div className="text-sm text-gray-500">Partager les données d&apos;utilisation anonymisées</div>
-              </div>
-              <label className="relative inline-flex items-center cursor-pointer">
-                <input type="checkbox" className="sr-only peer" />
                 <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
               </label>
             </div>

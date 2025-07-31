@@ -3,7 +3,10 @@ import { NextResponse } from 'next/server'
 // POST - Déconnexion utilisateur
 export async function POST() {
   try {
-    const response = NextResponse.json({ message: 'Déconnexion réussie' })
+    const response = NextResponse.json({ 
+      message: 'Déconnexion réussie',
+      redirect: '/'
+    })
     
     // Supprimer le cookie de session
     response.cookies.set('session', '', {

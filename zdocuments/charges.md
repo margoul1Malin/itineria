@@ -30,8 +30,6 @@ Pages Importantes :
 	Gérer les recommandations personnalisées
 - Inscription / Connexion
 - FAQ / Blog (Temporaire au départ c'est surtout parceque c'est ultra bénéfique pour le Référencement on les supprimera plus tard quand le site prendra de la valeur)
-- A propos
-- Centre de presse / Blog
-- Recrutement
-- Contact
-- Le reste on verra après
+- A propos (On explique ce qu'on apporte de nouveau et ce qu'on fait)
+- Ajout d'établissement / Contact
+- 

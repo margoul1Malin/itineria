@@ -60,25 +60,23 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Données manquantes' }, { status: 400 })
     }
 
+    const token = session.value
+    const payload = verifyToken(token)
+    if (!payload) {
+      return NextResponse.json({ error: 'Token invalide' }, { status: 401 })
+    }
+
     // Récupérer les moyens de paiement existants
-    const user = await prisma.user.findFirst({
-      where: { isActive: true },
+    const user = await prisma.user.findUnique({
+      where: {
+        id: payload.userId,
+        isActive: true
+      },
       select: { id: true, paymentMethods: true }
     })
 
     if (!user) {
       return NextResponse.json({ error: 'Utilisateur non trouvé' }, { status: 404 })
-    }
-
-    // Créer le nouveau moyen de paiement
-    const newPaymentMethod = {
-      id: Date.now().toString(),
-      type,
-      maskedNumber: `**** **** **** ${cardNumber.slice(-4)}`,
-      expiryDate,
-      cardholderName,
-      isDefault: false,
-      createdAt: new Date().toISOString()
     }
 
     // Ajouter aux moyens de paiement existants
@@ -91,6 +89,19 @@ export async function POST(request: NextRequest) {
       isDefault: boolean;
       createdAt: string;
     }>) || []
+
+    // Créer le nouveau moyen de paiement (sans CVV pour des raisons de sécurité)
+    const newPaymentMethod = {
+      id: Date.now().toString(),
+      type,
+      maskedNumber: `**** **** **** ${cardNumber.slice(-4)}`,
+      expiryDate,
+      cardholderName,
+      isDefault: currentPaymentMethods.length === 0, // Première carte = carte par défaut
+      createdAt: new Date().toISOString(),
+      // Note: CVV non stocké pour des raisons de sécurité PCI DSS
+      // Le CVV sera demandé à chaque utilisation pour les paiements
+    }
     const updatedPaymentMethods = [...currentPaymentMethods, newPaymentMethod]
 
     // Mettre à jour en base
@@ -124,9 +135,18 @@ export async function DELETE(request: NextRequest) {
       return NextResponse.json({ error: 'ID du moyen de paiement requis' }, { status: 400 })
     }
 
+    const token = session.value
+    const payload = verifyToken(token)
+    if (!payload) {
+      return NextResponse.json({ error: 'Token invalide' }, { status: 401 })
+    }
+
     // Récupérer l'utilisateur
-    const user = await prisma.user.findFirst({
-      where: { isActive: true },
+    const user = await prisma.user.findUnique({
+      where: {
+        id: payload.userId,
+        isActive: true
+      },
       select: { id: true, paymentMethods: true }
     })
 

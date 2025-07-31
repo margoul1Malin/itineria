@@ -7,3 +7,6 @@ PrivateEmail :
 - contact@my-itineria.com
 - security@my-itineria.com
     - Password : !Itineria47
+
+GitHub : 
+admin@my-itineria.com:!Itineria47

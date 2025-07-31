@@ -10,9 +10,12 @@ export default function Login() {
     email: '',
     password: ''
   })
+  const [twoFactorCode, setTwoFactorCode] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
   const [showPassword, setShowPassword] = useState(false)
+  const [showTwoFactor, setShowTwoFactor] = useState(false)
+  const [tempSessionId, setTempSessionId] = useState('')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -30,8 +33,18 @@ export default function Login() {
       })
 
       if (response.ok) {
-        // Redirection vers la page précédente ou le profil
-        router.push('/profil')
+        const data = await response.json()
+        
+        // Si l'utilisateur a la 2FA activée
+        if (data.requiresTwoFactor) {
+          setShowTwoFactor(true)
+          setTempSessionId(data.tempSessionId)
+          setError('') // Effacer les erreurs précédentes
+        } else {
+          // Connexion normale
+          window.dispatchEvent(new Event('auth-change'))
+          router.push('/profil')
+        }
       } else {
         const data = await response.json()
         setError(data.error || 'Erreur lors de la connexion')
@@ -39,6 +52,39 @@ export default function Login() {
     } catch (error) {
       console.error('Erreur de connexion au serveur:', error)
       setError('Erreur de connexion au serveur')
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleTwoFactorSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsLoading(true)
+    setError('')
+
+    try {
+      const response = await fetch('/api/auth/login/verify-2fa', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          code: twoFactorCode,
+          tempSessionId
+        })
+      })
+
+      if (response.ok) {
+        window.dispatchEvent(new Event('auth-change'))
+        router.push('/profil')
+      } else {
+        const data = await response.json()
+        setError(data.error || 'Code incorrect')
+      }
+    } catch (error) {
+      console.error('Erreur lors de la vérification 2FA:', error)
+      setError('Erreur lors de la vérification')
     } finally {
       setIsLoading(false)
     }
@@ -83,6 +129,8 @@ export default function Login() {
       })
 
       if (result.ok) {
+        // Déclencher l'événement de changement d'authentification
+        window.dispatchEvent(new Event('auth-change'))
         router.push('/profil')
       } else {
         const data = await result.json()
@@ -94,6 +142,107 @@ export default function Login() {
     } finally {
       setIsLoading(false)
     }
+  }
+
+  // Si on est en mode 2FA, afficher le formulaire de code
+  if (showTwoFactor) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-stone-50 to-green-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-md w-full space-y-8">
+          {/* Header */}
+          <div className="text-center">
+            <div className="flex justify-center mb-6">
+              <Image
+                src="/ItineriaLogo.png"
+                alt="Itineria"
+                width={80}
+                height={80}
+                className="rounded-lg"
+              />
+            </div>
+            <h2 className="text-3xl font-bold text-gray-900 mb-2">
+              Vérification 2FA
+            </h2>
+            <p className="text-gray-600">
+              Entrez le code de vérification envoyé par email
+            </p>
+          </div>
+
+          {/* Formulaire 2FA */}
+          <div className="bg-white rounded-xl shadow-lg p-8">
+            <form className="space-y-6" onSubmit={handleTwoFactorSubmit}>
+              {/* Message d'erreur */}
+              {error && (
+                <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                  <div className="flex items-center gap-3">
+                    <svg className="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                    </svg>
+                    <span className="text-red-800 text-sm">{error}</span>
+                  </div>
+                </div>
+              )}
+
+              {/* Code 2FA */}
+              <div>
+                <label htmlFor="twoFactorCode" className="block text-sm font-medium text-gray-700 mb-2">
+                  Code de vérification
+                </label>
+                <input
+                  id="twoFactorCode"
+                  name="twoFactorCode"
+                  type="text"
+                  required
+                  value={twoFactorCode}
+                  onChange={(e) => setTwoFactorCode(e.target.value)}
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent text-black text-center text-lg tracking-widest"
+                  placeholder="123456"
+                  maxLength={6}
+                />
+              </div>
+
+              {/* Bouton de vérification */}
+              <button
+                type="submit"
+                disabled={isLoading || twoFactorCode.length !== 6}
+                className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-lg text-sm font-medium text-white ${
+                  isLoading || twoFactorCode.length !== 6
+                    ? 'bg-gray-400 cursor-not-allowed'
+                    : 'bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500'
+                } transition-colors`}
+              >
+                {isLoading ? (
+                  <div className="flex items-center">
+                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Vérification...
+                  </div>
+                ) : (
+                  'Vérifier'
+                )}
+              </button>
+
+              {/* Retour au login */}
+              <div className="text-center">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowTwoFactor(false)
+                    setTwoFactorCode('')
+                    setError('')
+                  }}
+                  className="text-sm text-gray-600 hover:text-gray-800"
+                >
+                  ← Retour à la connexion
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (
