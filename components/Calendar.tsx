@@ -104,7 +104,7 @@ export default function Calendar({ selectedDates, onDateSelect, tripType, minDat
     
     // Jours vides au début
     for (let i = 0; i < firstDay; i++) {
-      days.push(<div key={`empty-${i}`} className="h-12"></div>)
+      days.push(<div key={`empty-${i}`} className="h-7 md:h-12"></div>)
     }
 
     // Jours du mois
@@ -125,7 +125,7 @@ export default function Calendar({ selectedDates, onDateSelect, tripType, minDat
           onMouseLeave={() => setHoveredDate(null)}
           disabled={disabled}
           className={`
-            h-12 w-12 rounded-lg text-sm font-medium transition-all duration-200
+            h-7 w-7 md:h-12 md:w-12 rounded text-xs md:text-sm font-medium transition-all duration-200
             ${disabled 
               ? 'text-gray-300 cursor-not-allowed' 
               : 'hover:bg-green-100 cursor-pointer'
@@ -151,19 +151,19 @@ export default function Calendar({ selectedDates, onDateSelect, tripType, minDat
 
     return (
       <div className="flex-1">
-        <div className="text-center font-semibold text-gray-800 mb-4 capitalize">
+        <div className="text-center font-semibold text-gray-800 mb-1 md:mb-4 capitalize text-xs md:text-base">
           {monthName}
         </div>
         
-        <div className="grid grid-cols-7 gap-2 mb-3">
+        <div className="grid grid-cols-7 gap-1 md:gap-2 mb-1 md:mb-3">
           {['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'].map(day => (
-            <div key={day} className="h-10 flex items-center justify-center text-sm font-medium text-gray-500">
+            <div key={day} className="h-6 md:h-10 flex items-center justify-center text-xs md:text-sm font-medium text-gray-500">
               {day}
             </div>
           ))}
         </div>
         
-        <div className="grid grid-cols-7 gap-2">
+        <div className="grid grid-cols-7 gap-1 md:gap-2">
           {days}
         </div>
       </div>
@@ -171,43 +171,43 @@ export default function Calendar({ selectedDates, onDateSelect, tripType, minDat
   }
 
   return (
-    <div className="bg-white border border-gray-300 rounded-lg shadow-2xl p-6 w-full max-w-4xl">
+    <div className="bg-white border border-gray-300 rounded-lg shadow-2xl p-2 md:p-6 w-full max-w-4xl mx-2 md:mx-0 max-h-screen md:max-h-none overflow-y-auto">
       {/* En-tête avec navigation */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center justify-between mb-2 md:mb-6">
         <button
           type="button"
           onClick={() => setCurrentMonth(prev => new Date(prev.getFullYear(), prev.getMonth() - 1, 1))}
-          className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
+          className="p-1.5 md:p-2 rounded-lg hover:bg-gray-100 transition-colors"
         >
-          <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-4 h-4 md:w-5 md:h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
         </button>
         
-        <div className="text-lg font-semibold text-gray-800">
+        <div className="text-xs md:text-lg font-semibold text-gray-800 text-center px-2">
           {tripType === 'roundtrip' ? 'Sélectionnez vos dates' : 'Sélectionnez votre date'}
         </div>
         
         <button
           type="button"
           onClick={() => setCurrentMonth(prev => new Date(prev.getFullYear(), prev.getMonth() + 1, 1))}
-          className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
+          className="p-1.5 md:p-2 rounded-lg hover:bg-gray-100 transition-colors"
         >
-          <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-4 h-4 md:w-5 md:h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
           </svg>
         </button>
       </div>
 
-      {/* Affichage des deux mois côte à côte */}
-      <div className="flex gap-12">
+      {/* Affichage des deux mois côte à côte sur desktop, empilés sur mobile */}
+      <div className="flex flex-col md:flex-row gap-4 md:gap-12">
         {renderMonth(0)}
         {renderMonth(1)}
       </div>
 
-      {/* Info sur les dates sélectionnées */}
+      {/* Info sur les dates sélectionnées - Masqué sur mobile */}
       {tripType === 'roundtrip' && (
-        <div className="mt-6 pt-4 border-t border-gray-200">
+        <div className="hidden md:block mt-6 pt-4 border-t border-gray-200">
           <div className="flex justify-center gap-8 text-sm">
             <div className="text-center">
               <div className="text-gray-500 mb-1">Départ</div>

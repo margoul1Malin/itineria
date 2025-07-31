@@ -150,19 +150,19 @@ export default function AdminContact() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 md:space-y-6">
       {/* Header */}
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Demandes de contact</h1>
-          <p className="text-gray-600 mt-2">Gérer les demandes de contact des utilisateurs</p>
+          <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Demandes de contact</h1>
+          <p className="text-gray-600 mt-2 text-sm md:text-base">Gérer les demandes de contact des utilisateurs</p>
         </div>
         
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-4 w-full md:w-auto">
           <select
             value={selectedStatus}
             onChange={(e) => setSelectedStatus(e.target.value)}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-black"
+            className="flex-1 md:flex-none px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-black text-sm md:text-base"
           >
             <option value="all">Tous les statuts</option>
             <option value="pending">En attente</option>
@@ -173,25 +173,26 @@ export default function AdminContact() {
         </div>
       </div>
 
-      {/* Table */}
+      {/* Table desktop / Cards mobile */}
       <div className="bg-white rounded-lg shadow overflow-hidden">
-        <div className="overflow-x-auto">
+        {/* Desktop Table */}
+        <div className="hidden md:block overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Utilisateur
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Sujet
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Statut
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Date
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Actions
                 </th>
               </tr>
@@ -199,27 +200,27 @@ export default function AdminContact() {
             <tbody className="bg-white divide-y divide-gray-200">
               {contacts.map((contact) => (
                 <tr key={contact.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap">
+                  <td className="px-4 lg:px-6 py-4 whitespace-nowrap">
                     <div>
                       <div className="text-sm font-medium text-gray-900">{contact.name}</div>
                       <div className="text-sm text-gray-500">{contact.email}</div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
+                  <td className="px-4 lg:px-6 py-4 whitespace-nowrap">
                     <div className="text-sm text-gray-900">{contact.subject}</div>
                     <div className="text-sm text-gray-500 truncate max-w-xs">
                       {contact.message.substring(0, 50)}...
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap ">
-                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full  ${getStatusColor(contact.status)}`}>
+                  <td className="px-4 lg:px-6 py-4 whitespace-nowrap">
+                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(contact.status)}`}>
                       {getStatusLabel(contact.status)}
                     </span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <td className="px-4 lg:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {new Date(contact.createdAt).toLocaleDateString('fr-FR')}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                  <td className="px-4 lg:px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <div className="flex items-center space-x-2">
                       <button
                         onClick={() => setSelectedContact(contact)}
@@ -254,11 +255,70 @@ export default function AdminContact() {
             </tbody>
           </table>
         </div>
+        
+        {/* Mobile Cards */}
+        <div className="md:hidden divide-y divide-gray-200">
+          {contacts.map((contact) => (
+            <div key={contact.id} className="p-4 hover:bg-gray-50">
+              <div className="flex justify-between items-start mb-3">
+                <div className="flex-1">
+                  <h3 className="text-sm font-medium text-gray-900">{contact.name}</h3>
+                  <p className="text-xs text-gray-500">{contact.email}</p>
+                </div>
+                <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(contact.status)}`}>
+                  {getStatusLabel(contact.status)}
+                </span>
+              </div>
+              
+              <div className="mb-3">
+                <p className="text-sm font-medium text-gray-900">{contact.subject}</p>
+                <p className="text-xs text-gray-500 mt-1">
+                  {contact.message.substring(0, 80)}...
+                </p>
+              </div>
+              
+              <div className="flex justify-between items-center text-xs text-gray-500 mb-3">
+                <span>{new Date(contact.createdAt).toLocaleDateString('fr-FR')}</span>
+              </div>
+              
+              <div className="flex flex-col gap-2">
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => setSelectedContact(contact)}
+                    className="flex-1 text-center py-2 px-3 text-xs font-medium text-blue-600 bg-blue-50 border border-blue-200 rounded hover:bg-blue-100"
+                  >
+                    Voir
+                  </button>
+                  <button
+                    onClick={() => {
+                      setSelectedContact(contact)
+                      setShowReplyModal(true)
+                      setReplyData({ subject: '', message: '' })
+                    }}
+                    className="flex-1 text-center py-2 px-3 text-xs font-medium text-green-600 bg-green-50 border border-green-200 rounded hover:bg-green-100"
+                  >
+                    Répondre
+                  </button>
+                </div>
+                <select
+                  value={contact.status}
+                  onChange={(e) => updateContactStatus(contact.id, e.target.value)}
+                  className="w-full text-xs border border-gray-300 rounded px-2 py-2 text-black"
+                >
+                  <option value="pending">En attente</option>
+                  <option value="processed">Traité</option>
+                  <option value="resolved">Résolu</option>
+                  <option value="archived">Archivé</option>
+                </select>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Pagination */}
       {totalPages > 1 && (
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="text-sm text-gray-700">
             Page {currentPage} sur {totalPages}
           </div>

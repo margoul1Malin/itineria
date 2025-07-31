@@ -95,7 +95,7 @@ export function AdminSidebar({ user, isOpen, onToggle, onLogout, currentPath }: 
       )}
 
       {/* Sidebar */}
-      <div className={`w-64 bg-white shadow-lg transition-transform duration-300 ease-in-out lg:translate-x-0 ${
+      <div className={`w-64 bg-white shadow-lg transition-transform duration-300 ease-in-out lg:translate-x-0  h-screen ${
         isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
       } ${isOpen ? 'fixed inset-y-0 left-0 z-50' : 'hidden lg:block'}`}>
         <div className="flex flex-col h-full">

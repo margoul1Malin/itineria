@@ -240,6 +240,16 @@ export default function Header() {
               <Link href="/contact" className="block px-3 py-2 text-gray-700 hover:text-green-600 transition-colors font-medium">
                 Contact
               </Link>
+              
+              {/* Lien admin direct dans le menu mobile */}
+              {!isLoading && user && (user?.role === 'admin' || user?.role === 'super_admin') && (
+                <div className="border-t border-gray-200 mt-4 pt-4">
+                  <Link href="/admin" className="block px-3 py-2 text-orange-600 hover:text-orange-700 transition-colors font-medium">
+                    🛠️ Administration
+                  </Link>
+                </div>
+              )}
+              
               {!isLoading && (
                 <>
                   {user ? (

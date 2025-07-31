@@ -64,65 +64,65 @@ export default function AdminDashboard() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Tableau de bord</h1>
-        <p className="text-gray-600 mt-2">Vue d&apos;ensemble de l&apos;activité du site</p>
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Tableau de bord</h1>
+        <p className="text-gray-600 mt-2 text-sm md:text-base">Vue d&apos;ensemble de l&apos;activité du site</p>
       </div>
 
       {/* Statistiques */}
       {stats && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="bg-white rounded-lg shadow p-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+          <div className="bg-white rounded-lg shadow p-4 md:p-6">
             <div className="flex items-center">
-              <div className="p-3 rounded-full bg-blue-100 text-blue-600">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="p-2 md:p-3 rounded-full bg-blue-100 text-blue-600">
+                <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
               </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Total contacts</p>
-                <p className="text-2xl font-semibold text-gray-900">{stats.totalContacts}</p>
+              <div className="ml-3 md:ml-4">
+                <p className="text-xs md:text-sm font-medium text-gray-600">Total contacts</p>
+                <p className="text-xl md:text-2xl font-semibold text-gray-900">{stats.totalContacts}</p>
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="bg-white rounded-lg shadow p-4 md:p-6">
             <div className="flex items-center">
-              <div className="p-3 rounded-full bg-yellow-100 text-yellow-600">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="p-2 md:p-3 rounded-full bg-yellow-100 text-yellow-600">
+                <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">En attente</p>
-                <p className="text-2xl font-semibold text-gray-900">{stats.pendingContacts}</p>
+              <div className="ml-3 md:ml-4">
+                <p className="text-xs md:text-sm font-medium text-gray-600">En attente</p>
+                <p className="text-xl md:text-2xl font-semibold text-gray-900">{stats.pendingContacts}</p>
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="bg-white rounded-lg shadow p-4 md:p-6">
             <div className="flex items-center">
-              <div className="p-3 rounded-full bg-green-100 text-green-600">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="p-2 md:p-3 rounded-full bg-green-100 text-green-600">
+                <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Traitées</p>
-                <p className="text-2xl font-semibold text-gray-900">{stats.processedContacts}</p>
+              <div className="ml-3 md:ml-4">
+                <p className="text-xs md:text-sm font-medium text-gray-600">Traitées</p>
+                <p className="text-xl md:text-2xl font-semibold text-gray-900">{stats.processedContacts}</p>
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="bg-white rounded-lg shadow p-4 md:p-6">
             <div className="flex items-center">
-              <div className="p-3 rounded-full bg-red-100 text-red-600">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="p-2 md:p-3 rounded-full bg-red-100 text-red-600">
+                <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
                 </svg>
               </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Tentatives bloquées</p>
-                <p className="text-2xl font-semibold text-gray-900">{stats.blockedAttempts}</p>
+              <div className="ml-3 md:ml-4">
+                <p className="text-xs md:text-sm font-medium text-gray-600">Tentatives bloquées</p>
+                <p className="text-xl md:text-2xl font-semibold text-gray-900">{stats.blockedAttempts}</p>
               </div>
             </div>
           </div>
@@ -130,21 +130,21 @@ export default function AdminDashboard() {
       )}
 
       {/* Contenu récent */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
         {/* Demandes de contact récentes */}
         <div className="bg-white rounded-lg shadow">
-          <div className="px-6 py-4 border-b border-gray-200">
-            <h3 className="text-lg font-semibold text-gray-900">Demandes de contact récentes</h3>
+          <div className="px-4 md:px-6 py-3 md:py-4 border-b border-gray-200">
+            <h3 className="text-base md:text-lg font-semibold text-gray-900">Demandes de contact récentes</h3>
           </div>
-          <div className="p-6">
+          <div className="p-4 md:p-6">
             {stats?.recentContacts && stats.recentContacts.length > 0 ? (
               <div className="space-y-4">
                 {stats.recentContacts.map((contact) => (
-                  <div key={contact.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                  <div key={contact.id} className="flex flex-col md:flex-row md:items-center justify-between p-3 md:p-4 bg-gray-50 rounded-lg gap-2 md:gap-0">
                     <div>
-                      <p className="font-medium text-gray-900">{contact.name}</p>
-                      <p className="text-sm text-gray-600">{contact.email}</p>
-                      <p className="text-sm text-gray-500">{contact.subject}</p>
+                      <p className="font-medium text-gray-900 text-sm md:text-base">{contact.name}</p>
+                      <p className="text-xs md:text-sm text-gray-600">{contact.email}</p>
+                      <p className="text-xs md:text-sm text-gray-500">{contact.subject}</p>
                     </div>
                     <div className="text-right">
                       <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${

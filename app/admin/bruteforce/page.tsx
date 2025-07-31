@@ -110,12 +110,12 @@ export default function AdminBruteforce() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 md:space-y-6">
       {/* Header */}
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Surveillance de sécurité</h1>
-          <p className="text-gray-600 mt-2">Tentatives de connexion et protection anti-bruteforce</p>
+          <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Surveillance de sécurité</h1>
+          <p className="text-gray-600 mt-2 text-sm md:text-base">Tentatives de connexion et protection anti-bruteforce</p>
         </div>
         
         <div className="flex items-center space-x-4">
@@ -132,74 +132,75 @@ export default function AdminBruteforce() {
       </div>
 
       {/* Statistiques */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-white rounded-lg shadow p-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+        <div className="bg-white rounded-lg shadow p-4 md:p-6">
           <div className="flex items-center">
-            <div className="p-3 rounded-full bg-red-100 text-red-600">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="p-2 md:p-3 rounded-full bg-red-100 text-red-600">
+              <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
               </svg>
             </div>
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Tentatives bloquées</p>
-              <p className="text-2xl font-semibold text-gray-900">
+            <div className="ml-3 md:ml-4">
+              <p className="text-xs md:text-sm font-medium text-gray-600">Tentatives bloquées</p>
+              <p className="text-xl md:text-2xl font-semibold text-gray-900">
                 {attempts.filter(a => a.isBlocked).length}
               </p>
             </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-white rounded-lg shadow p-4 md:p-6">
           <div className="flex items-center">
-            <div className="p-3 rounded-full bg-blue-100 text-blue-600">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="p-2 md:p-3 rounded-full bg-blue-100 text-blue-600">
+              <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
             </div>
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Total tentatives</p>
-              <p className="text-2xl font-semibold text-gray-900">{attempts.length}</p>
+            <div className="ml-3 md:ml-4">
+              <p className="text-xs md:text-sm font-medium text-gray-600">Total tentatives</p>
+              <p className="text-xl md:text-2xl font-semibold text-gray-900">{attempts.length}</p>
             </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-white rounded-lg shadow p-4 md:p-6">
           <div className="flex items-center">
-            <div className="p-3 rounded-full bg-green-100 text-green-600">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="p-2 md:p-3 rounded-full bg-green-100 text-green-600">
+              <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Protection active</p>
-              <p className="text-2xl font-semibold text-gray-900">✓</p>
+            <div className="ml-3 md:ml-4">
+              <p className="text-xs md:text-sm font-medium text-gray-600">Protection active</p>
+              <p className="text-xl md:text-2xl font-semibold text-gray-900">✓</p>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Table */}
+      {/* Table desktop / Cards mobile */}
       <div className="bg-white rounded-lg shadow overflow-hidden">
-        <div className="overflow-x-auto">
+        {/* Desktop Table */}
+        <div className="hidden md:block overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   IP
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Appareil
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Tentatives
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Statut
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Dernière tentative
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-4 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Actions
                 </th>
               </tr>
@@ -207,13 +208,13 @@ export default function AdminBruteforce() {
             <tbody className="bg-white divide-y divide-gray-200">
               {attempts.map((attempt) => (
                 <tr key={attempt.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap">
+                  <td className="px-4 lg:px-6 py-4 whitespace-nowrap">
                     <div className="text-sm font-medium text-gray-900">{attempt.ip}</div>
                     <div className="text-sm text-gray-500 font-mono">
                       {attempt.fingerprint.substring(0, 16)}...
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
+                  <td className="px-4 lg:px-6 py-4 whitespace-nowrap">
                     <div className="text-sm text-gray-900">
                       {attempt.browser || 'Inconnu'} - {attempt.os || 'Inconnu'}
                     </div>
@@ -264,11 +265,61 @@ export default function AdminBruteforce() {
             </tbody>
           </table>
         </div>
+        
+        {/* Mobile Cards */}
+        <div className="md:hidden divide-y divide-gray-200">
+          {attempts.map((attempt) => (
+            <div key={attempt.id} className="p-4 hover:bg-gray-50">
+              <div className="flex justify-between items-start mb-3">
+                <div className="flex-1">
+                  <h3 className="text-sm font-medium text-gray-900">{attempt.ip}</h3>
+                  <p className="text-xs text-gray-500 font-mono">
+                    {attempt.fingerprint.substring(0, 16)}...
+                  </p>
+                </div>
+                <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(attempt.isBlocked)}`}>
+                  {getStatusLabel(attempt.isBlocked)}
+                </span>
+              </div>
+              
+              <div className="mb-3 space-y-1">
+                <p className="text-sm text-gray-900">
+                  {attempt.browser || 'Inconnu'} - {attempt.os || 'Inconnu'}
+                </p>
+                <p className="text-xs text-gray-500">{attempt.device || 'Desktop'}</p>
+                <p className="text-xs text-gray-500">
+                  {attempt.attempts} tentative{attempt.attempts > 1 ? 's' : ''}
+                </p>
+              </div>
+              
+              <div className="flex justify-between items-center text-xs text-gray-500 mb-3">
+                <span>{formatDate(attempt.lastAttempt)}</span>
+              </div>
+              
+              <div className="flex gap-2">
+                {attempt.isBlocked && (
+                  <button
+                    onClick={() => unblockAttempt(attempt.id)}
+                    className="flex-1 text-center py-2 px-3 text-xs font-medium text-green-600 bg-green-50 border border-green-200 rounded hover:bg-green-100"
+                  >
+                    Débloquer
+                  </button>
+                )}
+                <button
+                  onClick={() => deleteAttempt(attempt.id)}
+                  className="flex-1 text-center py-2 px-3 text-xs font-medium text-red-600 bg-red-50 border border-red-200 rounded hover:bg-red-100"
+                >
+                  Supprimer
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Pagination */}
       {totalPages > 1 && (
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="text-sm text-gray-700">
             Page {currentPage} sur {totalPages}
           </div>

@@ -535,23 +535,23 @@ export default function VolsPage() {
           ))}
         </div>
         <div className="relative max-w-6xl mx-auto z-20">
-          <div className="text-center mb-12">
-            <h1 className="text-5xl font-bold text-green-800 mb-4">
+          <div className="text-center mb-8 md:mb-12">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-green-800 mb-4">
               Trouvez vos vols parfaits
             </h1>
-            <p className="text-xl text-gray-600">
+            <p className="text-lg md:text-xl text-gray-600">
               Comparez et réservez les meilleurs vols au meilleur prix
             </p>
           </div>
 
           {/* Formulaire de recherche */}
-          <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-xl p-8 mb-8">
+          <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-xl p-4 md:p-8 mb-8">
             {/* Type de voyage */}
-            <div className="flex gap-4 mb-6">
+            <div className="flex gap-2 md:gap-4 mb-6">
               <button
                 type="button"
                 onClick={() => setSearchForm(prev => ({ ...prev, tripType: 'roundtrip' }))}
-                className={`px-6 py-3 rounded-lg font-medium transition-colors ${
+                className={`flex-1 md:flex-none px-4 md:px-6 py-3 rounded-lg font-medium transition-colors text-sm md:text-base ${
                   searchForm.tripType === 'roundtrip'
                     ? 'bg-green-600 text-white'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
@@ -562,7 +562,7 @@ export default function VolsPage() {
               <button
                 type="button"
                 onClick={() => setSearchForm(prev => ({ ...prev, tripType: 'oneway' }))}
-                className={`px-6 py-3 rounded-lg font-medium transition-colors ${
+                className={`flex-1 md:flex-none px-4 md:px-6 py-3 rounded-lg font-medium transition-colors text-sm md:text-base ${
                   searchForm.tripType === 'oneway'
                     ? 'bg-green-600 text-white'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
@@ -573,7 +573,7 @@ export default function VolsPage() {
             </div>
 
                         {/* Première ligne : Départ, Arrivée, Dates */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-6">
               {/* Ville de départ */}
               <div className="origin-dropdown-container relative">
                 <label className="block text-sm font-semibold text-green-800 mb-2">Départ</label>
@@ -600,7 +600,7 @@ export default function VolsPage() {
                       handleOriginSearch(searchForm.origin)
                     }
                   }}
-                  className="w-full h-12 px-4 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent text-black bg-white transition-all"
+                  className="w-full h-10 md:h-12 px-3 md:px-4 text-sm md:text-base rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent text-black bg-white transition-all"
                 />
                 
                 {showOriginDropdown && filteredOriginAirports.length > 0 && (
@@ -662,7 +662,7 @@ export default function VolsPage() {
                       handleDestinationSearch(searchForm.destination)
                     }
                   }}
-                  className="w-full h-12 px-4 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent text-black bg-white transition-all"
+                  className="w-full h-10 md:h-12 px-3 md:px-4 text-sm md:text-base rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent text-black bg-white transition-all"
                 />
                 
                 {showDestinationDropdown && filteredDestinationAirports.length > 0 && (
@@ -735,12 +735,12 @@ export default function VolsPage() {
             </div>
 
             {/* Deuxième ligne : Passagers et Classe */}
-            <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 md:gap-6">
               {/* Passagers */}
               <div className="lg:col-span-3">
                 <label className="block text-sm font-semibold text-green-800 mb-2">Passagers</label>
-                <div className="grid grid-cols-3 gap-4">
-                  <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4">
+                  <div className="bg-gray-50 p-3 md:p-4 rounded-lg border border-gray-200">
                     <label className="block text-xs font-medium text-gray-700 mb-2">Adultes (18+)</label>
                     <select
                       value={searchForm.passengers.adults}
@@ -760,7 +760,7 @@ export default function VolsPage() {
                     </select>
                   </div>
                   
-                  <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                  <div className="bg-gray-50 p-3 md:p-4 rounded-lg border border-gray-200">
                     <label className="block text-xs font-medium text-gray-700 mb-2">Enfants (2-17)</label>
                     <select
                       value={searchForm.passengers.children}
@@ -780,7 +780,7 @@ export default function VolsPage() {
                     </select>
                   </div>
                   
-                  <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                  <div className="bg-gray-50 p-3 md:p-4 rounded-lg border border-gray-200">
                     <label className="block text-xs font-medium text-gray-700 mb-2">Bébés (0-1)</label>
                     <select
                       value={searchForm.passengers.infants}
@@ -827,7 +827,7 @@ export default function VolsPage() {
               {/* Classe */}
               <div>
                 <label className="block text-sm font-semibold text-green-800 mb-2">Classe</label>
-                <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                <div className="bg-gray-50 p-3 md:p-4 rounded-lg border border-gray-200">
                   <label className="block text-xs font-medium text-gray-700 mb-2">Type de cabine</label>
                   <select
                     value={searchForm.cabinClass}
@@ -845,7 +845,7 @@ export default function VolsPage() {
               
             {/* Calendrier en overlay complet */}
             {showCalendar && (
-              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 calendar-container">
+              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 calendar-container px-2 py-4">
                 <div className="relative">
                   <Calendar
                     selectedDates={{
@@ -860,13 +860,13 @@ export default function VolsPage() {
                       return dayAfterTomorrow.toISOString().split('T')[0]
                     })()}
                   />
-                  {/* Bouton fermer */}
+                  {/* Bouton fermer - haut gauche sur mobile, haut droite sur desktop */}
                   <button
                     type="button"
                     onClick={() => setShowCalendar(false)}
-                    className="absolute -top-2 -right-2 bg-white rounded-full p-2 shadow-lg hover:bg-gray-100 transition-colors"
+                    className="absolute -top-4 left-31 md:-top-2 md:-right-2 md:left-auto bg-white rounded-full p-1.5 md:p-2 shadow-lg hover:bg-gray-100 transition-colors z-10"
                   >
-                    <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4 md:w-5 md:h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                     </svg>
                   </button>
@@ -875,11 +875,11 @@ export default function VolsPage() {
             )}
 
             {/* Bouton de recherche */}
-            <div className="mt-8">
+            <div className="mt-6 md:mt-8">
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-green-600 hover:bg-green-700 disabled:bg-green-400 text-white font-bold py-4 px-8 rounded-lg text-lg transition-colors"
+                className="w-full bg-green-600 hover:bg-green-700 disabled:bg-green-400 text-white font-bold py-3 md:py-4 px-6 md:px-8 rounded-lg text-base md:text-lg transition-colors"
               >
                 {isLoading ? (
                   <div className="flex items-center justify-center gap-3">
@@ -1020,17 +1020,17 @@ export default function VolsPage() {
 
       {/* Résultats de recherche */}
       {searchPerformed && (
-        <section className="py-20 px-4 bg-white">
+        <section className="py-8 md:py-20 px-4 bg-white">
           <div className="max-w-7xl mx-auto">
             
-            {/* Layout avec sidebar */}
-            <div className="flex gap-8">
+            {/* Layout avec sidebar - responsive */}
+            <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
               
-              {/* Sidebar des filtres */}
+              {/* Sidebar des filtres - en haut sur mobile, à gauche sur desktop */}
               {metadata && !isLoading && (
-                <aside className="w-80 flex-shrink-0">
-                  <div className="sticky top-4 bg-gray-50 rounded-xl p-6 max-h-screen overflow-y-auto">
-                    <h3 className="text-xl font-bold text-gray-800 mb-6">Filtres de recherche</h3>
+                <aside className="w-full lg:w-80 lg:flex-shrink-0 order-1 lg:order-none">
+                  <div className="lg:sticky lg:top-4 bg-gray-50 rounded-xl p-4 md:p-6 max-h-96 lg:max-h-screen overflow-y-auto">
+                    <h3 className="text-lg md:text-xl font-bold text-gray-800 mb-4 md:mb-6">Filtres de recherche</h3>
                     
                     <div className="space-y-6">
                       
@@ -1205,17 +1205,17 @@ export default function VolsPage() {
               )}
               
               {/* Contenu principal */}
-              <div className="flex-1">
-                <div className="text-center mb-8">
-                  <h2 className="text-4xl font-bold text-green-800 mb-4">
-                    {isLoading ? 'Recherche en cours...' : `Résultats de recherche (${filteredFlights.length} vols trouvés)`}
+              <div className="flex-1 order-2 lg:order-none">
+                <div className="text-center mb-6 md:mb-8">
+                  <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-green-800 mb-4">
+                    {isLoading ? 'Recherche en cours...' : `Résultats (${filteredFlights.length} vols)`}
                   </h2>
                   
                   {/* Compteur et pagination */}
                   {!isLoading && filteredFlights.length > 0 && (
-                    <div className="flex justify-between items-center mb-6">
-                      <div className="text-gray-600">
-                        Affichage de {Math.min((currentPage - 1) * FLIGHTS_PER_PAGE + 1, filteredFlights.length)} à {Math.min(currentPage * FLIGHTS_PER_PAGE, filteredFlights.length)} sur {filteredFlights.length} vols
+                    <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
+                      <div className="text-gray-600 text-sm md:text-base">
+                        {Math.min((currentPage - 1) * FLIGHTS_PER_PAGE + 1, filteredFlights.length)} à {Math.min(currentPage * FLIGHTS_PER_PAGE, filteredFlights.length)} sur {filteredFlights.length}
                       </div>
                       
                       {totalPages > 1 && (
@@ -1257,51 +1257,51 @@ export default function VolsPage() {
                 </div>
 
                 {!isLoading && paginatedFlights.length > 0 && (
-                  <div className="space-y-6">
+                  <div className="space-y-4 md:space-y-6">
                     {paginatedFlights.map((flight: Flight) => (
-                      <div key={flight.id} className="bg-white rounded-xl shadow-lg border border-gray-200 p-6 hover:shadow-xl transition-shadow">
-                        <div className="flex items-center justify-between mb-4">
-                          <div className="flex items-center gap-4">
-                            <div className="text-3xl font-bold text-green-600">
+                      <div key={flight.id} className="bg-white rounded-xl shadow-lg border border-gray-200 p-4 md:p-6 hover:shadow-xl transition-shadow">
+                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
+                          <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4">
+                            <div className="text-2xl md:text-3xl font-bold text-green-600">
                               {formatPrice(flight.totalPrice, flight.currency)}
                             </div>
                             <div className="text-sm text-gray-600">
                               {flight.slices.length === 2 ? 'Aller-retour' : 'Aller simple'}
                             </div>
                           </div>
-                          <button className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg font-medium transition-colors cursor-pointer">
+                          <button className="bg-green-600 hover:bg-green-700 text-white px-4 md:px-6 py-2 rounded-lg font-medium transition-colors cursor-pointer text-sm md:text-base self-start md:self-auto">
                             Réserver
                           </button>
                         </div>
 
                         {/* Détails des vols */}
-                        <div className="space-y-4">
+                        <div className="space-y-3 md:space-y-4">
                           {flight.slices.map((slice, sliceIndex) => (
-                            <div key={sliceIndex} className="border border-gray-100 rounded-lg p-4">
-                              <div className="flex items-center justify-between mb-3">
-                                <h4 className="font-semibold text-lg text-black">
+                            <div key={sliceIndex} className="border border-gray-100 rounded-lg p-3 md:p-4">
+                              <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 mb-3">
+                                <h4 className="font-semibold text-base md:text-lg text-black">
                                   {sliceIndex === 0 ? 'Aller' : 'Retour'}: {slice.segments[0].originName} → {slice.segments[slice.segments.length - 1].destinationName}
                                 </h4>
-                                                                 <div className="text-sm text-black font-bold">
-                                   Durée Totale: {formatDuration(calculateSliceDuration(slice))}
+                                <div className="text-xs md:text-sm text-black font-bold">
+                                   Durée: {formatDuration(calculateSliceDuration(slice))}
                                    {slice.hasStops && <span className="ml-2 text-orange-600">({slice.segments.length - 1} escale{slice.segments.length > 2 ? 's' : ''})</span>}
                                  </div>
                               </div>
                               
                               <div className="space-y-2">
                                 {slice.segments.map((segment) => (
-                                  <div key={segment.id} className="flex items-center justify-between">
-                                    <div className="flex items-center gap-4">
-                                      <div className="text-sm text-black">
-                                        <div className=" text-blue-600 font-bold">{segment.airline} {segment.flightNumber}</div>
-                                        <div className="text-gray-600">{segment.aircraft}</div>
+                                  <div key={segment.id} className="flex flex-col md:flex-row md:items-center justify-between gap-2">
+                                    <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4">
+                                      <div className="text-xs md:text-sm text-black">
+                                        <div className="text-blue-600 font-bold">{segment.airline} {segment.flightNumber}</div>
+                                        <div className="text-gray-600 hidden md:block">{segment.aircraft}</div>
                                       </div>
-                                      <div className="text-sm text-black">
-                                        <div>{formatTime(segment.departure)} - {formatTime(segment.arrival)}</div>
+                                      <div className="text-xs md:text-sm text-black">
+                                        <div className="font-medium">{formatTime(segment.departure)} - {formatTime(segment.arrival)}</div>
                                         <div className="text-gray-600">{segment.originName} → {segment.destinationName}</div>
                                       </div>
                                     </div>
-                                    <div className="text-sm text-right">
+                                    <div className="text-xs md:text-sm text-left md:text-right">
                                       <div className="text-black font-medium">{formatDuration(segment.duration)}</div>
                                       <div className="text-gray-600">{segment.cabinClass}</div>
                                     </div>
