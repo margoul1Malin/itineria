@@ -2,6 +2,8 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useTranslations, useLocale } from 'next-intl';
+import LanguageSelector from './LanguageSelector';
 
 interface User {
   id: string;
@@ -17,6 +19,9 @@ export default function Header() {
   const [isAccountMenuOpen, setIsAccountMenuOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  
+  const t = useTranslations('navigation');
+  const locale = useLocale();
 
   const toggleAccountMenu = () => {
     setIsAccountMenuOpen(!isAccountMenuOpen);
@@ -32,8 +37,8 @@ export default function Header() {
       if (response.ok) {
         setUser(null);
         setIsAccountMenuOpen(false);
-        // Rediriger vers la page d'accueil
-        window.location.href = '/';
+        // Rediriger vers la page d'accueil avec la locale
+        window.location.href = `/${locale}`;
       }
     } catch (error) {
       console.error('Erreur lors de la déconnexion:', error);
@@ -89,42 +94,50 @@ export default function Header() {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex items-center">
-            <Image
-              src="/ItineriaLogo.png"
-              alt="Itineria"
-              width={1000}
-              height={1000}
-              className="mr-2 w-12 h-12 rounded-lg"
-            />
-            <h1 className="text-2xl font-bold text-green-800">Itineria</h1>
+            <Link href={`/${locale}`}>
+              <Image
+                src="/ItineriaLogo.png"
+                alt="Itineria"
+                width={1000}
+                height={1000}
+                className="mr-2 w-12 h-12 rounded-lg cursor-pointer"
+              />
+            </Link>
+            <Link href={`/${locale}`}>
+              <h1 className="text-2xl font-bold text-green-800 cursor-pointer">Itineria</h1>
+            </Link>
           </div>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8 font-bold">
-            <Link href="/vols" className="text-gray-700 hover:text-green-600 transition-colors">
-              Vols
+            <Link href={`/${locale}/vols`} className="text-gray-700 hover:text-green-600 transition-colors">
+              {t('flights')}
             </Link>
-            <Link href="/hotels" className="text-gray-700 hover:text-green-600 transition-colors">
-              Hôtels
+            <Link href={`/${locale}/hotels`} className="text-gray-700 hover:text-green-600 transition-colors">
+              {t('hotels')}
             </Link>
-            <Link href="/activites" className="text-gray-700 hover:text-green-600 transition-colors">
-              Activités
+            <Link href={`/${locale}/activites`} className="text-gray-700 hover:text-green-600 transition-colors">
+              {t('activities')}
             </Link>
-            <Link href="/vols-et-hotels" className="text-gray-700 hover:text-green-600 transition-colors">
-              Vols & Hôtels
+            <Link href={`/${locale}/vols-et-hotels`} className="text-gray-700 hover:text-green-600 transition-colors">
+              {t('flightsAndHotels')}
             </Link>
-            <Link href="/contact" className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
-              Ajouter votre établissement
+            <Link href={`/${locale}/contact`} className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
+              {t('contact')}
             </Link>
           </nav>
 
-          {/* Desktop Account Menu */}
-          <div className="hidden md:block relative">
+          {/* Desktop Right Section */}
+          <div className="hidden md:flex items-center space-x-4">
+            {/* Language Selector */}
+            <LanguageSelector />
+            
+            {/* Account Menu */}
             {!isLoading && (
               <>
                 {user ? (
                   // Utilisateur connecté
-                  <>
+                  <div className="relative">
                     <button 
                       onClick={toggleAccountMenu}
                       className="text-gray-700 hover:text-green-600 transition-colors flex items-center gap-1 font-bold cursor-pointer"
@@ -139,37 +152,37 @@ export default function Header() {
                     {isAccountMenuOpen && (
                       <div className="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
                         <Link 
-                          href="/profil" 
+                          href={`/${locale}/profil`} 
                           className="block px-4 py-2 text-gray-700 hover:bg-green-50 hover:text-green-600 transition-colors"
                         >
-                          Profil
+                          {t('profile')}
                         </Link>
                         <Link 
-                          href="/vols" 
+                          href={`/${locale}/vols`} 
                           className="block px-4 py-2 text-gray-700 hover:bg-green-50 hover:text-green-600 transition-colors"
                         >
-                          Vols
+                          {t('flights')}
                         </Link>
                         <Link 
-                          href="/hotels" 
+                          href={`/${locale}/hotels`} 
                           className="block px-4 py-2 text-gray-700 hover:bg-green-50 hover:text-green-600 transition-colors"
                         >
-                          Hôtels
+                          {t('hotels')}
                         </Link>
                         <Link 
-                          href="/activites" 
+                          href={`/${locale}/activites`} 
                           className="block px-4 py-2 text-gray-700 hover:bg-green-50 hover:text-green-600 transition-colors"
                         >
-                          Activités
+                          {t('activities')}
                         </Link>
                         {(user?.role === 'admin' || user?.role === 'super_admin') && (
                           <>
                             <div className="border-t border-gray-200 my-1"></div>
                             <Link 
-                              href="/admin" 
+                              href={`/${locale}/admin`} 
                               className="block px-4 py-2 text-orange-600 hover:bg-orange-50 hover:text-orange-700 transition-colors font-medium"
                             >
-                              🛠️ Administration
+                              🛠️ {t('admin')}
                             </Link>
                           </>
                         )}
@@ -178,25 +191,25 @@ export default function Header() {
                           onClick={handleLogout}
                           className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors"
                         >
-                          Déconnexion
+                          {t('logout')}
                         </button>
                       </div>
                     )}
-                  </>
+                  </div>
                 ) : (
                   // Utilisateur non connecté
                   <div className="flex items-center space-x-4">
                     <Link 
-                      href="/login" 
+                      href={`/${locale}/login`} 
                       className="text-gray-700 hover:text-green-600 transition-colors font-medium"
                     >
-                      Connexion
+                      {t('login')}
                     </Link>
                     <Link 
-                      href="/register" 
+                      href={`/${locale}/register`} 
                       className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors font-medium"
                     >
-                      Inscription
+                      {t('register')}
                     </Link>
                   </div>
                 )}
@@ -205,7 +218,10 @@ export default function Header() {
           </div>
 
           {/* Mobile menu button */}
-          <div className="md:hidden">
+          <div className="md:hidden flex items-center space-x-2">
+            {/* Language Selector Mobile */}
+            <LanguageSelector />
+            
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="text-gray-700 hover:text-green-600 transition-colors"
@@ -225,27 +241,27 @@ export default function Header() {
         {isMenuOpen && (
           <div className="md:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1 bg-white border-t border-gray-200">
-              <Link href="/vols" className="block px-3 py-2 text-gray-700 hover:text-green-600 transition-colors font-medium">
-                Vols
+              <Link href={`/${locale}/vols`} className="block px-3 py-2 text-gray-700 hover:text-green-600 transition-colors font-medium">
+                {t('flights')}
               </Link>
-              <Link href="/hotels" className="block px-3 py-2 text-gray-700 hover:text-green-600 transition-colors font-medium">
-                Hôtels
+              <Link href={`/${locale}/hotels`} className="block px-3 py-2 text-gray-700 hover:text-green-600 transition-colors font-medium">
+                {t('hotels')}
               </Link>
-              <Link href="/activites" className="block px-3 py-2 text-gray-700 hover:text-green-600 transition-colors font-medium">
-                Activités
+              <Link href={`/${locale}/activites`} className="block px-3 py-2 text-gray-700 hover:text-green-600 transition-colors font-medium">
+                {t('activities')}
               </Link>
-              <Link href="/vols-et-hotels" className="block px-3 py-2 text-gray-700 hover:text-green-600 transition-colors font-medium">
-                Vols & Hôtels
+              <Link href={`/${locale}/vols-et-hotels`} className="block px-3 py-2 text-gray-700 hover:text-green-600 transition-colors font-medium">
+                {t('flightsAndHotels')}
               </Link>
-              <Link href="/contact" className="block px-3 py-2 text-gray-700 hover:text-green-600 transition-colors font-medium">
-                Contact
+              <Link href={`/${locale}/contact`} className="block px-3 py-2 text-gray-700 hover:text-green-600 transition-colors font-medium">
+                {t('contact')}
               </Link>
               
               {/* Lien admin direct dans le menu mobile */}
               {!isLoading && user && (user?.role === 'admin' || user?.role === 'super_admin') && (
                 <div className="border-t border-gray-200 mt-4 pt-4">
-                  <Link href="/admin" className="block px-3 py-2 text-orange-600 hover:text-orange-700 transition-colors font-medium">
-                    🛠️ Administration
+                  <Link href={`/${locale}/admin`} className="block px-3 py-2 text-orange-600 hover:text-orange-700 transition-colors font-medium">
+                    🛠️ {t('admin')}
                   </Link>
                 </div>
               )}
@@ -261,23 +277,23 @@ export default function Header() {
                       <div className="px-3 py-2 text-gray-700 font-bold cursor-pointer" onClick={toggleAccountMenu}>Compte</div>
                       {isAccountMenuOpen && (
                         <>
-                          <Link href="/profil" className="block px-6 py-2 text-gray-600 hover:text-green-600 transition-colors">
-                            Profil
+                          <Link href={`/${locale}/profil`} className="block px-6 py-2 text-gray-600 hover:text-green-600 transition-colors">
+                            {t('profile')}
                           </Link>
-                          <Link href="/reservations-et-voyages" className="block px-6 py-2 text-gray-600 hover:text-green-600 transition-colors">
+                          <Link href={`/${locale}/reservations-et-voyages`} className="block px-6 py-2 text-gray-600 hover:text-green-600 transition-colors">
                             Réservations et Voyages
                           </Link>
-                          <Link href="/commentaires-et-notes" className="block px-6 py-2 text-gray-600 hover:text-green-600 transition-colors">
+                          <Link href={`/${locale}/commentaires-et-notes`} className="block px-6 py-2 text-gray-600 hover:text-green-600 transition-colors">
                             Commentaires et Notes
                           </Link>
-                          <Link href="/favoris" className="block px-6 py-2 text-gray-600 hover:text-green-600 transition-colors">
+                          <Link href={`/${locale}/favoris`} className="block px-6 py-2 text-gray-600 hover:text-green-600 transition-colors">
                             Favoris
                           </Link>
                           {(user?.role === 'admin' || user?.role === 'super_admin') && (
                             <>
                               <div className="border-t border-gray-200 my-1 mx-3"></div>
-                              <Link href="/admin" className="block px-6 py-2 text-orange-600 hover:text-orange-700 transition-colors font-medium">
-                                🛠️ Administration
+                              <Link href={`/${locale}/admin`} className="block px-6 py-2 text-orange-600 hover:text-orange-700 transition-colors font-medium">
+                                🛠️ {t('admin')}
                               </Link>
                             </>
                           )}
@@ -286,7 +302,7 @@ export default function Header() {
                             onClick={handleLogout}
                             className="block w-full text-left px-6 py-2 text-gray-600 hover:text-red-600 transition-colors"
                           >
-                            Déconnexion
+                            {t('logout')}
                           </button>
                         </>
                       )}
@@ -294,11 +310,11 @@ export default function Header() {
                   ) : (
                     // Utilisateur non connecté
                     <div className="pt-4 border-t border-gray-200">
-                      <Link href="/login" className="block px-3 py-2 text-gray-700 hover:text-green-600 transition-colors font-medium">
-                        Connexion
+                      <Link href={`/${locale}/login`} className="block px-3 py-2 text-gray-700 hover:text-green-600 transition-colors font-medium">
+                        {t('login')}
                       </Link>
-                      <Link href="/register" className="block px-3 py-2 text-gray-700 hover:text-green-600 transition-colors font-medium">
-                        Inscription
+                      <Link href={`/${locale}/register`} className="block px-3 py-2 text-gray-700 hover:text-green-600 transition-colors font-medium">
+                        {t('register')}
                       </Link>
                     </div>
                   )}

@@ -3,136 +3,67 @@ import { MetadataRoute } from 'next'
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://www.itineria.fr'
   const currentDate = new Date()
+  const locales = ['fr', 'en', 'de', 'es']
+
+  // Pages principales pour chaque locale
+  const mainRoutes = [
+    '',
+    '/vols',
+    '/hotels', 
+    '/activites',
+    '/vols-et-hotels',
+    '/contact',
+    '/profil',
+    '/login',
+    '/register'
+  ]
+
+  // Pages légales pour chaque locale
+  const legalRoutes = [
+    '/legal/cgv',
+    '/legal/privacy',
+    '/legal/cookies',
+    '/legal/terms'
+  ]
+
+  // Générer les URLs pour toutes les locales
+  const sitemapEntries: MetadataRoute.Sitemap = []
 
   // Pages principales
-  const mainPages = [
-    {
-      url: baseUrl,
-      lastModified: currentDate,
-      changeFrequency: 'daily' as const,
-      priority: 1,
-    },
-    {
-      url: `${baseUrl}/vols`,
-      lastModified: currentDate,
-      changeFrequency: 'daily' as const,
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/hotels`,
-      lastModified: currentDate,
-      changeFrequency: 'daily' as const,
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/activites`,
-      lastModified: currentDate,
-      changeFrequency: 'daily' as const,
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/vols-et-hotels`,
-      lastModified: currentDate,
-      changeFrequency: 'daily' as const,
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/contact`,
-      lastModified: currentDate,
-      changeFrequency: 'weekly' as const,
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/profil`,
-      lastModified: currentDate,
-      changeFrequency: 'weekly' as const,
-      priority: 0.7,
-    },
-  ]
+  locales.forEach(locale => {
+    mainRoutes.forEach(route => {
+      sitemapEntries.push({
+        url: `${baseUrl}/${locale}${route}`,
+        lastModified: currentDate,
+        changeFrequency: route === '' ? 'daily' : 'weekly',
+        priority: route === '' ? 1 : 0.8,
+        alternates: {
+          languages: locales.reduce((acc, loc) => ({
+            ...acc,
+            [loc]: `${baseUrl}/${loc}${route}`
+          }), {})
+        }
+      })
+    })
+  })
 
-  // Pages légales (priorité plus faible car moins importantes pour le SEO)
-  const legalPages = [
-    {
-      url: `${baseUrl}/legal/cgv`,
-      lastModified: currentDate,
-      changeFrequency: 'monthly' as const,
-      priority: 0.3,
-    },
-    {
-      url: `${baseUrl}/legal/privacy`,
-      lastModified: currentDate,
-      changeFrequency: 'monthly' as const,
-      priority: 0.3,
-    },
-    {
-      url: `${baseUrl}/legal/cookies`,
-      lastModified: currentDate,
-      changeFrequency: 'monthly' as const,
-      priority: 0.3,
-    },
-    {
-      url: `${baseUrl}/legal/terms`,
-      lastModified: currentDate,
-      changeFrequency: 'monthly' as const,
-      priority: 0.3,
-    },
-  ]
+  // Pages légales
+  locales.forEach(locale => {
+    legalRoutes.forEach(route => {
+      sitemapEntries.push({
+        url: `${baseUrl}/${locale}${route}`,
+        lastModified: currentDate,
+        changeFrequency: 'monthly',
+        priority: 0.3,
+        alternates: {
+          languages: locales.reduce((acc, loc) => ({
+            ...acc,
+            [loc]: `${baseUrl}/${loc}${route}`
+          }), {})
+        }
+      })
+    })
+  })
 
-  // Pages de contenu informatif
-  const infoPages = [
-    {
-      url: `${baseUrl}/about`,
-      lastModified: currentDate,
-      changeFrequency: 'monthly' as const,
-      priority: 0.6,
-    },
-    {
-      url: `${baseUrl}/destinations`,
-      lastModified: currentDate,
-      changeFrequency: 'weekly' as const,
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/offres`,
-      lastModified: currentDate,
-      changeFrequency: 'daily' as const,
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/blog`,
-      lastModified: currentDate,
-      changeFrequency: 'weekly' as const,
-      priority: 0.7,
-    },
-  ]
-
-  // Pages de support et aide
-  const supportPages = [
-    {
-      url: `${baseUrl}/aide`,
-      lastModified: currentDate,
-      changeFrequency: 'monthly' as const,
-      priority: 0.5,
-    },
-    {
-      url: `${baseUrl}/faq`,
-      lastModified: currentDate,
-      changeFrequency: 'monthly' as const,
-      priority: 0.5,
-    },
-    {
-      url: `${baseUrl}/support`,
-      lastModified: currentDate,
-      changeFrequency: 'weekly' as const,
-      priority: 0.6,
-    },
-  ]
-
-  // Combiner toutes les pages
-  return [
-    ...mainPages,
-    ...legalPages,
-    ...infoPages,
-    ...supportPages,
-  ]
+  return sitemapEntries
 }

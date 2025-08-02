@@ -1,54 +1,35 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
 
-// Fonction simple pour décoder un JWT (sans vérification de signature pour le middleware)
-function decodeJwtPayload(token: string) {
-  try {
-    const parts = token.split('.')
-    if (parts.length !== 3) return null
-    
-    const payload = parts[1]
-    // Ajouter le padding si nécessaire
-    const paddedPayload = payload + '='.repeat((4 - payload.length % 4) % 4)
-    const decoded = atob(paddedPayload)
-    return JSON.parse(decoded)
-  } catch {
-    return null
-  }
-}
+const locales = ['fr', 'en', 'de', 'es'];
+const defaultLocale = 'fr';
 
 export function middleware(request: NextRequest) {
-  // Vérifier si la route est protégée (admin)
-  if (request.nextUrl.pathname.startsWith('/admin')) {
-    // Récupérer le token depuis le cookie
-    const session = request.cookies.get('session')
-    
-    if (!session) {
-      return NextResponse.redirect(new URL('/', request.url))
-    }
+  const pathname = request.nextUrl.pathname;
+  
+  // Vérifier si la pathname commence déjà par une locale
+  const pathnameHasLocale = locales.some(
+    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
+  );
 
-    try {
-      // Décoder le token (sans vérification de signature dans le middleware)
-      const payload = decodeJwtPayload(session.value)
-      
-      if (!payload || (payload.role !== 'admin' && payload.role !== 'super_admin')) {
-        return NextResponse.redirect(new URL('/', request.url))
-      }
-      
-      // L'utilisateur a les droits admin, continuer
-      return NextResponse.next()
-    } catch (error) {
-      // Token invalide, rediriger vers l'accueil
-      return NextResponse.redirect(new URL('/', request.url))
-    }
+  if (!pathnameHasLocale) {
+    // Rediriger vers la locale par défaut
+    return NextResponse.redirect(new URL(`/${defaultLocale}${pathname}`, request.url));
   }
 
-  // Pour toutes les autres routes, continuer normalement
-  return NextResponse.next()
+  // Extraire la locale de l'URL
+  const locale = pathname.split('/')[1];
+  
+  // Créer une nouvelle réponse avec les headers next-intl
+  const response = NextResponse.next();
+  response.headers.set('x-locale', locale);
+  
+  return response;
 }
 
 export const config = {
   matcher: [
-    // Protéger uniquement les routes admin
-    '/admin/:path*'
-  ],
-} 
+    '/((?!api|_next|_vercel|.*\\..*|favicon.ico).*)',
+    '/'
+  ]
+}; 

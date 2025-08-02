@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #d4cfbc;
+  --foreground: #193328;
 }
 
 @theme inline {
@@ -10,12 +10,46 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  
+  /* Couleurs personnalisées du logo */
+  --color-brand-dark: #193328;
+  --color-brand-light: #d4cfbc;
+  
+  /* Redéfinition des couleurs green avec les couleurs du logo */
+  --color-green-50: #f8f7f4;
+  --color-green-100: #eeebd8;
+  --color-green-200: #d4cfbc;
+  --color-green-300: #beb899;
+  --color-green-400: #a8a176;
+  --color-green-500: #928a53;
+  --color-green-600: #5a5138;
+  --color-green-700: #434028;
+  --color-green-800: #2c2f1c;
+  --color-green-900: #193328;
+  
+  /* Couleurs personnalisées pour les backgrounds */
+  --color-bg-primary: #d4cfbc;
+  --color-gray-50: #f8f7f4;
+  --color-gray-100: #eeebd8;
+  --color-gray-200: #d4cfbc;
+  
+  /* Redéfinition des couleurs stone pour s'aligner avec notre palette */
+  --color-stone-50: #f8f7f4;
+  --color-stone-100: #eeebd8;
+  --color-stone-200: #d4cfbc;
+  --color-stone-300: #beb899;
+  --color-stone-400: #a8a176;
+  --color-stone-500: #928a53;
+  --color-stone-600: #5a5138;
+  --color-stone-700: #434028;
+  --color-stone-800: #2c2f1c;
+  --color-stone-900: #193328;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #193328;
+    --foreground: #d4cfbc;
   }
 }
 
@@ -23,6 +57,57 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Styles spécifiques pour les formulaires et inputs */
+.form-container {
+  background: #ffffff !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+}
+
+.input-field {
+  background: #ffffff !important;
+  border: 1px solid #d1d5db !important;
+}
+
+.input-field:focus {
+  border-color: var(--color-green-500) !important;
+  box-shadow: 0 0 0 3px rgba(25, 51, 40, 0.1) !important;
+}
+
+.dropdown-menu {
+  background: #ffffff !important;
+  border: 1px solid #d1d5db !important;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
+}
+
+/* Classe pour les sections avec notre couleur de marque */
+.bg-brand {
+  background-color: var(--color-bg-primary) !important;
+}
+
+/* Remplacement automatique des bg-white pour les sections non-formulaires */
+section.bg-white {
+  background-color: var(--color-bg-primary) !important;
+}
+
+/* Animation pour le carousel infini */
+@keyframes scroll-infinite {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-scroll-infinite {
+  animation: scroll-infinite 30s linear infinite;
+}
+
+/* Pause l'animation au hover pour permettre l'interaction */
+.animate-scroll-infinite:hover {
+  animation-play-state: paused;
 }
 
 
