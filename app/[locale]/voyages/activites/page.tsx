@@ -362,20 +362,22 @@ export default function ActivitesPage() {
                 className="object-cover"
                 priority
               />
-              <div className="absolute inset-0 bg-black/40 z-10"></div>
-              <div className="absolute inset-0 bg-gradient-to-r from-green-800/60 to-stone-800/60"></div>
+              <div className="absolute inset-0 bg-black/20 z-10"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-green-800/30 to-stone-800/30"></div>
             </div>
           ))}
         </div>
 
         {/* Hero Content */}
         <div className="relative z-20 text-center text-white px-4 w-full max-w-6xl">
-          <h1 className="text-4xl md:text-7xl font-bold mb-4 md:mb-6">
-            <span className="text-stone-200">Activités</span>
-          </h1>
-          <p className="text-lg md:text-2xl mb-6 md:mb-8 max-w-2xl mx-auto">
-            Découvrez des expériences uniques et des activités inoubliables dans le monde entier
-          </p>
+          <div className="inline-block bg-white/90 backdrop-blur-sm rounded-2xl px-8 py-6 shadow-xl border border-white/20 mb-8">
+            <h1 className="text-4xl md:text-7xl font-bold mb-4 md:mb-6">
+              <span className="text-green-800">Activités</span>
+            </h1>
+            <p className="text-lg md:text-2xl mb-6 md:mb-8 max-w-2xl mx-auto text-gray-700">
+              Découvrez des expériences uniques et des activités inoubliables dans le monde entier
+            </p>
+          </div>
           
           {/* Search Form */}
           <form onSubmit={handleSubmit} className="bg-white/95 backdrop-blur-sm rounded-2xl p-4 md:p-8 shadow-2xl max-w-5xl mx-auto">

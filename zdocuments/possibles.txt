@@ -1,0 +1,93 @@
+🏨 API pour les hôtels
+1. Booking.com (via BookingXML ou autres agrégateurs)
+Accès direct à l’API Booking.com est très restreint.
+
+Solutions comme BookingXML, TravelgateX, ou TBO Holidays proposent des connexions agrégées.
+
+🔧 Nécessite agrément ou volume.
+
+2. Hotelbeds
+API robuste avec plus de 300k hôtels.
+
+Accès direct mais nécessite validation commerciale.
+
+Inclut aussi des activités (voir ci-dessous).
+
+🔗 https://developer.hotelbeds.com
+
+3. TravelgateX
+Agrégateur d'API pour hôtels, vols, activités, etc.
+
+Se connecte à de multiples fournisseurs comme Hotelbeds, DOTW, Tourico, etc.
+
+🔗 https://www.travelgatex.com
+
+4. TBO Holidays
+Fournisseur B2B avec un large catalogue d’hôtels.
+
+API complète, souvent utilisée par les agences.
+
+🔗 https://www.tbobholidays.com
+
+5. RateHawk
+Fournisseur orienté B2B, API moderne.
+
+Accès rapide et bon support.
+
+🔗 https://www.ratehawk.com
+
+6. Beds24
+Moteur de réservation + API.
+
+Moins riche en inventaire global mais bon en direct.
+
+🔗 https://www.beds24.com
+
+7. Ostrovok / Emerging Travel Group
+API très fiable, bonne couverture mondiale.
+
+🔗 https://emergingtravel.com/en/
+
+8. WebBeds
+Grosse banque de lits, concurrent direct d’Hotelbeds.
+
+🔗 https://www.webbeds.com
+
+🧭 API pour les activités & expériences
+1. Viator (TripAdvisor Experiences)
+API officielle pour vendre des activités/visites.
+
+Besoin de validation pour accès.
+
+🔗 https://www.viator.com/affiliates
+
+2. GetYourGuide
+Énorme catalogue d'activités.
+
+API disponible pour partenaires sérieux.
+
+🔗 https://partner.getyourguide.com
+
+3. Musement (par TUI)
+API bien documentée, nombreuses expériences locales.
+
+🔗 https://www.musement.com
+
+4. Klook
+Ciblé sur l’Asie au départ, maintenant global.
+
+API disponible pour partenaires OTA.
+
+🔗 https://affiliate.klook.com
+
+5. Hotelbeds – Activities API
+Leur API couvre aussi des activités avec plus de 18k produits.
+
+Intéressant si tu bosses déjà avec Hotelbeds.
+
+6. Tiqets
+Accès aux musées, parcs, monuments, etc.
+
+API bien conçue pour distribution.
+
+🔗 https://www.tiqets.com/partners/

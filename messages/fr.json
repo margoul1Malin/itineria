@@ -1,10 +1,13 @@
 {
   "navigation": {
     "home": "Accueil",
+    "travels": "Voyages",
+    "itineraryGenerator": "Générateur d'Itinéraire",
+    "vipLounge": "Salon VIP",
     "flights": "Vols",
     "hotels": "Hôtels",
     "activities": "Activités",
-    "flightsAndHotels": "Vols + Hôtels",
+    "flightsAndHotels": "Traducteur",
     "contact": "Contact",
     "profile": "Profil",
     "login": "Connexion",
@@ -183,15 +186,6 @@
       "title": "Notifications",
       "subtitle": "Gérez vos notifications et alertes",
       "bookingConfirmations": "Confirmations de réservation",
-      "flightUpdates": "Mises à jour de vol",
-      "promotions": "Promotions et offres",
-      "reminders": "Rappels",
-      "save": "Enregistrer"
-    },
-    "notifications": {
-      "title": "Notifications",
-      "subtitle": "Gérez vos notifications et alertes",
-      "bookingConfirmations": "Confirmations de réservation",
       "flightUpdates": "Mises à jour des vols",
       "promotions": "Promotions et offres",
       "reminders": "Rappels",
@@ -356,5 +350,272 @@
     "services": "Services",
     "insurance": "Assurance",
     "allRightsReserved": "Tous droits réservés."
+  },
+  "voyages": {
+    "title": "Voyages",
+    "subtitle": "Découvrez nos destinations et services de voyage",
+    "chooseCategory": "Choisissez votre catégorie",
+    "categoryDescription": "Explorez nos différentes offres de voyage",
+    "flights": "Vols",
+    "flightsDescription": "Trouvez les meilleurs vols au meilleur prix",
+    "hotels": "Hôtels",
+    "hotelsDescription": "Séjournez dans des établissements d'exception",
+    "activities": "Activités",
+    "activitiesDescription": "Découvrez des expériences uniques",
+    "explore": "Explorer",
+    "search": "Rechercher",
+    "whyChooseUs": "Pourquoi nous choisir",
+    "whyChooseUsDescription": "Découvrez ce qui fait notre différence",
+    "bestPrices": "Meilleurs prix",
+    "bestPricesDescription": "Garantie des prix les plus bas du marché",
+    "secureBooking": "Réservation sécurisée",
+    "secureBookingDescription": "Paiement protégé et confirmation instantanée",
+    "personalizedService": "Service personnalisé",
+    "personalizedServiceDescription": "Accompagnement sur mesure pour chaque voyage",
+    "readyToTravel": "Prêt à voyager ?",
+    "readyToTravelDescription": "Nos experts sont là pour créer votre voyage parfait",
+    "planMyTrip": "Planifier mon voyage",
+    "vipService": "Service VIP",
+    "backToVoyages": "Retour aux voyages"
+  },
+  "generator": {
+    "title": "Générateur d'Itinéraire",
+    "subtitle": "Laissez notre IA créer votre voyage parfait en quelques clics",
+    "formTitle": "Décrivez votre voyage idéal",
+    "fromSubtitle": "Décrivez votre voyage idéal et notre algorithme intelligent vous proposera 3 itinéraires personnalisés",
+    "keywords": "Mots-clés",
+    "keywordsPlaceholder": "Ex: plage, montagne, culture, gastronomie, aventure...",
+    "budget": "Budget",
+    "duration": "Durée",
+    "generate": "Générer mon itinéraire",
+    "generating": "Génération en cours...",
+    "resultsTitle": "Vos itinéraires personnalisés",
+    "resultsDescription": "Voici 3 voyages parfaits pour vous",
+    "activities": "Activités incluses",
+    "bookNow": "Réserver maintenant",
+    "howItWorks": "Comment ça marche",
+    "howItWorksDescription": "Notre algorithme intelligent analyse vos préférences",
+    "step1Title": "Décrivez vos envies",
+    "step1Description": "Entrez vos mots-clés et préférences",
+    "step2Title": "IA analyse",
+    "step2Description": "Notre IA analyse des milliers d'options",
+    "step3Title": "Résultats personnalisés",
+    "step3Description": "Recevez 3 voyages parfaits pour vous"
+  },
+  "vipLounge": {
+    "title": "Salon VIP",
+    "subtitle": "Accompagnement personnalisé pour des voyages d'exception",
+    "premiumTitle": "Passez Premium",
+    "premiumDescription": "Débloquez l'accès complet à notre équipe d'experts",
+    "premiumBenefit1": "Conseiller personnel dédié",
+    "premiumBenefit2": "Réservations prioritaires",
+    "premiumBenefit3": "Support 24/7 pendant votre voyage",
+    "maybeLater": "Plus tard",
+    "upgradeNow": "Passer Premium",
+    "servicesTitle": "Nos Services VIP",
+    "servicesDescription": "Une équipe d'experts à votre service",
+    "service1Title": "Conseil Personnalisé",
+    "service1Description": "Un expert dédié pour créer votre voyage sur mesure",
+    "service2Title": "Réservations Premium",
+    "service2Description": "Accès aux meilleurs hôtels et tarifs exclusifs",
+    "service3Title": "Accompagnement",
+    "service3Description": "Support complet avant, pendant et après votre voyage",
+    "meetOurTeam": "Rencontrer Notre Équipe",
+    "teamDescription": "Nos experts passionnés sont là pour vous accompagner",
+    "teamMembers": {
+      "sophie": {
+        "name": "Sophie Martin",
+        "role": "Directrice des Voyages de Luxe",
+        "description": "15 ans d'expérience dans la création d'expériences de voyage uniques et personnalisées",
+        "specialties": ["Destinations exotiques", "Voyages de luxe", "Expériences culinaires"]
+      },
+      "marc": {
+        "name": "Marc Dubois",
+        "role": "Expert en Destinations",
+        "description": "Spécialiste des destinations méconnues et des expériences authentiques",
+        "specialties": ["Destinations insolites", "Voyages d'aventure", "Culture locale"]
+      },
+      "emma": {
+        "name": "Emma Rodriguez",
+        "role": "Conseillère en Expériences",
+        "description": "Passionnée de voyages et experte en création d'expériences mémorables",
+        "specialties": ["Expériences uniques", "Voyages romantiques", "Séjours bien-être"]
+      },
+      "thomas": {
+        "name": "Thomas Chen",
+        "role": "Spécialiste Asie-Pacifique",
+        "description": "Expert des destinations asiatiques avec une connaissance approfondie de la région",
+        "specialties": ["Asie du Sud-Est", "Japon", "Australie", "Nouvelle-Zélande"]
+      }
+    },
+    "ctaTitle": "Prêt pour l'expérience VIP ?",
+    "ctaDescription": "Contactez notre équipe pour commencer votre voyage d'exception",
+    "contactUs": "Nous contacter",
+    "learnMore": "En savoir plus"
+  },
+  "translator": {
+    "title": "Traducteur Universel",
+    "subtitle": "Traduisez instantanément vos textes dans plus de 20 langues avec notre outil de traduction gratuit",
+    "sourceText": "Texte à traduire",
+    "translatedText": "Traduction",
+    "translate": "Traduire",
+    "translating": "Traduction...",
+    "copy": "Copier",
+    "clear": "Effacer tout",
+    "swapLanguages": "Inverser les langues",
+    "useAsSource": "Utiliser comme source",
+    "placeholder": "Tapez ou collez votre texte ici...",
+    "translationPlaceholder": "La traduction apparaîtra ici...",
+    "autoDetect": "Détection automatique",
+    "characterCount": "caractères",
+    "maxLength": "/5000",
+    "quickExamples": "Exemples rapides :",
+    "features": {
+      "instant": {
+        "title": "Traduction instantanée",
+        "description": "Obtenez des traductions rapides et précises en quelques secondes"
+      },
+      "languages": {
+        "title": "20+ langues supportées",
+        "description": "Traduisez dans les principales langues du monde"
+      },
+      "free": {
+        "title": "100% gratuit",
+        "description": "Service de traduction entièrement gratuit avec LibreTranslate"
+      }
+    },
+    "errors": {
+      "emptyText": "Veuillez saisir du texte à traduire",
+      "translationFailed": "Erreur lors de la traduction. Veuillez réessayer.",
+      "networkError": "Erreur de connexion. Vérifiez votre connexion internet."
+    }
+  },
+  "contact": {
+    "title": "Contactez-nous",
+    "subtitle": "Notre équipe d'experts en voyage est là pour vous accompagner dans la création de votre séjour parfait",
+    "hero": {
+      "title": "Contactez-nous",
+      "subtitle": "Notre équipe d'experts en voyage est là pour vous accompagner dans la création de votre séjour parfait",
+      "phone": {
+        "title": "Par Téléphone",
+        "number": "+33 1 23 45 67 89",
+        "hours": "Lun-Ven: 9h-18h"
+      },
+      "email": {
+        "title": "Par Email",
+        "address": "contact@itineria.fr",
+        "response": "Réponse sous 24h"
+      },
+      "address": {
+        "title": "Notre Adresse",
+        "street": "123 Rue du Voyage",
+        "city": "75001 Paris, France"
+      }
+    },
+    "form": {
+      "title": "Envoyez-nous un message",
+      "subtitle": "Notre équipe d'experts en voyage est disponible pour répondre à toutes vos questions et vous accompagner dans la planification de votre prochain voyage",
+      "name": "Nom complet *",
+      "email": "Email *",
+      "phone": "Téléphone",
+      "subject": "Sujet *",
+      "message": "Message *",
+      "namePlaceholder": "Votre nom complet",
+      "emailPlaceholder": "votre@email.com",
+      "phonePlaceholder": "+33 6 12 34 56 78",
+      "messagePlaceholder": "Décrivez votre demande en détail...",
+      "subjects": {
+        "choose": "Choisissez un sujet",
+        "booking": "Réservation et voyages",
+        "general": "Informations générales",
+        "technical": "Support technique",
+        "partnership": "Partenariat commercial",
+        "complaint": "Réclamation",
+        "suggestion": "Suggestion",
+        "other": "Autre"
+      },
+      "sending": "Envoi en cours...",
+      "send": "Envoyer le message",
+      "success": "Votre message a été envoyé avec succès !",
+      "error": "Une erreur est survenue lors de l'envoi du message.",
+      "connectionError": "Une erreur de connexion est survenue. Veuillez réessayer."
+    },
+    "whyContact": {
+      "title": "Pourquoi nous contacter ?",
+      "reasons": [
+        "Conseils personnalisés pour votre voyage",
+        "Devis sur mesure pour votre budget",
+        "Assistance 24h/7j en cas d'urgence",
+        "Expertise des destinations",
+        "Réservations en dernière minute"
+      ]
+    },
+    "openingHours": {
+      "title": "Horaires d'ouverture",
+      "monday": "Lundi - Vendredi",
+      "saturday": "Samedi",
+      "sunday": "Dimanche",
+      "closed": "Fermé",
+      "emergency": "Urgence voyage :",
+      "emergencyText": "Disponible 24h/7j au +33 1 23 45 67 89"
+    },
+    "faq": {
+      "title": "Questions Fréquentes",
+      "subtitle": "Trouvez rapidement les réponses aux questions les plus courantes sur nos services de voyage.",
+      "questions": {
+        "booking": {
+          "title": "Comment réserver un voyage sur Itineria ?",
+          "answer": "Réserver un voyage sur Itineria est simple et rapide. Vous pouvez utiliser notre moteur de recherche en haut de page pour comparer les prix des vols, hôtels et activités. Une fois votre sélection faite, suivez les étapes de réservation en ligne ou contactez-nous directement pour une assistance personnalisée."
+        },
+        "payment": {
+          "title": "Quels sont les moyens de paiement acceptés ?",
+          "answer": "Nous acceptons tous les moyens de paiement courants : cartes bancaires (Visa, Mastercard, American Express), virements bancaires, chèques et paiements en plusieurs fois pour certains voyages. Toutes nos transactions sont sécurisées par les dernières technologies de cryptage."
+        },
+        "insurance": {
+          "title": "Proposez-vous une assurance voyage ?",
+          "answer": "Oui, nous proposons plusieurs formules d'assurance voyage adaptées à vos besoins. Nos assurances couvrent l'annulation, les frais médicaux, les bagages et les retards. Nos conseillers peuvent vous aider à choisir la formule la plus adaptée à votre destination et à votre budget."
+        },
+        "cancellation": {
+          "title": "Que faire en cas d'annulation ou de modification ?",
+          "answer": "En cas d'annulation ou de modification, contactez-nous immédiatement. Les conditions varient selon les prestataires et les tarifs choisis. Nous vous accompagnerons dans les démarches et vous informerons des frais éventuels. Nous recommandons fortement de souscrire à une assurance annulation pour vous protéger."
+        },
+        "custom": {
+          "title": "Proposez-vous des voyages sur mesure ?",
+          "answer": "Absolument ! Nos experts en voyage créent des itinéraires personnalisés selon vos envies, votre budget et vos contraintes. Que ce soit pour un voyage en famille, un séjour romantique ou une aventure solo, nous concevons des voyages uniques qui correspondent parfaitement à vos attentes."
+        }
+      }
+    },
+    "legal": {
+      "title": "Informations Légales",
+      "subtitle": "Toutes les informations importantes concernant nos conditions de vente et notre politique de confidentialité",
+      "terms": {
+        "title": "Conditions Générales de Vente",
+        "description": "Nos conditions générales de vente définissent les droits et obligations de chaque partie lors de la réservation d'un voyage. Elles couvrent les modalités de réservation, de paiement, d'annulation et de modification.",
+        "items": [
+          "Réservation et confirmation",
+          "Modalités de paiement",
+          "Conditions d'annulation",
+          "Responsabilité et garanties",
+          "Protection des données"
+        ]
+      },
+      "privacy": {
+        "title": "Politique de Confidentialité",
+        "description": "Nous nous engageons à protéger vos données personnelles conformément au RGPD. Vos informations ne sont utilisées que pour traiter vos réservations et améliorer nos services.",
+        "items": [
+          "Collecte des données",
+          "Utilisation des informations",
+          "Partage des données",
+          "Vos droits",
+          "Cookies et tracking"
+        ]
+      }
+    },
+    "cta": {
+      "title": "Prêt à partir à l'aventure ?",
+      "subtitle": "Contactez-nous dès maintenant pour planifier votre prochain voyage inoubliable",
+      "call": "Appelez-nous maintenant",
+      "quote": "Demander un devis"
+    }
   }
 } 

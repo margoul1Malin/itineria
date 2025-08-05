@@ -1,10 +1,13 @@
 {
   "navigation": {
     "home": "Startseite",
+    "travels": "Reisen",
+    "itineraryGenerator": "Reiseplaner",
+    "vipLounge": "VIP Lounge",
     "flights": "Flüge",
     "hotels": "Hotels",
     "activities": "Aktivitäten",
-    "flightsAndHotels": "Flüge + Hotels",
+    "flightsAndHotels": "Übersetzer",
     "contact": "Kontakt",
     "profile": "Profil",
     "login": "Anmelden",
@@ -347,5 +350,272 @@
     "services": "Services",
     "insurance": "Versicherung",
     "allRightsReserved": "Alle Rechte vorbehalten."
+  },
+  "voyages": {
+    "title": "Reisen",
+    "subtitle": "Entdecken Sie unsere Reiseziele und Reisedienste",
+    "chooseCategory": "Wählen Sie Ihre Kategorie",
+    "categoryDescription": "Entdecken Sie unsere verschiedenen Reiseangebote",
+    "flights": "Flüge",
+    "flightsDescription": "Finden Sie die besten Flüge zum besten Preis",
+    "hotels": "Hotels",
+    "hotelsDescription": "Übernachten Sie in außergewöhnlichen Einrichtungen",
+    "activities": "Aktivitäten",
+    "activitiesDescription": "Entdecken Sie einzigartige Erlebnisse",
+    "explore": "Entdecken",
+    "search": "Suchen",
+    "whyChooseUs": "Warum uns wählen",
+    "whyChooseUsDescription": "Entdecken Sie, was uns anders macht",
+    "bestPrices": "Beste Preise",
+    "bestPricesDescription": "Garantie der niedrigsten Preise auf dem Markt",
+    "secureBooking": "Sichere Buchung",
+    "secureBookingDescription": "Geschützte Zahlung und sofortige Bestätigung",
+    "personalizedService": "Persönlicher Service",
+    "personalizedServiceDescription": "Maßgeschneiderte Unterstützung für jede Reise",
+    "readyToTravel": "Bereit zu reisen?",
+    "readyToTravelDescription": "Unsere Experten sind hier, um Ihre perfekte Reise zu erstellen",
+    "planMyTrip": "Meine Reise planen",
+    "vipService": "VIP Service",
+    "backToVoyages": "Zurück zu Reisen"
+  },
+  "generator": {
+    "title": "Reiseplaner",
+    "subtitle": "Lassen Sie unsere KI Ihre perfekte Reise in wenigen Klicks erstellen",
+    "formTitle": "Beschreiben Sie Ihre ideale Reise",
+    "fromSubtitle": "Beschreiben Sie Ihre ideale Reise und unser intelligenter Algorithmus wird Ihnen 3 personalisierte Reiserouten anbieten",
+    "keywords": "Schlüsselwörter",
+    "keywordsPlaceholder": "Z.B.: Strand, Berg, Kultur, Gastronomie, Abenteuer...",
+    "budget": "Budget",
+    "duration": "Dauer",
+    "generate": "Meine Reise generieren",
+    "generating": "Generierung läuft...",
+    "resultsTitle": "Ihre personalisierten Reiserouten",
+    "resultsDescription": "Hier sind 3 perfekte Reisen für Sie",
+    "activities": "Inklusive Aktivitäten",
+    "bookNow": "Jetzt buchen",
+    "howItWorks": "Wie es funktioniert",
+    "howItWorksDescription": "Unser intelligenter Algorithmus analysiert Ihre Präferenzen",
+    "step1Title": "Beschreiben Sie Ihre Wünsche",
+    "step1Description": "Geben Sie Ihre Schlüsselwörter und Präferenzen ein",
+    "step2Title": "KI-Analyse",
+    "step2Description": "Unsere KI analysiert Tausende von Optionen",
+    "step3Title": "Personalisierten Ergebnisse",
+    "step3Description": "Erhalten Sie 3 perfekte Reisen für Sie"
+  },
+  "vipLounge": {
+    "title": "VIP Lounge",
+    "subtitle": "Persönliche Betreuung für außergewöhnliche Reisen",
+    "premiumTitle": "Premium werden",
+    "premiumDescription": "Schalten Sie vollen Zugang zu unserem Expertenteam frei",
+    "premiumBenefit1": "Persönlicher Berater",
+    "premiumBenefit2": "Prioritätsbuchungen",
+    "premiumBenefit3": "24/7 Support während Ihrer Reise",
+    "maybeLater": "Später",
+    "upgradeNow": "Jetzt upgraden",
+    "servicesTitle": "Unsere VIP-Services",
+    "servicesDescription": "Ein Expertenteam steht Ihnen zur Verfügung",
+    "service1Title": "Persönliche Beratung",
+    "service1Description": "Ein dedizierter Experte erstellt Ihre maßgeschneiderte Reise",
+    "service2Title": "Premium-Buchungen",
+    "service2Description": "Zugang zu den besten Hotels und exklusiven Tarifen",
+    "service3Title": "Begleitung",
+    "service3Description": "Vollständige Unterstützung vor, während und nach Ihrer Reise",
+    "meetOurTeam": "Unser Team kennenlernen",
+    "teamDescription": "Unsere leidenschaftlichen Experten sind hier, um Sie zu unterstützen",
+    "teamMembers": {
+      "sophie": {
+        "name": "Sophie Martin",
+        "role": "Direktorin für Luxusreisen",
+        "description": "15 Jahre Erfahrung in der Erstellung einzigartiger und personalisierter Reiseerlebnisse",
+        "specialties": ["Exotische Destinationen", "Luxusreisen", "Kulinarische Erlebnisse"]
+      },
+      "marc": {
+        "name": "Marc Dubois",
+        "role": "Destinationsexperte",
+        "description": "Spezialist für unbekannte Destinationen und authentische Erlebnisse",
+        "specialties": ["Abseits der Touristenpfade", "Abenteuerreisen", "Lokale Kultur"]
+      },
+      "emma": {
+        "name": "Emma Rodriguez",
+        "role": "Erlebnisberaterin",
+        "description": "Reisebegeisterte und Expertin für die Erstellung unvergesslicher Erlebnisse",
+        "specialties": ["Einzigartige Erlebnisse", "Romantische Reisen", "Wellness-Aufenthalte"]
+      },
+      "thomas": {
+        "name": "Thomas Chen",
+        "role": "Asien-Pazifik-Spezialist",
+        "description": "Experte für asiatische Destinationen mit fundiertem Wissen über die Region",
+        "specialties": ["Südostasien", "Japan", "Australien", "Neuseeland"]
+      }
+    },
+    "ctaTitle": "Bereit für die VIP-Erfahrung?",
+    "ctaDescription": "Kontaktieren Sie unser Team, um Ihre außergewöhnliche Reise zu beginnen",
+    "contactUs": "Kontaktieren Sie uns",
+    "learnMore": "Mehr erfahren"
+  },
+  "translator": {
+    "title": "Universal-Übersetzer",
+    "subtitle": "Übersetzen Sie Ihre Texte sofort in mehr als 20 Sprachen mit unserem kostenlosen Übersetzungstool",
+    "sourceText": "Zu übersetzender Text",
+    "translatedText": "Übersetzung",
+    "translate": "Übersetzen",
+    "translating": "Übersetze...",
+    "copy": "Kopieren",
+    "clear": "Alles löschen",
+    "swapLanguages": "Sprachen tauschen",
+    "useAsSource": "Als Quelle verwenden",
+    "placeholder": "Text hier eingeben oder einfügen...",
+    "translationPlaceholder": "Übersetzung erscheint hier...",
+    "autoDetect": "Automatische Erkennung",
+    "characterCount": "Zeichen",
+    "maxLength": "/5000",
+    "quickExamples": "Schnelle Beispiele:",
+    "features": {
+      "instant": {
+        "title": "Sofortige Übersetzung",
+        "description": "Erhalten Sie schnelle und präzise Übersetzungen in Sekunden"
+      },
+      "languages": {
+        "title": "20+ unterstützte Sprachen",
+        "description": "Übersetzen Sie in die wichtigsten Sprachen der Welt"
+      },
+      "free": {
+        "title": "100% kostenlos",
+        "description": "Völlig kostenloser Übersetzungsservice mit LibreTranslate"
+      }
+    },
+    "errors": {
+      "emptyText": "Bitte geben Sie Text zum Übersetzen ein",
+      "translationFailed": "Übersetzungsfehler. Bitte versuchen Sie es erneut.",
+      "networkError": "Verbindungsfehler. Überprüfen Sie Ihre Internetverbindung."
+    }
+  },
+  "contact": {
+    "title": "Kontaktieren Sie uns",
+    "subtitle": "Unser Team von Reiseexperten ist hier, um Ihnen bei der Erstellung Ihrer perfekten Reise zu helfen",
+    "hero": {
+      "title": "Kontaktieren Sie uns",
+      "subtitle": "Unser Team von Reiseexperten ist hier, um Ihnen bei der Erstellung Ihrer perfekten Reise zu helfen",
+      "phone": {
+        "title": "Per Telefon",
+        "number": "+33 1 23 45 67 89",
+        "hours": "Mo-Fr: 9-18 Uhr"
+      },
+      "email": {
+        "title": "Per E-Mail",
+        "address": "contact@itineria.fr",
+        "response": "Antwort innerhalb von 24h"
+      },
+      "address": {
+        "title": "Unsere Adresse",
+        "street": "123 Reise Straße",
+        "city": "75001 Paris, Frankreich"
+      }
+    },
+    "form": {
+      "title": "Senden Sie uns eine Nachricht",
+      "subtitle": "Unser Team von Reiseexperten steht zur Verfügung, um alle Ihre Fragen zu beantworten und Ihnen bei der Planung Ihrer nächsten Reise zu helfen",
+      "name": "Vollständiger Name *",
+      "email": "E-Mail *",
+      "phone": "Telefon",
+      "subject": "Betreff *",
+      "message": "Nachricht *",
+      "namePlaceholder": "Ihr vollständiger Name",
+      "emailPlaceholder": "ihre@email.com",
+      "phonePlaceholder": "+33 6 12 34 56 78",
+      "messagePlaceholder": "Beschreiben Sie Ihre Anfrage im Detail...",
+      "subjects": {
+        "choose": "Wählen Sie ein Thema",
+        "booking": "Buchung und Reisen",
+        "general": "Allgemeine Informationen",
+        "technical": "Technischer Support",
+        "partnership": "Kommerzielle Partnerschaft",
+        "complaint": "Beschwerde",
+        "suggestion": "Vorschlag",
+        "other": "Andere"
+      },
+      "sending": "Wird gesendet...",
+      "send": "Nachricht senden",
+      "success": "Ihre Nachricht wurde erfolgreich gesendet!",
+      "error": "Beim Senden der Nachricht ist ein Fehler aufgetreten.",
+      "connectionError": "Ein Verbindungsfehler ist aufgetreten. Bitte versuchen Sie es erneut."
+    },
+    "whyContact": {
+      "title": "Warum uns kontaktieren?",
+      "reasons": [
+        "Persönliche Beratung für Ihre Reise",
+        "Maßgeschneiderte Angebote für Ihr Budget",
+        "24/7 Unterstützung im Notfall",
+        "Zielort-Expertise",
+        "Last-Minute-Buchungen"
+      ]
+    },
+    "openingHours": {
+      "title": "Öffnungszeiten",
+      "monday": "Montag - Freitag",
+      "saturday": "Samstag",
+      "sunday": "Sonntag",
+      "closed": "Geschlossen",
+      "emergency": "Reisenotfall:",
+      "emergencyText": "24/7 verfügbar unter +33 1 23 45 67 89"
+    },
+    "faq": {
+      "title": "Häufig gestellte Fragen",
+      "subtitle": "Finden Sie schnell Antworten auf die häufigsten Fragen zu unseren Reisedienstleistungen.",
+      "questions": {
+        "booking": {
+          "title": "Wie buche ich eine Reise bei Itineria?",
+          "answer": "Eine Reise bei Itineria zu buchen ist einfach und schnell. Sie können unsere Suchmaschine oben auf der Seite verwenden, um Preise für Flüge, Hotels und Aktivitäten zu vergleichen. Nach Ihrer Auswahl folgen Sie den Online-Buchungsschritten oder kontaktieren Sie uns direkt für persönliche Unterstützung."
+        },
+        "payment": {
+          "title": "Welche Zahlungsmethoden werden akzeptiert?",
+          "answer": "Wir akzeptieren alle gängigen Zahlungsmethoden: Kreditkarten (Visa, Mastercard, American Express), Banküberweisungen, Schecks und Ratenzahlungen für bestimmte Reisen. Alle unsere Transaktionen sind durch die neuesten Verschlüsselungstechnologien gesichert."
+        },
+        "insurance": {
+          "title": "Bieten Sie Reiseversicherungen an?",
+          "answer": "Ja, wir bieten mehrere Reiseversicherungspakete an, die auf Ihre Bedürfnisse zugeschnitten sind. Unsere Versicherungen decken Stornierung, medizinische Kosten, Gepäck und Verspätungen ab. Unsere Berater können Ihnen helfen, das Paket zu wählen, das am besten zu Ihrem Zielort und Budget passt."
+        },
+        "cancellation": {
+          "title": "Was tun bei Stornierung oder Änderung?",
+          "answer": "Bei Stornierung oder Änderung kontaktieren Sie uns sofort. Die Bedingungen variieren je nach Anbieter und gewählten Tarifen. Wir unterstützen Sie bei den Verfahren und informieren Sie über eventuelle Gebühren. Wir empfehlen dringend, eine Stornierungsversicherung abzuschließen, um sich zu schützen."
+        },
+        "custom": {
+          "title": "Bieten Sie maßgeschneiderte Reisen an?",
+          "answer": "Absolut! Unsere Reiseexperten erstellen personalisierte Reiserouten basierend auf Ihren Wünschen, Budget und Einschränkungen. Ob für eine Familienreise, romantischen Urlaub oder Solo-Abenteuer, wir gestalten einzigartige Reisen, die perfekt zu Ihren Erwartungen passen."
+        }
+      }
+    },
+    "legal": {
+      "title": "Rechtliche Informationen",
+      "subtitle": "Alle wichtigen Informationen zu unseren Verkaufsbedingungen und Datenschutzrichtlinie",
+      "terms": {
+        "title": "Allgemeine Geschäftsbedingungen",
+        "description": "Unsere allgemeinen Geschäftsbedingungen definieren die Rechte und Pflichten jeder Partei bei der Buchung einer Reise. Sie decken Buchungs-, Zahlungs-, Stornierungs- und Änderungsverfahren ab.",
+        "items": [
+          "Buchung und Bestätigung",
+          "Zahlungsbedingungen",
+          "Stornierungsbedingungen",
+          "Haftung und Garantien",
+          "Datenschutz"
+        ]
+      },
+      "privacy": {
+        "title": "Datenschutzrichtlinie",
+        "description": "Wir verpflichten uns, Ihre persönlichen Daten gemäß der DSGVO zu schützen. Ihre Informationen werden nur zur Bearbeitung Ihrer Buchungen und zur Verbesserung unserer Dienstleistungen verwendet.",
+        "items": [
+          "Datenerhebung",
+          "Informationsnutzung",
+          "Datenweitergabe",
+          "Ihre Rechte",
+          "Cookies und Tracking"
+        ]
+      }
+    },
+    "cta": {
+      "title": "Bereit für das Abenteuer?",
+      "subtitle": "Kontaktieren Sie uns jetzt, um Ihre nächste unvergessliche Reise zu planen",
+      "call": "Rufen Sie uns jetzt an",
+      "quote": "Angebot anfordern"
+    }
   }
 } 

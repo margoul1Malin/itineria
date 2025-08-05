@@ -1,5 +1,6 @@
 "use client"
 import { useState } from "react";
+import { useTranslations } from 'next-intl';
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -14,6 +15,8 @@ export default function Contact() {
     type: 'success' | 'error' | null;
     message: string;
   }>({ type: null, message: '' });
+
+  const t = useTranslations('contact');
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -47,7 +50,7 @@ export default function Contact() {
       if (response.ok) {
         setSubmitStatus({
           type: 'success',
-          message: data.message || 'Votre message a été envoyé avec succès !'
+          message: data.message || t('form.success')
         });
         // Réinitialiser le formulaire
         setFormData({
@@ -60,14 +63,14 @@ export default function Contact() {
       } else {
         setSubmitStatus({
           type: 'error',
-          message: data.error || 'Une erreur est survenue lors de l\'envoi du message.'
+          message: data.error || t('form.error')
         });
       }
     } catch (error) {
       console.error('Erreur lors de l\'envoi du message:', error)
       setSubmitStatus({
         type: 'error',
-        message: 'Une erreur de connexion est survenue. Veuillez réessayer.'
+        message: t('form.connectionError')
       });
     } finally {
       setIsSubmitting(false);
@@ -79,9 +82,9 @@ export default function Contact() {
       {/* Hero Section */}
       <section className="relative py-20 px-4 bg-gradient-to-r from-green-600 to-stone-600 text-white">
         <div className="max-w-7xl mx-auto text-center">
-          <h1 className="text-5xl md:text-6xl font-bold mb-6">Contactez-nous</h1>
+          <h1 className="text-5xl md:text-6xl font-bold mb-6">{t('hero.title')}</h1>
           <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
-            Notre équipe d&apos;experts en voyage est là pour vous accompagner dans la création de votre séjour parfait
+            {t('hero.subtitle')}
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
             <div className="text-center">
@@ -90,9 +93,9 @@ export default function Contact() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold mb-2">Par Téléphone</h3>
-              <p className="text-stone-200">+33 1 23 45 67 89</p>
-              <p className="text-sm text-stone-300">Lun-Ven: 9h-18h</p>
+              <h3 className="text-xl font-semibold mb-2">{t('hero.phone.title')}</h3>
+              <p className="text-stone-200">{t('hero.phone.number')}</p>
+              <p className="text-sm text-stone-300">{t('hero.phone.hours')}</p>
             </div>
             <div className="text-center">
               <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -100,9 +103,9 @@ export default function Contact() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold mb-2">Par Email</h3>
-              <p className="text-stone-200">contact@itineria.fr</p>
-              <p className="text-sm text-stone-300">Réponse sous 24h</p>
+              <h3 className="text-xl font-semibold mb-2">{t('hero.email.title')}</h3>
+              <p className="text-stone-200">{t('hero.email.address')}</p>
+              <p className="text-sm text-stone-300">{t('hero.email.response')}</p>
             </div>
             <div className="text-center">
               <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -111,9 +114,9 @@ export default function Contact() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold mb-2">Notre Adresse</h3>
-              <p className="text-stone-200">123 Rue du Voyage</p>
-              <p className="text-sm text-stone-300">75001 Paris, France</p>
+              <h3 className="text-xl font-semibold mb-2">{t('hero.address.title')}</h3>
+              <p className="text-stone-200">{t('hero.address.street')}</p>
+              <p className="text-sm text-stone-300">{t('hero.address.city')}</p>
             </div>
           </div>
         </div>
@@ -123,156 +126,158 @@ export default function Contact() {
       <section className="py-20 px-4 bg-white">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-green-800 mb-4">Envoyez-nous un message</h2>
+            <h2 className="text-4xl font-bold text-green-800 mb-4">{t('form.title')}</h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Notre équipe d&apos;experts en voyage est disponible pour répondre à toutes vos questions et vous accompagner dans la planification de votre prochain voyage
+              {t('form.subtitle')}
             </p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Formulaire */}
             <div>
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-2xl p-8 border border-gray-100">
+                <div className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-sm font-semibold text-green-800 mb-2">{t('form.name')}</label>
+                      <input
+                        type="text"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleInputChange}
+                        required
+                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent text-black"
+                        placeholder={t('form.namePlaceholder')}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-semibold text-green-800 mb-2">{t('form.email')}</label>
+                      <input
+                        type="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                        required
+                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent text-black"
+                        placeholder={t('form.emailPlaceholder')}
+                      />
+                    </div>
+                  </div>
                   <div>
-                    <label className="block text-sm font-semibold text-green-800 mb-2">Nom complet *</label>
+                    <label className="block text-sm font-semibold text-green-800 mb-2">{t('form.phone')}</label>
                     <input
-                      type="text"
-                      name="name"
-                      value={formData.name}
+                      type="tel"
+                      name="telephone"
+                      value={formData.telephone}
                       onChange={handleInputChange}
-                      required
                       className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent text-black"
-                      placeholder="Votre nom complet"
+                      placeholder={t('form.phonePlaceholder')}
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-semibold text-green-800 mb-2">Email *</label>
-                    <input
-                      type="email"
-                      name="email"
-                      value={formData.email}
+                    <label className="block text-sm font-semibold text-green-800 mb-2">{t('form.subject')}</label>
+                    <select
+                      name="subject"
+                      value={formData.subject}
                       onChange={handleInputChange}
                       required
                       className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent text-black"
-                      placeholder="votre@email.com"
-                    />
+                    >
+                      <option value="">{t('form.subjects.choose')}</option>
+                      <option value="Réservation et voyages">{t('form.subjects.booking')}</option>
+                      <option value="Informations générales">{t('form.subjects.general')}</option>
+                      <option value="Support technique">{t('form.subjects.technical')}</option>
+                      <option value="Partenariat commercial">{t('form.subjects.partnership')}</option>
+                      <option value="Réclamation">{t('form.subjects.complaint')}</option>
+                      <option value="Suggestion">{t('form.subjects.suggestion')}</option>
+                      <option value="Autre">{t('form.subjects.other')}</option>
+                    </select>
                   </div>
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-green-800 mb-2">Téléphone</label>
-                  <input
-                    type="tel"
-                    name="telephone"
-                    value={formData.telephone}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent text-black"
-                    placeholder="+33 6 12 34 56 78"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-green-800 mb-2">Sujet *</label>
-                  <select
-                    name="subject"
-                    value={formData.subject}
-                    onChange={handleInputChange}
-                    required
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent text-black"
-                  >
-                    <option value="">Choisissez un sujet</option>
-                    <option value="Réservation et voyages">Réservation et voyages</option>
-                    <option value="Informations générales">Informations générales</option>
-                    <option value="Support technique">Support technique</option>
-                    <option value="Partenariat commercial">Partenariat commercial</option>
-                    <option value="Réclamation">Réclamation</option>
-                    <option value="Suggestion">Suggestion</option>
-                    <option value="Autre">Autre</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-green-800 mb-2">Message *</label>
-                  <textarea
-                    name="message"
-                    value={formData.message}
-                    onChange={handleInputChange}
-                    required
-                    rows={6}
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent resize-none text-black"
-                    placeholder="Décrivez votre demande en détail..."
-                  ></textarea>
-                </div>
-                {/* Message de statut */}
-                {submitStatus.type && (
-                  <div className={`p-4 rounded-lg ${
-                    submitStatus.type === 'success' 
-                      ? 'bg-green-100 border border-green-400 text-green-800' 
-                      : 'bg-red-100 border border-red-400 text-red-800'
-                  }`}>
-                    {submitStatus.message}
+                  <div>
+                    <label className="block text-sm font-semibold text-green-800 mb-2">{t('form.message')}</label>
+                    <textarea
+                      name="message"
+                      value={formData.message}
+                      onChange={handleInputChange}
+                      required
+                      rows={6}
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-green-500 focus:border-transparent resize-none text-black"
+                      placeholder={t('form.messagePlaceholder')}
+                    ></textarea>
                   </div>
-                )}
+                  {/* Message de statut */}
+                  {submitStatus.type && (
+                    <div className={`p-4 rounded-lg ${
+                      submitStatus.type === 'success' 
+                        ? 'bg-green-100 border border-green-400 text-green-800' 
+                        : 'bg-red-100 border border-red-400 text-red-800'
+                    }`}>
+                      {submitStatus.message}
+                    </div>
+                  )}
 
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className={`w-full px-8 py-4 rounded-lg font-semibold transition-colors text-lg ${
-                    isSubmitting
-                      ? 'bg-gray-400 cursor-not-allowed'
-                      : 'bg-green-600 hover:bg-green-700 text-white'
-                  }`}
-                >
-                  {isSubmitting ? 'Envoi en cours...' : 'Envoyer le message'}
-                </button>
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className={`w-full px-8 py-4 rounded-lg font-semibold transition-colors text-lg ${
+                      isSubmitting
+                        ? 'bg-gray-400 cursor-not-allowed'
+                        : 'bg-green-600 hover:bg-green-700 text-white'
+                    }`}
+                  >
+                    {isSubmitting ? t('form.sending') : t('form.send')}
+                  </button>
+                </div>
               </form>
             </div>
 
             {/* Informations supplémentaires */}
             <div className="space-y-8">
               <div className="bg-gradient-to-r from-green-50 to-stone-50 rounded-xl p-8">
-                <h3 className="text-2xl font-bold text-green-800 mb-4">Pourquoi nous contacter ?</h3>
+                <h3 className="text-2xl font-bold text-green-800 mb-4">{t('whyContact.title')}</h3>
                 <ul className="space-y-3 text-gray-700">
                   <li className="flex items-start">
                     <span className="text-green-600 mr-3">✓</span>
-                    <span>Conseils personnalisés pour votre voyage</span>
+                    <span>{t('whyContact.reasons.0')}</span>
                   </li>
                   <li className="flex items-start">
                     <span className="text-green-600 mr-3">✓</span>
-                    <span>Devis sur mesure pour votre budget</span>
+                    <span>{t('whyContact.reasons.1')}</span>
                   </li>
                   <li className="flex items-start">
                     <span className="text-green-600 mr-3">✓</span>
-                    <span>Assistance 24h/7j en cas d&apos;urgence</span>
+                    <span>{t('whyContact.reasons.2')}</span>
                   </li>
                   <li className="flex items-start">
                     <span className="text-green-600 mr-3">✓</span>
-                    <span>Expertise des destinations</span>
+                    <span>{t('whyContact.reasons.3')}</span>
                   </li>
                   <li className="flex items-start">
                     <span className="text-green-600 mr-3">✓</span>
-                    <span>Réservations en dernière minute</span>
+                    <span>{t('whyContact.reasons.4')}</span>
                   </li>
                 </ul>
               </div>
 
               <div className="bg-white border border-gray-200 rounded-xl p-8">
-                <h3 className="text-2xl font-bold text-green-800 mb-4">Horaires d&apos;ouverture</h3>
+                <h3 className="text-2xl font-bold text-green-800 mb-4">{t('openingHours.title')}</h3>
                 <div className="space-y-2 text-gray-700">
                   <div className="flex justify-between">
-                    <span>Lundi - Vendredi</span>
+                    <span>{t('openingHours.monday')}</span>
                     <span className="font-semibold">9h00 - 18h00</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Samedi</span>
+                    <span>{t('openingHours.saturday')}</span>
                     <span className="font-semibold">10h00 - 16h00</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>Dimanche</span>
-                    <span className="font-semibold">Fermé</span>
+                    <span>{t('openingHours.sunday')}</span>
+                    <span className="font-semibold">{t('openingHours.closed')}</span>
                   </div>
                 </div>
                 <div className="mt-6 p-4 bg-green-50 rounded-lg">
                   <p className="text-sm text-green-800">
-                    <strong>Urgence voyage :</strong> Disponible 24h/7j au +33 1 23 45 67 89
+                    <strong>{t('openingHours.emergency')}</strong> {t('openingHours.emergencyText')}
                   </p>
                 </div>
               </div>
@@ -285,45 +290,45 @@ export default function Contact() {
       <section className="py-20 px-4 bg-gradient-to-br from-stone-50 to-green-50">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-green-800 mb-4">Questions Fréquentes</h2>
+            <h2 className="text-4xl font-bold text-green-800 mb-4">{t('faq.title')}</h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Trouvez rapidement les réponses aux questions les plus courantes sur nos services de voyage.
+              {t('faq.subtitle')}
             </p>
           </div>
 
           <div className="space-y-6">
             <div className="bg-white rounded-xl p-8 shadow-lg">
-              <h3 className="text-xl font-bold text-green-800 mb-3">Comment réserver un voyage sur Itineria ?</h3>
+              <h3 className="text-xl font-bold text-green-800 mb-3">{t('faq.questions.booking.title')}</h3>
               <p className="text-gray-700">
-                Réserver un voyage sur Itineria est simple et rapide. Vous pouvez utiliser notre moteur de recherche en haut de page pour comparer les prix des vols, hôtels et activités. Une fois votre sélection faite, suivez les étapes de réservation en ligne ou contactez-nous directement pour une assistance personnalisée.
+                {t('faq.questions.booking.answer')}
               </p>
             </div>
 
             <div className="bg-white rounded-xl p-8 shadow-lg">
-              <h3 className="text-xl font-bold text-green-800 mb-3">Quels sont les moyens de paiement acceptés ?</h3>
+              <h3 className="text-xl font-bold text-green-800 mb-3">{t('faq.questions.payment.title')}</h3>
               <p className="text-gray-700">
-                Nous acceptons tous les moyens de paiement courants : cartes bancaires (Visa, Mastercard, American Express), virements bancaires, chèques et paiements en plusieurs fois pour certains voyages. Toutes nos transactions sont sécurisées par les dernières technologies de cryptage.
+                {t('faq.questions.payment.answer')}
               </p>
             </div>
 
             <div className="bg-white rounded-xl p-8 shadow-lg">
-              <h3 className="text-xl font-bold text-green-800 mb-3">Proposez-vous une assurance voyage ?</h3>
+              <h3 className="text-xl font-bold text-green-800 mb-3">{t('faq.questions.insurance.title')}</h3>
               <p className="text-gray-700">
-                Oui, nous proposons plusieurs formules d&apos;assurance voyage adaptées à vos besoins. Nos assurances couvrent l&apos;annulation, les frais médicaux, les bagages et les retards. Nos conseillers peuvent vous aider à choisir la formule la plus adaptée à votre destination et à votre budget.
+                {t('faq.questions.insurance.answer')}
               </p>
             </div>
 
             <div className="bg-white rounded-xl p-8 shadow-lg">
-              <h3 className="text-xl font-bold text-green-800 mb-3">Que faire en cas d&apos;annulation ou de modification ?</h3>
+              <h3 className="text-xl font-bold text-green-800 mb-3">{t('faq.questions.cancellation.title')}</h3>
               <p className="text-gray-700">
-                En cas d&apos;annulation ou de modification, contactez-nous immédiatement. Les conditions varient selon les prestataires et les tarifs choisis. Nous vous accompagnerons dans les démarches et vous informerons des frais éventuels. Nous recommandons fortement de souscrire à une assurance annulation pour vous protéger.
+                {t('faq.questions.cancellation.answer')}
               </p>
             </div>
 
             <div className="bg-white rounded-xl p-8 shadow-lg">
-              <h3 className="text-xl font-bold text-green-800 mb-3">Proposez-vous des voyages sur mesure ?</h3>
+              <h3 className="text-xl font-bold text-green-800 mb-3">{t('faq.questions.custom.title')}</h3>
               <p className="text-gray-700">
-                Absolument ! Nos experts en voyage créent des itinéraires personnalisés selon vos envies, votre budget et vos contraintes. Que ce soit pour un voyage en famille, un séjour romantique ou une aventure solo, nous concevons des voyages uniques qui correspondent parfaitement à vos attentes.
+                {t('faq.questions.custom.answer')}
               </p>
             </div>
           </div>
@@ -334,17 +339,17 @@ export default function Contact() {
       <section className="py-20 px-4 bg-white">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-green-800 mb-4">Informations Légales</h2>
+            <h2 className="text-4xl font-bold text-green-800 mb-4">{t('legal.title')}</h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Toutes les informations importantes concernant nos conditions de vente et notre politique de confidentialité
+              {t('legal.subtitle')}
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="bg-gradient-to-r from-green-50 to-stone-50 rounded-xl p-8">
-              <h3 className="text-2xl font-bold text-green-800 mb-4">Conditions Générales de Vente</h3>
+              <h3 className="text-2xl font-bold text-green-800 mb-4">{t('legal.terms.title')}</h3>
               <p className="text-gray-700 mb-4">
-                Nos conditions générales de vente définissent les droits et obligations de chaque partie lors de la réservation d&apos;un voyage. Elles couvrent les modalités de réservation, de paiement, d&apos;annulation et de modification.
+                {t('legal.terms.description')}
               </p>
               <ul className="space-y-2 text-sm text-gray-600">
                 <li>• Réservation et confirmation</li>
@@ -356,9 +361,9 @@ export default function Contact() {
             </div>
 
             <div className="bg-gradient-to-r from-green-50 to-stone-50 rounded-xl p-8">
-              <h3 className="text-2xl font-bold text-green-800 mb-4">Politique de Confidentialité</h3>
+              <h3 className="text-2xl font-bold text-green-800 mb-4">{t('legal.privacy.title')}</h3>
               <p className="text-gray-700 mb-4">
-                Nous nous engageons à protéger vos données personnelles conformément au RGPD. Vos informations ne sont utilisées que pour traiter vos réservations et améliorer nos services.
+                {t('legal.privacy.description')}
               </p>
               <ul className="space-y-2 text-sm text-gray-600">
                 <li>• Collecte des données</li>
@@ -375,16 +380,16 @@ export default function Contact() {
       {/* CTA Section */}
       <section className="py-20 px-4 bg-gradient-to-r from-green-600 to-stone-600">
         <div className="max-w-4xl mx-auto text-center text-white">
-               <h2 className="text-4xl font-bold mb-6">Prêt à partir à l&apos;aventure ?</h2>
+          <h2 className="text-4xl font-bold mb-6">{t('cta.title')}</h2>
           <p className="text-xl mb-8 opacity-90">
-            Contactez-nous dès maintenant pour planifier votre prochain voyage inoubliable
+            {t('cta.subtitle')}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button className="bg-white text-green-800 px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition-colors">
-              Appelez-nous maintenant
+              {t('cta.call')}
             </button>
             <button className="border-2 border-white text-white px-8 py-3 rounded-full font-semibold hover:bg-white hover:text-green-800 transition-colors">
-              Demander un devis
+              {t('cta.quote')}
             </button>
           </div>
         </div>

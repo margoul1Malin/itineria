@@ -1,10 +1,13 @@
 {
   "navigation": {
     "home": "Home",
+    "travels": "Travels",
+    "itineraryGenerator": "Itinerary Generator",
+    "vipLounge": "VIP Lounge",
     "flights": "Flights",
     "hotels": "Hotels",
     "activities": "Activities",
-    "flightsAndHotels": "Flights + Hotels",
+    "flightsAndHotels": "Translator",
     "contact": "Contact",
     "profile": "Profile",
     "login": "Login",
@@ -347,5 +350,272 @@
     "services": "Services",
     "insurance": "Insurance",
     "allRightsReserved": "All rights reserved."
+  },
+  "voyages": {
+    "title": "Travels",
+    "subtitle": "Discover our destinations and travel services",
+    "chooseCategory": "Choose your category",
+    "categoryDescription": "Explore our different travel offers",
+    "flights": "Flights",
+    "flightsDescription": "Find the best flights at the best price",
+    "hotels": "Hotels",
+    "hotelsDescription": "Stay in exceptional establishments",
+    "activities": "Activities",
+    "activitiesDescription": "Discover unique experiences",
+    "explore": "Explore",
+    "search": "Search",
+    "whyChooseUs": "Why choose us",
+    "whyChooseUsDescription": "Discover what makes us different",
+    "bestPrices": "Best prices",
+    "bestPricesDescription": "Guaranteed lowest prices on the market",
+    "secureBooking": "Secure booking",
+    "secureBookingDescription": "Protected payment and instant confirmation",
+    "personalizedService": "Personalized service",
+    "personalizedServiceDescription": "Tailored support for each trip",
+    "readyToTravel": "Ready to travel?",
+    "readyToTravelDescription": "Our experts are here to create your perfect trip",
+    "planMyTrip": "Plan my trip",
+    "vipService": "VIP Service",
+    "backToVoyages": "Back to travels"
+  },
+  "generator": {
+    "title": "Itinerary Generator",
+    "subtitle": "Let our AI create your perfect trip in a few clicks",
+    "formTitle": "Describe your ideal trip",
+    "fromSubtitle": "Describe your ideal trip and our intelligent algorithm will propose 3 personalized itineraries",
+    "keywords": "Keywords",
+    "keywordsPlaceholder": "Ex: beach, mountain, culture, gastronomy, adventure...",
+    "budget": "Budget",
+    "duration": "Duration",
+    "generate": "Generate my itinerary",
+    "generating": "Generating...",
+    "resultsTitle": "Your personalized itineraries",
+    "resultsDescription": "Here are 3 perfect trips for you",
+    "activities": "Included activities",
+    "bookNow": "Book now",
+    "howItWorks": "How it works",
+    "howItWorksDescription": "Our intelligent algorithm analyzes your preferences",
+    "step1Title": "Describe your desires",
+    "step1Description": "Enter your keywords and preferences",
+    "step2Title": "AI analysis",
+    "step2Description": "Our AI analyzes thousands of options",
+    "step3Title": "Personalized results",
+    "step3Description": "Receive 3 perfect trips for you"
+  },
+  "vipLounge": {
+    "title": "VIP Lounge",
+    "subtitle": "Personalized support for exceptional journeys",
+    "premiumTitle": "Go Premium",
+    "premiumDescription": "Unlock full access to our team of experts",
+    "premiumBenefit1": "Dedicated personal advisor",
+    "premiumBenefit2": "Priority bookings",
+    "premiumBenefit3": "24/7 support during your trip",
+    "maybeLater": "Maybe later",
+    "upgradeNow": "Upgrade Now",
+    "servicesTitle": "Our VIP Services",
+    "servicesDescription": "A team of experts at your service",
+    "service1Title": "Personalized Advice",
+    "service1Description": "A dedicated expert to create your tailor-made journey",
+    "service2Title": "Premium Bookings",
+    "service2Description": "Access to the best hotels and exclusive rates",
+    "service3Title": "Support",
+    "service3Description": "Complete support before, during and after your trip",
+    "meetOurTeam": "Meet Our Team",
+    "teamDescription": "Our passionate experts are here to support you",
+    "teamMembers": {
+      "sophie": {
+        "name": "Sophie Martin",
+        "role": "Luxury Travel Director",
+        "description": "15 years of experience in creating unique and personalized travel experiences",
+        "specialties": ["Exotic destinations", "Luxury travel", "Culinary experiences"]
+      },
+      "marc": {
+        "name": "Marc Dubois",
+        "role": "Destination Expert",
+        "description": "Specialist in unknown destinations and authentic experiences",
+        "specialties": ["Off-the-beaten-path destinations", "Adventure travel", "Local culture"]
+      },
+      "emma": {
+        "name": "Emma Rodriguez",
+        "role": "Experience Advisor",
+        "description": "Travel enthusiast and expert in creating memorable experiences",
+        "specialties": ["Unique experiences", "Romantic travel", "Wellness stays"]
+      },
+      "thomas": {
+        "name": "Thomas Chen",
+        "role": "Asia-Pacific Specialist",
+        "description": "Expert in Asian destinations with deep knowledge of the region",
+        "specialties": ["Southeast Asia", "Japan", "Australia", "New Zealand"]
+      }
+    },
+    "ctaTitle": "Ready for the VIP experience?",
+    "ctaDescription": "Contact our team to start your exceptional journey",
+    "contactUs": "Contact Us",
+    "learnMore": "Learn More"
+  },
+  "translator": {
+    "title": "Universal Translator",
+    "subtitle": "Instantly translate your texts into more than 20 languages with our free translation tool",
+    "sourceText": "Text to translate",
+    "translatedText": "Translation",
+    "translate": "Translate",
+    "translating": "Translating...",
+    "copy": "Copy",
+    "clear": "Clear all",
+    "swapLanguages": "Swap languages",
+    "useAsSource": "Use as source",
+    "placeholder": "Type or paste your text here...",
+    "translationPlaceholder": "Translation will appear here...",
+    "autoDetect": "Auto detect",
+    "characterCount": "characters",
+    "maxLength": "/5000",
+    "quickExamples": "Quick examples:",
+    "features": {
+      "instant": {
+        "title": "Instant translation",
+        "description": "Get fast and accurate translations in seconds"
+      },
+      "languages": {
+        "title": "20+ supported languages",
+        "description": "Translate into the world's major languages"
+      },
+      "free": {
+        "title": "100% free",
+        "description": "Completely free translation service with LibreTranslate"
+      }
+    },
+    "errors": {
+      "emptyText": "Please enter text to translate",
+      "translationFailed": "Translation error. Please try again.",
+      "networkError": "Connection error. Check your internet connection."
+    }
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "Our team of travel experts is here to help you create your perfect trip",
+    "hero": {
+      "title": "Contact Us",
+      "subtitle": "Our team of travel experts is here to help you create your perfect trip",
+      "phone": {
+        "title": "By Phone",
+        "number": "+33 1 23 45 67 89",
+        "hours": "Mon-Fri: 9am-6pm"
+      },
+      "email": {
+        "title": "By Email",
+        "address": "contact@itineria.fr",
+        "response": "Response within 24h"
+      },
+      "address": {
+        "title": "Our Address",
+        "street": "123 Travel Street",
+        "city": "75001 Paris, France"
+      }
+    },
+    "form": {
+      "title": "Send us a message",
+      "subtitle": "Our team of travel experts is available to answer all your questions and help you plan your next trip",
+      "name": "Full name *",
+      "email": "Email *",
+      "phone": "Phone",
+      "subject": "Subject *",
+      "message": "Message *",
+      "namePlaceholder": "Your full name",
+      "emailPlaceholder": "your@email.com",
+      "phonePlaceholder": "+33 6 12 34 56 78",
+      "messagePlaceholder": "Describe your request in detail...",
+      "subjects": {
+        "choose": "Choose a subject",
+        "booking": "Booking and travel",
+        "general": "General information",
+        "technical": "Technical support",
+        "partnership": "Commercial partnership",
+        "complaint": "Complaint",
+        "suggestion": "Suggestion",
+        "other": "Other"
+      },
+      "sending": "Sending...",
+      "send": "Send message",
+      "success": "Your message has been sent successfully!",
+      "error": "An error occurred while sending the message.",
+      "connectionError": "A connection error occurred. Please try again."
+    },
+    "whyContact": {
+      "title": "Why contact us?",
+      "reasons": [
+        "Personalized advice for your trip",
+        "Custom quotes for your budget",
+        "24/7 assistance in case of emergency",
+        "Destination expertise",
+        "Last minute bookings"
+      ]
+    },
+    "openingHours": {
+      "title": "Opening hours",
+      "monday": "Monday - Friday",
+      "saturday": "Saturday",
+      "sunday": "Sunday",
+      "closed": "Closed",
+      "emergency": "Travel emergency:",
+      "emergencyText": "Available 24/7 at +33 1 23 45 67 89"
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "subtitle": "Quickly find answers to the most common questions about our travel services.",
+      "questions": {
+        "booking": {
+          "title": "How to book a trip on Itineria?",
+          "answer": "Booking a trip on Itineria is simple and fast. You can use our search engine at the top of the page to compare prices for flights, hotels and activities. Once you've made your selection, follow the online booking steps or contact us directly for personalized assistance."
+        },
+        "payment": {
+          "title": "What payment methods are accepted?",
+          "answer": "We accept all common payment methods: credit cards (Visa, Mastercard, American Express), bank transfers, checks and installment payments for certain trips. All our transactions are secured by the latest encryption technologies."
+        },
+        "insurance": {
+          "title": "Do you offer travel insurance?",
+          "answer": "Yes, we offer several travel insurance packages tailored to your needs. Our insurance covers cancellation, medical expenses, luggage and delays. Our advisors can help you choose the package best suited to your destination and budget."
+        },
+        "cancellation": {
+          "title": "What to do in case of cancellation or modification?",
+          "answer": "In case of cancellation or modification, contact us immediately. Conditions vary depending on providers and chosen rates. We will assist you with the procedures and inform you of any fees. We strongly recommend taking out cancellation insurance to protect yourself."
+        },
+        "custom": {
+          "title": "Do you offer custom trips?",
+          "answer": "Absolutely! Our travel experts create personalized itineraries based on your desires, budget and constraints. Whether it's for a family trip, romantic getaway or solo adventure, we design unique trips that perfectly match your expectations."
+        }
+      }
+    },
+    "legal": {
+      "title": "Legal Information",
+      "subtitle": "All important information regarding our terms of sale and privacy policy",
+      "terms": {
+        "title": "General Terms and Conditions",
+        "description": "Our general terms and conditions define the rights and obligations of each party when booking a trip. They cover booking, payment, cancellation and modification procedures.",
+        "items": [
+          "Booking and confirmation",
+          "Payment terms",
+          "Cancellation conditions",
+          "Liability and guarantees",
+          "Data protection"
+        ]
+      },
+      "privacy": {
+        "title": "Privacy Policy",
+        "description": "We are committed to protecting your personal data in accordance with GDPR. Your information is only used to process your bookings and improve our services.",
+        "items": [
+          "Data collection",
+          "Information usage",
+          "Data sharing",
+          "Your rights",
+          "Cookies and tracking"
+        ]
+      }
+    },
+    "cta": {
+      "title": "Ready for adventure?",
+      "subtitle": "Contact us now to plan your next unforgettable trip",
+      "call": "Call us now",
+      "quote": "Request a quote"
+    }
   }
 } 

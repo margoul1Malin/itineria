@@ -3,6 +3,7 @@ import { useState, useEffect, useMemo, useCallback } from "react"
 import Image from "next/image"
 import Calendar from "@/components/Calendar"
 import { useTranslations } from 'next-intl'
+import { useSearchParams } from 'next/navigation'
 
 interface Airport {
   iataCode: string
@@ -69,14 +70,15 @@ interface SearchFilters {
 export default function VolsPage() {
   const t = useTranslations('flights')
   const tCommon = useTranslations('common')
+  const searchParams = useSearchParams()
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   
   // Images pour le carrousel d'arrière-plan
   const heroImages = [
-    "https://images.unsplash.com/photo-1718948740023-ebb6e6f9cf6e?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=1748&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    "https://images.unsplash.com/photo-1500835556837-99ac94a94552?q=80&w=774&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    "https://images.unsplash.com/photo-1479209749439-1f3a483ad0bc?q=80&w=1546&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    "https://images.unsplash.com/flagged/photo-1555685460-1d9cf532761b?q=80&w=2146&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "https://images.unsplash.com/photo-1464037866556-6812c9d1c72e?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "https://images.unsplash.com/photo-1608023136037-626dad6c6188?q=80&w=1744&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "https://images.unsplash.com/photo-1531045535792-b515d59c3d1f?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
   ]
 
   const [searchForm, setSearchForm] = useState({
@@ -115,6 +117,180 @@ export default function VolsPage() {
   // État pour la pagination
   const [currentPage, setCurrentPage] = useState(1)
   const FLIGHTS_PER_PAGE = 20
+
+  // Lire les paramètres de l'URL et les appliquer au formulaire
+  useEffect(() => {
+    const origin = searchParams.get('origin')
+    const destination = searchParams.get('destination')
+    const departureDate = searchParams.get('departureDate')
+    const returnDate = searchParams.get('returnDate')
+    const adults = searchParams.get('adults')
+    const children = searchParams.get('children')
+    const infants = searchParams.get('infants')
+    const tripType = searchParams.get('tripType')
+    const cabinClass = searchParams.get('cabinClass')
+
+    if (origin || destination || departureDate) {
+      setSearchForm(prev => ({
+        ...prev,
+        origin: origin || '',
+        destination: destination || '',
+        departureDate: departureDate || '',
+        returnDate: returnDate || '',
+        passengers: {
+          adults: adults ? parseInt(adults) : 1,
+          children: children ? parseInt(children) : 0,
+          infants: infants ? parseInt(infants) : 0
+        },
+        tripType: (tripType as 'roundtrip' | 'oneway') || 'roundtrip',
+        cabinClass: cabinClass || 'economy'
+      }))
+
+      // Déclencher automatiquement la recherche si on a les paramètres essentiels
+      if (origin && destination && departureDate) {
+        // Petit délai pour s'assurer que le formulaire est mis à jour
+        setTimeout(() => {
+          performSearch()
+        }, 100)
+      }
+    }
+  }, [searchParams]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Fonction pour effectuer la recherche
+  const performSearch = async () => {
+    if (!searchForm.origin || !searchForm.destination || !searchForm.departureDate) {
+      setError(t('errors.fillRequired'))
+      return
+    }
+
+    if (searchForm.tripType === 'roundtrip' && !searchForm.returnDate) {
+      setError(t('errors.selectReturn'))
+      return
+    }
+
+    // Validation des passagers
+    const totalPassengers = searchForm.passengers.adults + searchForm.passengers.children + searchForm.passengers.infants
+    if (totalPassengers === 0) {
+      setError(t('errors.selectPassenger'))
+      return
+    }
+
+    if (totalPassengers > 9) {
+      setError(t('errors.maxPassengers'))
+      return
+    }
+
+    if (searchForm.passengers.adults === 0) {
+      setError(t('errors.adultRequired'))
+      return
+    }
+
+    if (searchForm.passengers.infants > searchForm.passengers.adults) {
+      setError(t('errors.infantsLimit'))
+      return
+    }
+
+    // Vérifier que l'origine et la destination sont des codes IATA valides
+    const isValidIATA = (code: string) => {
+      return code.startsWith('ALL_') || /^[A-Z]{3}$/.test(code)
+    }
+
+    if (!isValidIATA(searchForm.origin)) {
+      setError(t('errors.selectOrigin'))
+      return
+    }
+
+    if (!isValidIATA(searchForm.destination)) {
+      setError(t('errors.selectDestination'))
+      return
+    }
+
+    console.log('Formulaire de recherche:', searchForm)
+    setIsLoading(true)
+    setError('')
+    setAllFlights([])
+    setMetadata(null)
+    setSearchPerformed(true)
+
+    try {
+      // Construction des passagers au format Duffel
+      const passengers = []
+      
+      // Ajouter les adultes
+      for (let i = 0; i < searchForm.passengers.adults; i++) {
+        passengers.push({ type: 'adult' })
+      }
+      
+      // Ajouter les enfants (avec âge par défaut de 10 ans)
+      for (let i = 0; i < searchForm.passengers.children; i++) {
+        passengers.push({ age: 10 }) // Duffel déterminera automatiquement que c'est un enfant
+      }
+      
+      // Ajouter les bébés (avec âge de 1 an)
+      for (let i = 0; i < searchForm.passengers.infants; i++) {
+        passengers.push({ age: 1 }) // Duffel déterminera automatiquement que c'est un bébé
+      }
+
+      const requestBody = {
+        origin: searchForm.origin,
+        destination: searchForm.destination,
+        departureDate: searchForm.departureDate,
+        passengers: passengers,
+        cabinClass: searchForm.cabinClass,
+        ...(searchForm.tripType === 'roundtrip' && searchForm.returnDate && {
+          returnDate: searchForm.returnDate
+        })
+      }
+
+      console.log('Envoi de la requête:', requestBody)
+
+      const response = await fetch('/api/flights/search', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody)
+      })
+
+      console.log('Statut de la réponse:', response.status)
+      console.log('Headers de la réponse:', response.headers)
+
+      if (response.ok) {
+        const data = await response.json()
+        console.log('Réponse reçue:', data)
+        setAllFlights(data.flights || [])
+        setMetadata(data.metadata || null)
+        
+        // Initialiser les filtres avec les valeurs metadata
+        if (data.metadata) {
+          setFilters(prev => ({
+            ...prev,
+            priceRange: { 
+              min: data.metadata.priceRange.min, 
+              max: data.metadata.priceRange.max 
+            }
+          }))
+        }
+      } else {
+        // Gestion d'erreur plus robuste
+        let errorMessage = t('errors.searchError')
+        try {
+          const errorData = await response.json()
+          errorMessage = errorData.message || errorData.error || errorMessage
+        } catch (jsonError) {
+          // Si la réponse n'est pas du JSON valide, utiliser le statut HTTP
+          console.error('Erreur JSON:', jsonError)
+          errorMessage = `Erreur ${response.status}: ${response.statusText}`
+        }
+        setError(errorMessage)
+      }
+    } catch (error) {
+      console.error('Erreur:', error)
+      setError(t('errors.connectionError'))
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   // Auto-changement des images du carrousel
   useEffect(() => {
@@ -275,136 +451,7 @@ export default function VolsPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-
-    if (!searchForm.origin || !searchForm.destination || !searchForm.departureDate) {
-      setError(t('errors.fillRequired'))
-      return
-    }
-
-    if (searchForm.tripType === 'roundtrip' && !searchForm.returnDate) {
-      setError(t('errors.selectReturn'))
-      return
-    }
-
-    // Validation des passagers
-    const totalPassengers = searchForm.passengers.adults + searchForm.passengers.children + searchForm.passengers.infants
-    if (totalPassengers === 0) {
-      setError(t('errors.selectPassenger'))
-      return
-    }
-
-    if (totalPassengers > 9) {
-      setError(t('errors.maxPassengers'))
-      return
-    }
-
-    if (searchForm.passengers.adults === 0) {
-      setError(t('errors.adultRequired'))
-      return
-    }
-
-    if (searchForm.passengers.infants > searchForm.passengers.adults) {
-      setError(t('errors.infantsLimit'))
-      return
-    }
-
-    // Vérifier que l'origine et la destination sont des codes IATA valides
-    const isValidIATA = (code: string) => {
-      return code.startsWith('ALL_') || /^[A-Z]{3}$/.test(code)
-    }
-
-    if (!isValidIATA(searchForm.origin)) {
-      setError(t('errors.selectOrigin'))
-      return
-    }
-
-    if (!isValidIATA(searchForm.destination)) {
-      setError(t('errors.selectDestination'))
-      return
-    }
-
-    console.log('Formulaire de recherche:', searchForm)
-    setIsLoading(true)
-    setError('')
-    setAllFlights([])
-    setMetadata(null)
-
-    try {
-      // Construction des passagers au format Duffel
-      const passengers = []
-      
-      // Ajouter les adultes
-      for (let i = 0; i < searchForm.passengers.adults; i++) {
-        passengers.push({ type: 'adult' })
-      }
-      
-      // Ajouter les enfants (avec âge par défaut de 10 ans)
-      for (let i = 0; i < searchForm.passengers.children; i++) {
-        passengers.push({ age: 10 }) // Duffel déterminera automatiquement que c'est un enfant
-      }
-      
-      // Ajouter les bébés (avec âge de 1 an)
-      for (let i = 0; i < searchForm.passengers.infants; i++) {
-        passengers.push({ age: 1 }) // Duffel déterminera automatiquement que c'est un bébé
-      }
-
-      const requestBody = {
-        origin: searchForm.origin,
-        destination: searchForm.destination,
-        departureDate: searchForm.departureDate,
-        passengers: passengers,
-        cabinClass: searchForm.cabinClass,
-        ...(searchForm.tripType === 'roundtrip' && searchForm.returnDate && {
-          returnDate: searchForm.returnDate
-        })
-      }
-
-      console.log('Envoi de la requête:', requestBody)
-
-      const response = await fetch('/api/flights/search', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(requestBody)
-      })
-
-      console.log('Statut de la réponse:', response.status)
-      console.log('Headers de la réponse:', response.headers)
-
-      if (response.ok) {
-        const data = await response.json()
-        console.log('Réponse reçue:', data)
-        setAllFlights(data.flights || [])
-        setMetadata(data.metadata || null)
-        setSearchPerformed(true)
-        
-        // Initialiser les filtres avec les valeurs metadata
-        if (data.metadata) {
-          setFilters(prev => ({
-            ...prev,
-            priceRange: { 
-              min: data.metadata.priceRange.min, 
-              max: data.metadata.priceRange.max 
-            }
-          }))
-        }
-      } else {
-        const errorData = await response.json()
-        console.error('Erreur de l\'API:', errorData)
-        
-        if (errorData.message) {
-          setError(errorData.message)
-        } else {
-          setError(t('errors.searchError'))
-        }
-      }
-    } catch (error) {
-      console.error('Erreur:', error)
-      setError(t('errors.connectionError'))
-    } finally {
-      setIsLoading(false)
-    }
+    await performSearch()
   }
 
   // Fonctions utilitaires
@@ -515,9 +562,9 @@ export default function VolsPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-green-50 to-white">
       {/* Section Hero avec formulaire de recherche */}
-      <section className="relative py-20 px-4 overflow-hidden">
+      <section className="relative py-20 px-4 overflow-hidden h-screen">
         {/* Carrousel d'images première classe - système d'opacité */}
-        <div className="absolute inset-0">
+        <div className="absolute inset-0 h-screen">
           {heroImages.map((image, index) => (
             <div
               key={index}
@@ -532,19 +579,20 @@ export default function VolsPage() {
                 className="object-cover"
                 priority={index === 0}
               />
-              <div className="absolute inset-0 z-10 bg-black/10"></div>
-              <div className="absolute inset-0 bg-gradient-to-b from-green-50/60 to-white/30 z-10"></div>
+              <div className="absolute inset-0 z-10 bg-black/5"></div>
             </div>
           ))}
         </div>
-        <div className="relative max-w-6xl mx-auto z-20">
+        <div className="relative max-w-6xl mx-auto z-20 lg:mt-32">
           <div className="text-center mb-8 md:mb-12">
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-green-800 mb-4">
-              {t('findPerfectFlights')}
-            </h1>
-            <p className="text-lg md:text-xl text-gray-600">
-              {t('compareAndBook')}
-            </p>
+            <div className="inline-block bg-white/90 backdrop-blur-sm rounded-2xl px-8 py-6 shadow-xl border border-white/20">
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-green-800 mb-4">
+                {t('findPerfectFlights')}
+              </h1>
+              <p className="text-lg md:text-xl text-gray-700">
+                {t('compareAndBook')}
+              </p>
+            </div>
           </div>
 
           {/* Formulaire de recherche */}

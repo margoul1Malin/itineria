@@ -27,6 +27,10 @@ export default function Header() {
     setIsAccountMenuOpen(!isAccountMenuOpen);
   };
 
+  const closeMobileMenu = () => {
+    setIsMenuOpen(false);
+  };
+
   const handleLogout = async () => {
     try {
       const response = await fetch('/api/auth/logout', {
@@ -110,17 +114,14 @@ export default function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8 font-bold">
-            <Link href={`/${locale}/vols`} className="text-gray-700 hover:text-green-600 transition-colors">
-              {t('flights')}
+            <Link href={`/${locale}/voyages`} className="text-gray-700 hover:text-green-600 transition-colors">
+              {t('travels')}
             </Link>
-            <Link href={`/${locale}/hotels`} className="text-gray-700 hover:text-green-600 transition-colors">
-              {t('hotels')}
+            <Link href={`/${locale}/generateur`} className="text-gray-700 hover:text-green-600 transition-colors">
+              {t('itineraryGenerator')}
             </Link>
-            <Link href={`/${locale}/activites`} className="text-gray-700 hover:text-green-600 transition-colors">
-              {t('activities')}
-            </Link>
-            <Link href={`/${locale}/vols-et-hotels`} className="text-gray-700 hover:text-green-600 transition-colors">
-              {t('flightsAndHotels')}
+            <Link href={`/${locale}/salon-vip`} className="text-gray-700 hover:text-green-600 transition-colors">
+              {t('vipLounge')}
             </Link>
             <Link href={`/${locale}/contact`} className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
               {t('contact')}
@@ -158,22 +159,22 @@ export default function Header() {
                           {t('profile')}
                         </Link>
                         <Link 
-                          href={`/${locale}/vols`} 
+                          href={`/${locale}/voyages`} 
                           className="block px-4 py-2 text-gray-700 hover:bg-green-50 hover:text-green-600 transition-colors"
                         >
-                          {t('flights')}
+                          {t('travels')}
                         </Link>
                         <Link 
-                          href={`/${locale}/hotels`} 
+                          href={`/${locale}/generateur`} 
                           className="block px-4 py-2 text-gray-700 hover:bg-green-50 hover:text-green-600 transition-colors"
                         >
-                          {t('hotels')}
+                          {t('itineraryGenerator')}
                         </Link>
                         <Link 
-                          href={`/${locale}/activites`} 
+                          href={`/${locale}/salon-vip`} 
                           className="block px-4 py-2 text-gray-700 hover:bg-green-50 hover:text-green-600 transition-colors"
                         >
-                          {t('activities')}
+                          {t('vipLounge')}
                         </Link>
                         {(user?.role === 'admin' || user?.role === 'super_admin') && (
                           <>
@@ -241,26 +242,23 @@ export default function Header() {
         {isMenuOpen && (
           <div className="md:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1 bg-white border-t border-gray-200">
-              <Link href={`/${locale}/vols`} className="block px-3 py-2 text-gray-700 hover:text-green-600 transition-colors font-medium">
-                {t('flights')}
+              <Link href={`/${locale}/voyages`} onClick={closeMobileMenu} className="block px-3 py-2 text-gray-700 hover:text-green-600 transition-colors font-medium">
+                {t('travels')}
               </Link>
-              <Link href={`/${locale}/hotels`} className="block px-3 py-2 text-gray-700 hover:text-green-600 transition-colors font-medium">
-                {t('hotels')}
+              <Link href={`/${locale}/generateur`} onClick={closeMobileMenu} className="block px-3 py-2 text-gray-700 hover:text-green-600 transition-colors font-medium">
+                {t('itineraryGenerator')}
               </Link>
-              <Link href={`/${locale}/activites`} className="block px-3 py-2 text-gray-700 hover:text-green-600 transition-colors font-medium">
-                {t('activities')}
+              <Link href={`/${locale}/salon-vip`} onClick={closeMobileMenu} className="block px-3 py-2 text-gray-700 hover:text-green-600 transition-colors font-medium">
+                {t('vipLounge')}
               </Link>
-              <Link href={`/${locale}/vols-et-hotels`} className="block px-3 py-2 text-gray-700 hover:text-green-600 transition-colors font-medium">
-                {t('flightsAndHotels')}
-              </Link>
-              <Link href={`/${locale}/contact`} className="block px-3 py-2 text-gray-700 hover:text-green-600 transition-colors font-medium">
+              <Link href={`/${locale}/contact`} onClick={closeMobileMenu} className="block px-3 py-2 text-gray-700 hover:text-green-600 transition-colors font-medium">
                 {t('contact')}
               </Link>
               
               {/* Lien admin direct dans le menu mobile */}
               {!isLoading && user && (user?.role === 'admin' || user?.role === 'super_admin') && (
                 <div className="border-t border-gray-200 mt-4 pt-4">
-                  <Link href={`/${locale}/admin`} className="block px-3 py-2 text-orange-600 hover:text-orange-700 transition-colors font-medium">
+                  <Link href={`/${locale}/admin`} onClick={closeMobileMenu} className="block px-3 py-2 text-orange-600 hover:text-orange-700 transition-colors font-medium">
                     🛠️ {t('admin')}
                   </Link>
                 </div>
@@ -277,22 +275,22 @@ export default function Header() {
                       <div className="px-3 py-2 text-gray-700 font-bold cursor-pointer" onClick={toggleAccountMenu}>Compte</div>
                       {isAccountMenuOpen && (
                         <>
-                          <Link href={`/${locale}/profil`} className="block px-6 py-2 text-gray-600 hover:text-green-600 transition-colors">
+                          <Link href={`/${locale}/profil`} onClick={closeMobileMenu} className="block px-6 py-2 text-gray-600 hover:text-green-600 transition-colors">
                             {t('profile')}
                           </Link>
-                          <Link href={`/${locale}/reservations-et-voyages`} className="block px-6 py-2 text-gray-600 hover:text-green-600 transition-colors">
+                          <Link href={`/${locale}/reservations-et-voyages`} onClick={closeMobileMenu} className="block px-6 py-2 text-gray-600 hover:text-green-600 transition-colors">
                             Réservations et Voyages
                           </Link>
-                          <Link href={`/${locale}/commentaires-et-notes`} className="block px-6 py-2 text-gray-600 hover:text-green-600 transition-colors">
+                          <Link href={`/${locale}/commentaires-et-notes`} onClick={closeMobileMenu} className="block px-6 py-2 text-gray-600 hover:text-green-600 transition-colors">
                             Commentaires et Notes
                           </Link>
-                          <Link href={`/${locale}/favoris`} className="block px-6 py-2 text-gray-600 hover:text-green-600 transition-colors">
+                          <Link href={`/${locale}/favoris`} onClick={closeMobileMenu} className="block px-6 py-2 text-gray-600 hover:text-green-600 transition-colors">
                             Favoris
                           </Link>
                           {(user?.role === 'admin' || user?.role === 'super_admin') && (
                             <>
                               <div className="border-t border-gray-200 my-1 mx-3"></div>
-                              <Link href={`/${locale}/admin`} className="block px-6 py-2 text-orange-600 hover:text-orange-700 transition-colors font-medium">
+                              <Link href={`/${locale}/admin`} onClick={closeMobileMenu} className="block px-6 py-2 text-orange-600 hover:text-orange-700 transition-colors font-medium">
                                 🛠️ {t('admin')}
                               </Link>
                             </>
@@ -310,10 +308,10 @@ export default function Header() {
                   ) : (
                     // Utilisateur non connecté
                     <div className="pt-4 border-t border-gray-200">
-                      <Link href={`/${locale}/login`} className="block px-3 py-2 text-gray-700 hover:text-green-600 transition-colors font-medium">
+                      <Link href={`/${locale}/login`} onClick={closeMobileMenu} className="block px-3 py-2 text-gray-700 hover:text-green-600 transition-colors font-medium">
                         {t('login')}
                       </Link>
-                      <Link href={`/${locale}/register`} className="block px-3 py-2 text-gray-700 hover:text-green-600 transition-colors font-medium">
+                      <Link href={`/${locale}/register`} onClick={closeMobileMenu} className="block px-3 py-2 text-gray-700 hover:text-green-600 transition-colors font-medium">
                         {t('register')}
                       </Link>
                     </div>
